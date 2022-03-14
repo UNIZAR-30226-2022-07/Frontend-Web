@@ -1,42 +1,45 @@
 <div class="register">
-    <form class="custom-form" method="post">
-      <h1>Registrarse</h1>
-      <input
-        type="email"
-        [(ngModel)]="email"
-        name="email"
-        placeholder="Correo..."
-        required="required"
-      />
-      <input
-        type="password"
-        [(ngModel)]="password"
-        name="password"
-        placeholder="Contraseña..."
-        required="required"
-      />
-      <input
-        type="password"
-        [(ngModel)]="confirmPassword"
-        name="password"
-        placeholder="Repetir contraseña..."
-        required="required"
-      />
-    	<button type="submit" [disabled]="validate()" (click)="register()">Registrarse</button>
-    </form>
+  <form class="custom-form" method="post">
+    <h1>Registrarse</h1>
+    <input
+      type="email"
+      [(ngModel)]="email"
+      name="email"
+      id="email-input"
+      placeholder="Correo..."
+      required="required"
+    />
+    <input
+      type="password"
+      [(ngModel)]="password"
+      name="password"
+      id="password-input"
+      placeholder="Contraseña..."
+      required="required"
+    />
+    <input
+      type="password"
+      [(ngModel)]="confirmPassword"
+      name="password"
+      id="confirmPassword-input"
+      placeholder="Repetir contraseña..."
+      required="required"
+    />
+    <button type="submit" id="register-btn" [disabled]="validate()" (click)="register()">Registrarse</button>
+  </form>
     
 
-    <div class="error">
-		<div *ngIf="passwordError">
-			Las contraseñas no coinciden.
-		</div>
+  <div class="error">
+    <div *ngIf="passwordError">
+      Las contraseñas no coinciden.
+    </div>
 
-  <div *ngIf="userError">
-			Un usuario con el correo proporcionado ya existe.
-		</div>
+    <div *ngIf="userError">
+      Un usuario con el correo proporcionado ya existe.
+    </div>
 
-		<div *ngIf="serviceError">
-			Ha ocurrido un error inesperado: {{this.serviceErrorMessage}}
-		</div>
+    <div *ngIf="serviceError">
+      Ha ocurrido un error inesperado: {{this.serviceErrorMessage}}
+    </div>
   </div>
 </div>
