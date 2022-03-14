@@ -15,7 +15,7 @@
       placeholder="Contraseña..."
       required="required"
     />
-    <button type="submit" (click)="login()">Iniciar sesion</button>
+    <button type="submit" [disabled]="validate()" (click)="login()">Iniciar sesion</button>
   </form>
 
 

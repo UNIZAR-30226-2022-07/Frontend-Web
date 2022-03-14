@@ -22,7 +22,7 @@
         placeholder="Repetir contraseña..."
         required="required"
       />
-    	<button type="submit" (click)="register()">Registrarse</button>
+    	<button type="submit" [disabled]="validate()" (click)="register()">Registrarse</button>
     </form>
     
 
