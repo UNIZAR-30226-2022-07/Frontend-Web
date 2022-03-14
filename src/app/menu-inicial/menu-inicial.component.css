@@ -642,7 +642,7 @@ progress {
 }
 
 @media (min-width: 576px) {
-  .container-sm, .container {
+  .container-sm, .container{
     max-width: 540px;
   }
 }
@@ -2020,6 +2020,41 @@ progress {
   color: var(--bs-table-active-color);
 }
 
+.menu-inicial {
+  list-style: none;
+  padding: 0%;
+  background:#636464;
+  width: 100%;
+  max-width: 2000px;
+  margin:none;
+}
+.menu-inicial li a{
+  text-decoration: none;
+  color:white;
+  padding: 20px;
+  display:block;
+}
+.menu-inicial li{
+  display: inline-block;
+  text-align: center;
+}
+
+.menu-item{
+  position: absolute;
+  right: 200px;
+  height: auto;
+  width: auto;
+}
+.menu-item2{
+  position: absolute;
+  right: 100px;
+  height: auto;
+  width: auto;
+}
+
+.menu-inicial li a:hover{
+  background: #ef8354 ;
+}
 .table-hover > tbody > tr:hover > * {
   --bs-table-accent-bg: var(--bs-table-hover-bg);
   color: var(--bs-table-hover-color);
@@ -3032,13 +3067,13 @@ textarea.form-control-lg {
 
 .btn-primary {
   color: #fff;
-  background-color: #f4623a;
-  border-color: #f4623a;
+  background-color: #6b6766;
+  border-color: #6b6766;
 }
 .btn-primary:hover {
   color: #fff;
-  background-color: #cf5331;
-  border-color: #c34e2e;
+  background-color: #6b6766;
+  border-color: #6b6766;
 }
 .btn-check:focus + .btn-primary, .btn-primary:focus {
   color: #fff;
