@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  //Metodo ejecutado al presionar el boton "iniciar sesion"
   login() {
     const user = {email: this.email, password: this.password};
     this.userService.login(user).subscribe(
@@ -34,6 +34,12 @@ export class LoginComponent implements OnInit {
         this.serviceErrorMessage = err.message
       }
     );
+  }
+
+  //Devuelve false si se puede hacer click en el boton login. True en caso contrario 
+  
+  validate() {
+    return this.email == "" || this.password == ""
   }
 
 }

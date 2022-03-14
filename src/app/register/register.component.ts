@@ -24,6 +24,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //Metodo ejecutado al presionar el boton "registrarse"
   register() {
     if(this.password != this.confirmPassword) {
       this.passwordError = true;
@@ -43,6 +44,11 @@ export class RegisterComponent implements OnInit {
         this.serviceErrorMessage = err.message
       }
     );
+  }
+
+  //Devuelve false si se puede hacer click en el boton register. True en caso contrario 
+  validate() {
+    return this.email == "" || this.password == "" || this.confirmPassword == ""
   }
 
 }
