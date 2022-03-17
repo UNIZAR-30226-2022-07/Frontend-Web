@@ -44,7 +44,7 @@
   --bs-body-bg-rgb: 255, 255, 255;
   --bs-font-sans-serif: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+  --bs-gradient: linear-gradient(180deg, rgba(238, 107, 107, 0.829), rgb(255, 255, 255));
   --bs-body-font-family: Merriweather, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
   --bs-body-font-size: 1rem;
   --bs-body-font-weight: 400;
@@ -71,17 +71,38 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }  
+
+.nav_menu{
+  display:flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  margin: 1rem;
+}
+
+.clasif_menu{
+  margin-left: 10px;
+}
+.amigos_menu{
+  margin-right: 30px;
+}
+.notis_menu{
+ 
+  right: 100px;
+
+}
+
 .menu-inicial {
   list-style: none;
   padding: 0%;
-  background:#636464;
+  background: linear-gradient(to bottom, rgba(165, 75, 71, 0.8) 0%, rgb(255, 255, 255) 100%);
   width: 100%;
   max-width: 2000px;
   margin:none;
 }
 .menu-inicial li a{
   text-decoration: none;
-  color:white;
+  color:rgba(255, 255, 255, 0);
   padding: 20px;
   display:block;
 }
@@ -105,6 +126,10 @@ body {
 
 .menu-inicial li a:hover{
   background: #ef8354 ;
+}
+
+.separacion{
+  margin-top: 20px;
 }
 
 
@@ -240,15 +265,12 @@ body {
 .text-center {
   text-align: center !important;
 }
-
-header.masthead {
-  padding-top: 10rem;
-  padding-bottom: calc(10rem - 4.5rem);
-  background: linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url("/assets/img/bg-masthead.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: scroll;
-  background-size: cover;
+.text-right {
+  text-align: right !important;
+}
+.masthead {
+  
+  background: linear-gradient(to bottom, rgba(165, 75, 71, 0.8) 0%, rgb(255, 255, 255) 100%);
 }
 header.masthead h1, header.masthead .h1 {
   font-size: 2.25rem;
@@ -349,6 +371,31 @@ padding-right: var(--bs-gutter-x, 0.75rem);
 padding-left: var(--bs-gutter-x, 0.75rem);
 margin-right: auto;
 margin-left: auto;
+}
+
+.boton1 a{
+  text-decoration: none;
+  display: block;
+  border: 1px solid transparent;
+  width: 200px;
+  height: 35px;
+  text-align: center;
+  padding-top: 15px;
+  margin:auto;
+  transition: 0.15s;
+  
+  background-color: #080808;
+  color:white;
+  font-family: 'Courier New', Courier, monospace;
+  
+  margin-bottom: 100px;
+  margin-top: 100px;
+
+  border-radius: 15px;
+}
+
+.boton1 a:hover{
+    width:300px;
 }
 
 @media (min-width: 576px) {
