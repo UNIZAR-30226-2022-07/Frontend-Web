@@ -20,6 +20,10 @@
     <button type="submit" id="login-btn" [disabled]="validate()" (click)="login()">Iniciar sesion</button>
   </form>
 
+  <p>
+    <a routerLink="/register">Registrarse</a> - <a routerLink="/forgotPassword">Olvide mi contraseña</a>
+  </p>
+
 
   <div class="error">
     <div *ngIf="userError">

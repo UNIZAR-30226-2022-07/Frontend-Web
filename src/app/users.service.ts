@@ -18,6 +18,10 @@ export class UsersService {
     return this.http.post("<DIRECCION WEB API>", user);
   }
 
+  forgotPassword(user: any): Observable<any> {
+    return this.http.post("<DIRECCION WEB API>", user);
+  }
+
   // Cookies
   setToken(token: string) {
     this.cookies.set("token", token);

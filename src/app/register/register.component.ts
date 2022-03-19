@@ -12,6 +12,7 @@ export class RegisterComponent implements OnInit {
   email: string = "";
   password: string = "";
   confirmPassword: string = "";
+  tos: boolean = false;
   
   //Error handling
   passwordError: boolean = false;
@@ -48,7 +49,7 @@ export class RegisterComponent implements OnInit {
 
   //Devuelve false si se puede hacer click en el boton register. True en caso contrario 
   validate() {
-    return this.email == "" || this.password == "" || this.confirmPassword == ""
+    return this.email == "" || this.password == "" || this.confirmPassword == "" || !this.tos
   }
 
 }

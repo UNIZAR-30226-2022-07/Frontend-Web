@@ -21,6 +21,11 @@ input {
   font-size:large;
 }
 
+input.tos {
+  display: inline;
+  width: auto;
+}
+
 button {
   display: block;
   width: 200px;
@@ -37,6 +42,11 @@ button {
 
 h1 {
   text-align: center;
+}
+
+p {
+  text-align: center;
+  font-size: large;
 }
 
 .error {
