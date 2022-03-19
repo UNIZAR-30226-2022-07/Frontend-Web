@@ -1,3 +1,4 @@
+<body>
 <div class="register">
   <form class="custom-form" method="post">
     <h1>Registrarse</h1>
@@ -25,6 +26,10 @@
       placeholder="Repetir contraseña..."
       required="required"
     />
+    <p>
+      <input type="checkbox" class="tos" id="tos-input" [checked]="tos" (change)="tos = !tos">
+      <label for="tos"> Acepto los <a routerLink="/tos">terminos y condiciones</a></label>
+    </p>
     <button type="submit" id="register-btn" [disabled]="validate()" (click)="register()">Registrarse</button>
   </form>
     
@@ -43,3 +48,4 @@
     </div>
   </div>
 </div>
+</body>

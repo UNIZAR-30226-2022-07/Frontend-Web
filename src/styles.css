@@ -1,1 +1,33 @@
-/* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: "Permanent Marker";
+  src: local("Permanent Marker"), url(./assets/fonts/PermanentMarker-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Fredoka One";
+  src: local("Fredoka One"), url(./assets/fonts/FredokaOne-Regular.ttf) format("truetype");
+}
+
+h1, h2, h3,
+h4, h5, h6 {
+  font-family: "Permanent Marker";
+}
+
+p, label, input {
+  font-family: "Fredoka One";
+}
+
+button {
+  font-family: "Fredoka One";
+  background-color: #C7261A;
+  color: white;
+  padding: 20px;
+  
+	cursor: pointer;
+}
+  
+button:disabled{
+	cursor: default;
+	background: dimgray;
+	font-size: 18px;
+}
