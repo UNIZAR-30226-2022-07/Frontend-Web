@@ -2,12 +2,12 @@ div.login {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 1000px;
+  padding: 100px;
+}
 
-  border-width: 2px;
-  border-style: solid;
-  border-color: black;
-  border-radius: 10px;
+body {
+  background: linear-gradient(to bottom, #FC7D7D, white);
+  margin: 0px;
 }
 
 /*------------------------------ FORM ------------------------------ */
