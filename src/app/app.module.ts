@@ -11,6 +11,7 @@ import { RegisterComponent } from './register/register.component';
 import { MenuInicialComponent } from './menu-inicial/menu-inicial.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { TosComponent } from './tos/tos.component';
+import { GameComponent } from './game/game.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { TosComponent } from './tos/tos.component';
     RegisterComponent,
     MenuInicialComponent,
     ForgotPasswordComponent,
-    TosComponent
+    TosComponent,
+    GameComponent
   ],
   imports: [
     BrowserModule,

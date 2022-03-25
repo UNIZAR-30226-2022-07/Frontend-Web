@@ -3,7 +3,7 @@ import { Carta } from "./carta";
 export class Mano {
   cartas: Carta[] = [];
 
-  tieneCarta(card: Carta) {
+  has(card: Carta) {
     if (!card) return false;
 
     return this.cartas.some(
@@ -11,8 +11,8 @@ export class Mano {
     );
   }
 
-  borrarCarta(card: Carta) {
-    if (!this.tieneCarta(card)) return;
+  remove(card: Carta) {
+    if (!this.has(card)) return;
 
     const i = this.cartas.findIndex(
       (c) => c.value === card.value && c.color === card.color,
@@ -20,7 +20,15 @@ export class Mano {
     this.cartas.splice(i, 1);
   }
 
-  length() {
-    return this.cartas.length
+  length() : number {
+    return this.cartas.length;
+  }
+
+  add(card: Carta) {
+    this.cartas.push(card);
+  }
+
+  getArray() {
+    return this.cartas;
   }
 }

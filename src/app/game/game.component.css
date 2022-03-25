@@ -1,0 +1,38 @@
+/* ---------------------------- MANO ---------------------------- */
+
+div.mano {
+  position: absolute;
+  width: 90%;
+  height: 20%;
+  bottom: 1ch;
+  left: 4%;
+
+  display: flex;
+  justify-content:center;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1%;
+
+  border-width: 6px;
+  border-style: solid;
+  border-color: black;
+  border-radius: 10px;
+}
+
+div.carta {
+  display: inline-block;
+}
+
+img.carta {
+  height: 100%;
+  border-width: 2px;
+  border-style: solid;
+  border-color: black;
+  border-radius: 16px;
+  
+  margin-right: -10ch;
+}
+
+img.carta:hover {
+  margin-right: -2ch;
+}
