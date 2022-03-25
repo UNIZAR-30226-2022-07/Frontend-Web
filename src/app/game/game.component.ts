@@ -1,9 +1,6 @@
-import { viewClassName } from '@angular/compiler';
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Carta } from './logica/carta';
 import { Jugador } from './logica/jugador';
-import { Mano } from './logica/mano';
-import { Partida } from './logica/partida';
 import * as util from "./logica/util";
 
 @Component({
