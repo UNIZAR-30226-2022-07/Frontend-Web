@@ -1,6 +1,15 @@
 <div class="game">
+    <div class="medio">
+        
+        <div class="cartaCentro" *ngFor="let item of pilaCartas;let indice=index">
+            <img class="cartaCentro"
+                [ngStyle]="{ 'transform': 'rotate('+this.randomRotation[indice]+'deg)' }"
+                src="assets/img/cartas/{{item.color}}-{{item.value}}.png"
+            >
+        </div>
+    </div>
     <div class="mano">
-        <div class="carta" *ngFor="let item of test.getArray();let indice=index">
+        <div class="carta" *ngFor="let item of jugadores[this.indexYo].mano.getArray();let indice=index">
             <img class="carta" src="assets/img/cartas/{{item.color}}-{{item.value}}.png">
         </div>
     </div>

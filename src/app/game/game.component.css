@@ -1,3 +1,21 @@
+/* ---------------------------- PILA CENTRAL ---------------------------- */
+
+div.cartaCentro {
+  display: inline-block;
+}
+
+img.cartaCentro {
+  height: 20%;
+  border-width: 2px;
+  border-style: solid;
+  border-color: black;
+  border-radius: 16px;
+
+  position: absolute;
+  top:30%;
+  left: 50%;
+}
+
 /* ---------------------------- MANO ---------------------------- */
 
 div.mano {
@@ -36,3 +54,4 @@ img.carta {
 img.carta:hover {
   margin-right: -2ch;
 }
+
