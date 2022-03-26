@@ -1,3 +1,5 @@
+import { Carta } from "./carta"
+
 export enum Valor {
   // numbers
   CERO = 0,
@@ -37,4 +39,20 @@ export function isSpecial(value: Valor) {
 
 export function isWild(value: Valor) {
   return value >= 13
+}
+// Dada la última carta y la  que se quiere jugar, devuelve TRUE si es posible jugarla, sino devuelve FALSE
+export function sePuedeJugar(Ultimacarta:Carta , cartaAJugar:Carta){
+    if(isWild(cartaAJugar.value)){    // ES +4 o CAMBIO DE COLOR. Estas siempre se pueden jugar
+      return true;
+    }else{    //ES ESPECIAL Y TIENE EL MISMO COLOR -> SE PUEDE JUGAR
+      if(isSpecial(cartaAJugar.value) && Ultimacarta.color == cartaAJugar.color ){
+        return true;
+      }
+      else if(isSpecial(cartaAJugar.value) && Ultimacarta.color != cartaAJugar.color ){
+        return false;
+      }else{    //NO ES ESPECIAL
+          return Ultimacarta.color == cartaAJugar.color || Ultimacarta.value == cartaAJugar.value;
+      }
+      
+    }
 }

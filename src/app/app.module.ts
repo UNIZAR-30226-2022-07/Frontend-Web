@@ -12,6 +12,11 @@ import { MenuInicialComponent } from './menu-inicial/menu-inicial.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { TosComponent } from './tos/tos.component';
 import { GameComponent } from './game/game.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+
+import {MatListModule} from '@angular/material/list'
+
 
 @NgModule({
   declarations: [
@@ -27,7 +32,9 @@ import { GameComponent } from './game/game.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatListModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]
