@@ -1,10 +1,18 @@
 <div class="game">
     <div class="medio">
-        <!-- <div class="otrosJugadores" *ngFor="let item of pilaCartas;let indice=index">
-            <img class="otrosJugadores"
-                src="assets/img/cartas/{{item.color}}-{{item.value}}.png"
-            >
-        </div> -->
+        <div class="otrosJugadores">
+            <hr>
+            <table *ngFor="let item of jugadores;let indice=index">
+                <caption>
+                    <h2>{{item.nombre}}</h2>
+                </caption>
+                <tr>
+                    <img class="otrosJugadores" src="assets/img/cartas/back.png">
+                    <p class="otrosJugadores">x {{item.mano.length()}}</p>
+                </tr>
+            </table>
+            <hr>
+        </div>
 
 
         <div class="cartaCentro" *ngFor="let item of pilaCartas;let indice=index">
