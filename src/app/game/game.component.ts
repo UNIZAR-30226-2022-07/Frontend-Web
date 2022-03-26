@@ -27,6 +27,7 @@ export class GameComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    //TODO: Request a backend de todos los datos. Por ahora son datos falsos
     //Pruebas
     this.victor.mano.add(new Carta(util.Valor.UNO,util.Color.ROJO));
     this.victor.mano.add(new Carta(util.Valor.DOS,util.Color.ROJO));
@@ -45,6 +46,15 @@ export class GameComponent implements OnInit {
     this.pilaCartas.push(new Carta(util.Valor.DOS,util.Color.AZUL));
     this.pilaCartas.push(new Carta(util.Valor.TRES,util.Color.AZUL));
     this.pilaCartas.push(new Carta(util.Valor.CUATRO,util.Color.AZUL));
+  }
+
+  //Ejecutado cuando se hace click en una carta
+  playCard(c: Carta) {
+    //Borrar carta de la mano
+    this.jugadores[this.indexYo].mano.remove(c);
+    //TODO: implementar reglas
+    //Añadirla al centro
+    this.pilaCartas.push(c)
   }
 
 }

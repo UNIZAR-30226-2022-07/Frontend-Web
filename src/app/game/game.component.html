@@ -27,6 +27,7 @@
         <div class="carta" *ngFor="let item of jugadores[this.indexYo].mano.getArray();let indice=index">
             <img class="carta" 
                 src="assets/img/cartas/{{item.color}}-{{item.value}}.png"
+                (click)="playCard(item)"
             >
         </div>
     </div>
