@@ -19,21 +19,42 @@ export class GameComponent implements OnInit {
   direccion:util.Direccion =  util.Direccion.NORMAL;
   //Vector de numeros aleatorios para la rotacion de las cartas de la pila central
   randomRotation: number[] = Array.from({length: 108}, () => Math.floor(Math.random() * 360)); 
-  victor: Jugador = new Jugador("victor"); //Prueba
+  //Pruebas
+  victor: Jugador = new Jugador("victor"); 
+  marcos: Jugador = new Jugador("marcos"); 
+  cesar: Jugador = new Jugador("cesar"); 
 
   constructor() { }
 
   ngOnInit(): void {
+    //TODO: Request a backend de todos los datos. Por ahora son datos falsos
+    //Pruebas
     this.victor.mano.add(new Carta(util.Valor.UNO,util.Color.ROJO));
     this.victor.mano.add(new Carta(util.Valor.DOS,util.Color.ROJO));
     this.victor.mano.add(new Carta(util.Valor.TRES,util.Color.ROJO));
     this.victor.mano.add(new Carta(util.Valor.CUATRO,util.Color.ROJO));
     this.jugadores.push(this.victor);
 
+    this.cesar.mano.add(new Carta(util.Valor.UNO,util.Color.ROJO));
+    this.jugadores.push(this.cesar);
+
+    this.marcos.mano.add(new Carta(util.Valor.UNO,util.Color.ROJO));
+    this.marcos.mano.add(new Carta(util.Valor.DOS,util.Color.ROJO));
+    this.jugadores.push(this.marcos);
+
     this.pilaCartas.push(new Carta(util.Valor.UNO,util.Color.AZUL));
     this.pilaCartas.push(new Carta(util.Valor.DOS,util.Color.AZUL));
     this.pilaCartas.push(new Carta(util.Valor.TRES,util.Color.AZUL));
     this.pilaCartas.push(new Carta(util.Valor.CUATRO,util.Color.AZUL));
+  }
+
+  //Ejecutado cuando se hace click en una carta
+  playCard(c: Carta) {
+    //Borrar carta de la mano
+    this.jugadores[this.indexYo].mano.remove(c);
+    //TODO: implementar reglas
+    //Añadirla al centro
+    this.pilaCartas.push(c)
   }
 
 }

@@ -1,3 +1,35 @@
+/* ---------------------------- LISTA JUGADORES ---------------------------- */
+
+div.otrosJugadores {
+  display: inline-block;
+}
+
+img.otrosJugadores {
+  height: 10ch;
+  margin-right: 2ch;
+
+  border-width: 2px;
+  border-style: solid;
+  border-color: black;
+  border-radius: 16px;
+}
+
+p.otrosJugadores {
+  height: 5ch;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: left;
+
+  font-size: xx-large;
+}
+
+h2 {
+  display: table-cell;
+  margin: 0%;
+}
+
+
+
 /* ---------------------------- PILA CENTRAL ---------------------------- */
 
 div.cartaCentro {
