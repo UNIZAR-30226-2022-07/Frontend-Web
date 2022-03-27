@@ -50,11 +50,12 @@ export class GameComponent implements OnInit {
 
   //Ejecutado cuando se hace click en una carta
   playCard(c: Carta) {
-    //Borrar carta de la mano
-    this.jugadores[this.indexYo].mano.remove(c);
-    //TODO: implementar reglas
-    //Añadirla al centro
-    this.pilaCartas.push(c)
+    if(util.sePuedeJugar(this.pilaCartas[this.pilaCartas.length-1],c)) {
+      //Borrar carta de la mano
+      this.jugadores[this.indexYo].mano.remove(c);
+      //Añadirla al centro
+      this.pilaCartas.push(c)
+    }
   }
 
 }
