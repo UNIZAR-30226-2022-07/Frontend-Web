@@ -15,7 +15,8 @@ import { GameComponent } from './game/game.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
-import {MatListModule} from '@angular/material/list'
+import {MaterialModule} from './material/material.module';
+
 
 
 @NgModule({
@@ -34,7 +35,7 @@ import {MatListModule} from '@angular/material/list'
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatListModule
+    MaterialModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]
