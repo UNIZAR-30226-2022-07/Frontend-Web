@@ -146,8 +146,8 @@ body {
   left: 50px;
  
   bottom: 0;
-  opacity: 100%;
-  z-index: 2;
+  opacity: 0%;
+  z-index: -2;
 }
 
 .mid-container{
