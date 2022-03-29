@@ -36,8 +36,7 @@ export class RegisterComponent implements OnInit {
     this.passwordError = false;
     const user = { username: this.username, email: this.email, pais:this.country, password: this.password };
     this.userService.register(user).subscribe({
-      next: (v) => {this.router.navigateByUrl('/login');
-      },
+      next: (v) => {this.router.navigateByUrl('/login'); },
       error: (e) => {
         console.error(e)
         this.serviceError = true
