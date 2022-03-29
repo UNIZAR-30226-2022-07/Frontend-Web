@@ -9,6 +9,7 @@ import{
 import{
   MatButtonModule
 }from '@angular/material/button'
+import {MatIconModule} from '@angular/material/icon';
 import { from } from 'rxjs';
 @NgModule({
 
@@ -17,7 +18,8 @@ imports: [
 
 MatListModule,
 MatDialogModule,
-MatButtonModule
+MatButtonModule,
+MatIconModule
 
 ],
 
@@ -25,7 +27,8 @@ exports: [
 
 MatListModule,
 MatDialogModule,
-MatButtonModule
+MatButtonModule,
+MatIconModule
 
 ]
 
