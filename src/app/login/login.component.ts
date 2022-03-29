@@ -8,7 +8,7 @@ import { UsersService } from '../users.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  email: string = "";
+  username: string = "";
   password: string = "";
   serviceError: boolean = false;
   serviceErrorMessage: string = "";
@@ -21,25 +21,28 @@ export class LoginComponent implements OnInit {
   }
   //Metodo ejecutado al presionar el boton "iniciar sesion"
   login() {
-    const user = {email: this.email, password: this.password};
-    this.userService.login(user).subscribe(
-      res => {
+    const user = {username: this.username, password: this.password};
+    this.userService.login(user).subscribe({
+      next: (v) => {
+        this.userService.setInfo(v.username,v.email,v.pais,v.puntos)
+        this.userService.setToken(v.accessToken)
         // TODO(Marcos): Guardar con setToken algo de res para recordar que el login es correcto. Tocar userError tambien
         // this.userService.setToken(res.algo);
         // NOTE(Marcos): Para borrar la cookie (hacer logout): this.cookies.delete("token");
         this.router.navigateByUrl('/');
       },
-      err => {
+      error: (e) => {
+        console.error(e)
         this.serviceError = true
-        this.serviceErrorMessage = err.message
+        this.serviceErrorMessage = e.message
       }
-    );
+    });
   }
 
   //Devuelve false si se puede hacer click en el boton login. True en caso contrario 
   
   validate() {
-    return this.email == "" || this.password == ""
+    return this.username == "" || this.password == ""
   }
 
 }
