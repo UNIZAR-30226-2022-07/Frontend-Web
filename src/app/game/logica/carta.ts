@@ -5,7 +5,7 @@ export class Carta {
   private _color!: util.Color;
 
   constructor(value: util.Valor, color: util.Color) {
-    if (util.isWild(value) && color === util.Color.INDEFINIDO) {
+    if (!util.isWild(value) && color === util.Color.INDEFINIDO) {
       throw Error('Solo las cartas wild (+4 o cambio de color) pueden ser inicializadas sin color.');
     }
 
