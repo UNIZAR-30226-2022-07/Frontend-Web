@@ -150,6 +150,25 @@ body {
   z-index: -2;
 }
 
+
+.pop-container2{
+  background-color: #6b6766;
+  font-family: 'Courier New', Courier, monospace;
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+  margin: 0;
+  width: 500px;
+  position: absolute;
+  left: 50px;
+ 
+  bottom: 0;
+  opacity: 100%;
+  z-index: 20;
+}
+
+
 .mid-container{
   position: absolute;
   width: 600px;

@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { MenuInicialComponent } from './menu-inicial/menu-inicial.component';
+import { DialogContent, MenuInicialComponent } from './menu-inicial/menu-inicial.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { TosComponent } from './tos/tos.component';
 import { GameComponent } from './game/game.component';
@@ -28,7 +28,8 @@ import {MaterialModule} from './material/material.module';
     MenuInicialComponent,
     ForgotPasswordComponent,
     TosComponent,
-    GameComponent
+    GameComponent,
+    DialogContent
   ],
   imports: [
     BrowserModule,

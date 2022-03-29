@@ -28,6 +28,7 @@ export class MenuInicialComponent implements OnInit {
 
 @Component({
   selector: 'dialog-content',
-  templateUrl: 'dialog-content.html'
+  templateUrl: 'dialog-content.html',
+  styleUrls: ['./menu-inicial.component.css']
 })
 export class DialogContent {}
