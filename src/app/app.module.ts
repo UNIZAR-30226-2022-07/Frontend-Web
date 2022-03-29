@@ -11,11 +11,9 @@ import { RegisterComponent } from './register/register.component';
 import { DialogContent, MenuInicialComponent } from './menu-inicial/menu-inicial.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { TosComponent } from './tos/tos.component';
-import { GameComponent } from './game/game.component';
+import { ChoseColorComponent, GameComponent } from './game/game.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
-import {MaterialModule} from './material/material.module';
+import { MaterialModule } from './material/material.module';
 
 
 
@@ -29,7 +27,8 @@ import {MaterialModule} from './material/material.module';
     ForgotPasswordComponent,
     TosComponent,
     GameComponent,
-    DialogContent
+    DialogContent,
+    ChoseColorComponent
   ],
   imports: [
     BrowserModule,

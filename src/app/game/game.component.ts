@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Carta } from './logica/carta';
 import { Jugador } from './logica/jugador';
+import { MatDialog } from '@angular/material/dialog';
 import * as util from "./logica/util";
 
 @Component({
@@ -24,7 +25,7 @@ export class GameComponent implements OnInit {
   marcos: Jugador = new Jugador("marcos"); 
   cesar: Jugador = new Jugador("cesar"); 
 
-  constructor() { }
+  constructor(public dialog:MatDialog) { }
 
   ngOnInit(): void {
     //TODO: Request a backend de todos los datos. Por ahora son datos falsos
@@ -50,6 +51,7 @@ export class GameComponent implements OnInit {
 
   //Ejecutado cuando se hace click en una carta
   playCard(c: Carta) {
+    this.popupColor()
     if(util.sePuedeJugar(this.pilaCartas[this.pilaCartas.length-1],c)) {
       //Borrar carta de la mano
       this.jugadores[this.indexYo].mano.remove(c);
@@ -58,4 +60,16 @@ export class GameComponent implements OnInit {
     }
   }
 
+  popupColor() {
+    const dialogRef = this.dialog.open(ChoseColorComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    })
+  }
 }
+@Component({
+  selector: 'chosecolor',
+  templateUrl: 'chosecolor.html',
+  styleUrls: ['./game.component.css']
+})
+export class ChoseColorComponent {}
