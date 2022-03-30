@@ -69,13 +69,6 @@ div.mano {
   border-radius: 10px;
 }
 
-button.mano{
-  min-height: 100px ;
-  min-width: 100px;
-  position: absolute;
-  right: 100px;
-  
-}
 
 div.carta {
   display: inline-block;
@@ -95,3 +88,10 @@ img.carta:hover {
   margin-right: -2ch;
 }
 
+button.uno {
+  position: absolute;
+  top:57%;
+  left: 90%;
+  width: 7vw;
+  height: 7vw;
+}

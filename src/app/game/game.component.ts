@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Carta } from './logica/carta';
 import { Jugador } from './logica/jugador';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import * as util from "./logica/util";
 
 @Component({
@@ -34,6 +34,7 @@ export class GameComponent implements OnInit {
     this.victor.mano.add(new Carta(util.Valor.DOS,util.Color.ROJO));
     this.victor.mano.add(new Carta(util.Valor.TRES,util.Color.ROJO));
     this.victor.mano.add(new Carta(util.Valor.CUATRO,util.Color.ROJO));
+    this.victor.mano.add(new Carta(util.Valor.WILD,util.Color.INDEFINIDO));
     this.jugadores.push(this.victor);
 
     this.cesar.mano.add(new Carta(util.Valor.UNO,util.Color.ROJO));
@@ -50,26 +51,37 @@ export class GameComponent implements OnInit {
   }
 
   //Ejecutado cuando se hace click en una carta
-  playCard(c: Carta) {
-    this.popupColor()
+  async playCard(c: Carta) {
     if(util.sePuedeJugar(this.pilaCartas[this.pilaCartas.length-1],c)) {
       //Borrar carta de la mano
       this.jugadores[this.indexYo].mano.remove(c);
+      if(util.isWild(c.value)) {
+        await this.popupColor(c);
+      }
       //Añadirla al centro
       this.pilaCartas.push(c)
     }
   }
 
-  popupColor() {
+  async popupColor(c:Carta) {
     const dialogRef = this.dialog.open(ChoseColorComponent);
+    dialogRef.disableClose = true;
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      c.color = result;
     })
   }
+
+
+  
 }
 @Component({
   selector: 'chosecolor',
   templateUrl: 'chosecolor.html',
-  styleUrls: ['./game.component.css']
+  styleUrls: ['chosecolor.css']
 })
-export class ChoseColorComponent {}
+export class ChoseColorComponent {
+  constructor(public dialogRef: MatDialogRef<ChoseColorComponent>) {}
+  close(n: number) {
+    this.dialogRef.close(n);
+  }
+}

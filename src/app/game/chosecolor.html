@@ -1,11 +1,9 @@
 <div class="mid-container">
-    <div class="pop-container2">
-        <h2 mat-dialog-title>Elige un color</h2>
-        <mat-dialog-actions>
-            <button mat-button mat-dialog-close>Rojo</button>
-            <button mat-button mat-dialog-close>Azul</button>
-            <button mat-button mat-dialog-close>Amarillo</button>
-            <button mat-button mat-dialog-close>Verde</button>
-        </mat-dialog-actions>
-    </div>
+    <h2 mat-dialog-title>Elige un color</h2>
+    <mat-dialog-actions>
+        <button mat-button (click)="close(1)">Rojo</button>
+        <button mat-button (click)="close(2)">Azul</button>
+        <button mat-button (click)="close(3)">Verde</button>
+        <button mat-button (click)="close(4)">Amarillo</button>
+    </mat-dialog-actions>
 </div>
