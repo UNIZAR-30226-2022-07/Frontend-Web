@@ -69,6 +69,14 @@ div.mano {
   border-radius: 10px;
 }
 
+button.mano{
+  min-height: 100px ;
+  min-width: 100px;
+  position: absolute;
+  right: 100px;
+  
+}
+
 div.carta {
   display: inline-block;
 }
