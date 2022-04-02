@@ -17,15 +17,15 @@ export class UsersService {
   
   //----------------------------- API interaction -----------------------------//
   login(user: any): Observable<any> {
-    return this.http.post("https://onep1.herokuapp.com/api/auth/signin", user);
+    return this.http.get("https://onep1.herokuapp.com/api/auth/signin", user);
   }
 
   register(user: any): Observable<any> {
-    return this.http.post("https://onep1.herokuapp.com/api/auth/signup", user);
+    return this.http.get("https://onep1.herokuapp.com/api/auth/signup", user);
   }
 
   forgotPassword(user: any): Observable<any> {
-    return this.http.post("<DIRECCION WEB API>", user);
+    return this.http.get("<DIRECCION WEB API>", user);
   }
 
   //----------------------------- Cookies -----------------------------//
