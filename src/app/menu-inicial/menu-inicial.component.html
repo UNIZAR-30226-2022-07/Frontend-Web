@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Menu</title>
+        <link rel="icon" type="image/x-icon" href="favicon.ico" />
+        
+        
+        <link href="menu-inicial.component.css" rel="stylesheet" />
+
+        </head>
+<body class="masthead">
+   
+<header>
+    <ul class="navbar">
+
+        
+        <li class="clasif_menu">
+            <a href= "#about">
+            <img src="../../assets/img/trofeo-deportivo.png" width=70px height= 70px alt="" />
+            </a>
+        </li>
+        <li class="amigos_menu">
+            
+                <a href= "#about">
+                <img src="../../assets/img/friends.png" border = "0" width=70px height= 70px  />
+            </a>
+       
+        
+        </li>
+        <li class="notis-menu">
+                <a href= "#about">
+                <img src="../../assets/img/bell.png" width=70px height= 70px alt="" />
+       
+        </a>
+        </li>
+    </ul>
+</header>
+<div class="container">
+    <hr class="separacion" size="4px" color="black" />
+    <button mat-button (click)="openDialog()"> Open dialog</button>
+    <div class="mid-container">
+       <div class="boton1">
+            <a routerLink="/game">Partida rápida</a>
+            <a href="#about">Unirse P.Privada</a>
+            <a href="#about">Crear P.Privada</a>
+        </div>
+        
+        <mat-dialog-content>
+        <mat-list class="pop-container" id="modal-container">
+            <mat-list-item class = "modal">
+                <h1>Amigos</h1>
+            </mat-list-item>
+            
+            <mat-list-item class = "modal">
+                Márcos
+            </mat-list-item>
+            <mat-list-item class = "modal">
+                Márcos
+            </mat-list-item>
+           
+
+
+        </mat-list> 
+        </mat-dialog-content>
+    </div>
+    
+</div>
+
+
+    
+
+               
+</body>
+</html>
+   

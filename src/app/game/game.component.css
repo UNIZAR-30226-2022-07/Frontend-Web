@@ -1,0 +1,95 @@
+/* ---------------------------- LISTA JUGADORES ---------------------------- */
+
+div.otrosJugadores {
+  display: inline-block;
+}
+
+img.otrosJugadores {
+  height: 10ch;
+  margin-right: 2ch;
+
+  border-width: 2px;
+  border-style: solid;
+  border-color: black;
+  border-radius: 16px;
+}
+
+p.otrosJugadores {
+  height: 5ch;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: left;
+
+  font-size: xx-large;
+}
+
+h2 {
+  display: table-cell;
+  margin: 0%;
+}
+
+/* ---------------------------- PILA CENTRAL ---------------------------- */
+
+div.cartaCentro {
+  display: inline-block;
+}
+
+img.cartaCentro {
+  height: 20%;
+  border-width: 2px;
+  border-style: solid;
+  border-color: black;
+  border-radius: 16px;
+
+  position: absolute;
+  top:30%;
+  left: 50%;
+}
+
+/* ---------------------------- MANO ---------------------------- */
+
+div.mano {
+  position: absolute;
+  width: 90%;
+  height: 20%;
+  bottom: 1ch;
+  left: 4%;
+
+  display: flex;
+  justify-content:center;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1%;
+
+  border-width: 6px;
+  border-style: solid;
+  border-color: black;
+  border-radius: 10px;
+}
+
+
+div.carta {
+  display: inline-block;
+}
+
+img.carta {
+  height: 100%;
+  border-width: 2px;
+  border-style: solid;
+  border-color: black;
+  border-radius: 16px;
+  
+  margin-right: -10ch;
+}
+
+img.carta:hover {
+  margin-right: -2ch;
+}
+
+button.uno {
+  position: absolute;
+  top:57%;
+  left: 90%;
+  width: 7vw;
+  height: 7vw;
+}

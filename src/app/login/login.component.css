@@ -1,5 +1,53 @@
+div.login {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 100px;
+}
+
+body {
+  background: linear-gradient(to bottom, #FC7D7D, white);
+  margin: 0px;
+}
+
+/*------------------------------ FORM ------------------------------ */
+
+input {
+  display: block;
+  width: 600px;
+
+  margin: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size:large;
+}
+
+button {
+  display: block;
+  width: 200px;
+  height: 80px;
+
+  margin: 60px;
+  margin-left: auto;
+  margin-right: auto;
+
+  font-size: large;
+}
+
+/*------------------------------ TEXTO ------------------------------ */
+
+h1 {
+  text-align: center;
+}
+
+p {
+  text-align: center;
+  font-size: large;
+}
+
 .error {
   color: red;
   margin-top: 10pt;
   margin-bottom: 10pt;
+  text-align: center;
 }
