@@ -136,13 +136,11 @@ body {
 
 
 .mid-container{
-  position: absolute;
-  width: 600px;
+  width: auto;
   height: 500px;
   align-items: center;
   justify-content: center;
   display: flex;
-  left: 400px;
 
   
 }
@@ -352,7 +350,7 @@ header.masthead h1, header.masthead .h1 {
   height: 35px;
   text-align: center;
   padding-top: 15px;
-  margin:auto;
+  margin: auto;
   transition: 0.15s;
 
 
