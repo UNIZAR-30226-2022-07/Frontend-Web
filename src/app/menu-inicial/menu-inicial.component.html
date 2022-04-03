@@ -41,8 +41,6 @@
 </header>
 <hr class="separacion" size="4px" color="black" />
 <div class="container">
-    
-    <button mat-button (click)="openDialog()"> Open dialog</button>
     <div class="mid-container">
        <div class="boton1">
             <a routerLink="/game">Partida rápida</a>
@@ -50,26 +48,11 @@
             <a href="#about">Crear P.Privada</a>
         </div>
         
-        <mat-dialog-content>
-        <mat-list class="pop-container" id="modal-container">
-            <mat-list-item class = "modal">
-                <h1>Amigos</h1>
-            </mat-list-item>
-            
-            <mat-list-item class = "modal">
-                Márcos
-            </mat-list-item>
-            <mat-list-item class = "modal">
-                Márcos
-            </mat-list-item>
-           
-
-
-        </mat-list> 
-        </mat-dialog-content>
+    
     </div>
     
 </div>
+<button mat-button (click)="openDialog()"> Open dialog</button>
 
 
     
