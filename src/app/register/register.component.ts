@@ -28,13 +28,13 @@ export class RegisterComponent implements OnInit {
   }
 
   //Metodo ejecutado al presionar el boton "registrarse"
-  register() {
+  register_button() {
     if(this.password != this.confirmPassword) {
       this.passwordError = true;
       return;
     }
     this.passwordError = false;
-    const user = { username: this.username, email: this.email, pais:this.country, password: this.password };
+    const user = { username: this.username, email: this.email, pais: this.country, password: this.password };
     this.userService.register(user).subscribe({
       next: (v) => {this.router.navigateByUrl('/login'); },
       error: (e) => {

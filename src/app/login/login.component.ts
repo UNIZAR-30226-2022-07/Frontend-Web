@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
   //Metodo ejecutado al presionar el boton "iniciar sesion"
-  login() {
+  login_button() {
     const user = {username: this.username, password: this.password};
     this.userService.login(user).subscribe({
       next: (v) => {
