@@ -120,13 +120,14 @@ body {
 .pop-container2{
   background-color: #6b6766;
  
-  display: block;
+  display:block;
 
   align-items: center;
   justify-content: center;
-  height: 500px;
+  height: auto;
   margin-left: auto;
   margin-right: auto;
+  margin-top: auto;
 
   left:auto;
   right: auto;
