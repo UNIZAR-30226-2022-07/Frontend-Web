@@ -26,15 +26,18 @@ export class LoginComponent implements OnInit {
       next: (v) => {
         this.userService.setInfo(v.username,v.email,v.pais,v.puntos)
         this.userService.setToken(v.accessToken)
-        // TODO(Marcos): Guardar con setToken algo de res para recordar que el login es correcto. Tocar userError tambien
-        // this.userService.setToken(res.algo);
         // NOTE(Marcos): Para borrar la cookie (hacer logout): this.cookies.delete("token");
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/menuInicial');
       },
       error: (e) => {
-        console.error(e)
-        this.serviceError = true
-        this.serviceErrorMessage = e.message
+        if (e.status == 401) {
+          this.userError = true;
+        }
+        else {
+          console.error(e);
+          this.serviceError = true;
+          this.serviceErrorMessage = e.message;
+        }
       }
     });
   }
