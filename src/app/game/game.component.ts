@@ -64,6 +64,12 @@ export class GameComponent implements OnInit {
     }
   }
 
+  //Ejecutado cuando el jugador presiona el boton UNO de otro jugador para recordarle que no lo ha presionado
+  //index es el indice del jugador en el array "jugadores"
+  sayUno(index:number) {
+    return;
+  }
+
   async popupColor(c:Carta) {
     const dialogRef = this.dialog.open(ChoseColorComponent);
     dialogRef.disableClose = true;

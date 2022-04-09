@@ -13,8 +13,9 @@
                     <div class="group">
                         <img class="otrosJugadores" src="assets/img/cartas/back.png">
                         <p class="otrosJugadores">x {{item.mano.length()}}</p>
-                        <!-- <button *ngIf="item.mano.length() == 1" class="uno">UNO</button> -->
                     </div>
+                    <br>
+                    <button mat-fab color="primary" *ngIf="(item.mano.length()==1) && (indice != this.indexYo)" class="uno-other" (click)="sayUno(indice)">UNO</button>
                 </div>
             </div>
             <hr>
