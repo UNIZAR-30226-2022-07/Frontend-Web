@@ -35,6 +35,7 @@ export class GameComponent implements OnInit {
     this.victor.mano.add(new Carta(util.Valor.TRES,util.Color.ROJO));
     this.victor.mano.add(new Carta(util.Valor.CUATRO,util.Color.ROJO));
     this.victor.mano.add(new Carta(util.Valor.WILD,util.Color.INDEFINIDO));
+    this.victor.mano.add(new Carta(util.Valor.DRAW4,util.Color.INDEFINIDO));
     this.jugadores.push(this.victor);
 
     this.cesar.mano.add(new Carta(util.Valor.UNO,util.Color.ROJO));
