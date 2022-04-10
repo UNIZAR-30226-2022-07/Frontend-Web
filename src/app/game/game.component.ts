@@ -56,8 +56,18 @@ export class GameComponent implements OnInit {
     if(util.sePuedeJugar(this.pilaCartas[this.pilaCartas.length-1],c)) {
       //Borrar carta de la mano
       this.jugadores[this.indexYo].mano.remove(c);
+      //Efectos especiales
       if(util.isWild(c.value)) {
         await this.popupColor(c);
+      }
+      if(c.value == util.Valor.REVERSE) {
+        if (this.direccion == util.Direccion.NORMAL) {
+          this.direccion = util.Direccion.INVERSA;
+        }
+        else {
+          this.direccion = util.Direccion.NORMAL;
+        }
+        
       }
       //Añadirla al centro
       this.pilaCartas.push(c)
@@ -67,6 +77,7 @@ export class GameComponent implements OnInit {
   //Ejecutado cuando el jugador presiona el boton UNO de otro jugador para recordarle que no lo ha presionado
   //index es el indice del jugador en el array "jugadores"
   sayUno(index:number) {
+    //TODO
     return;
   }
 
