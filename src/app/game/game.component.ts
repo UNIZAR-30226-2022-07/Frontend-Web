@@ -20,6 +20,8 @@ export class GameComponent implements OnInit {
   direccion:util.Direccion =  util.Direccion.NORMAL;
   //Vector de numeros aleatorios para la rotacion de las cartas de la pila central
   randomRotation: number[] = Array.from({length: 108}, () => Math.floor(Math.random() * 360)); 
+  //Variables temporales
+  tempJugador: Jugador|undefined;
   //Pruebas
   victor: Jugador = new Jugador("victor"); 
   marcos: Jugador = new Jugador("marcos"); 
@@ -79,6 +81,24 @@ export class GameComponent implements OnInit {
   sayUno(index:number) {
     //TODO
     return;
+  }
+
+  //Ejecutado cuando se quiere pasar al siguiente turno.
+  siguienteTurno() {
+    if (this.direccion == util.Direccion.NORMAL) {
+      this.tempJugador = this.jugadores.shift();
+      if (this.tempJugador !== undefined) {
+        this.jugadores.push(this.tempJugador);
+        this.indexYo = (this.indexYo-1) % this.jugadores.length;
+      }
+    }
+    else {
+      this.tempJugador = this.jugadores.pop();
+      if (this.tempJugador !== undefined) {
+        this.jugadores.unshift(this.tempJugador);
+        this.indexYo = (this.indexYo+1) % this.jugadores.length;
+      }
+    }
   }
 
   async popupColor(c:Carta) {
