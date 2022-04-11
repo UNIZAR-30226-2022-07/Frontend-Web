@@ -21,7 +21,7 @@ h4, h5, h6 {
 p, label, input {
   font-family: "Fredoka One";
 }
-
+/*
 button {
   font-family: "Fredoka One";
   background-color: #C7261A;
@@ -36,3 +36,4 @@ button:disabled{
 	background: dimgray;
 	font-size: 18px;
 }
+*/

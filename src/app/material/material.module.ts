@@ -11,6 +11,7 @@ import{
 }from '@angular/material/button'
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatDividerModule} from '@angular/material/divider';
 import { from } from 'rxjs';
 @NgModule({
 
@@ -21,7 +22,8 @@ MatListModule,
 MatDialogModule,
 MatButtonModule,
 MatIconModule,
-MatToolbarModule
+MatToolbarModule,
+MatDividerModule
 
 ],
 
@@ -31,7 +33,8 @@ MatListModule,
 MatDialogModule,
 MatButtonModule,
 MatIconModule,
-MatToolbarModule
+MatToolbarModule,
+MatDividerModule
 
 ]
 
