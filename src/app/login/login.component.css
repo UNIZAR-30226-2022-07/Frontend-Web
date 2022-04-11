@@ -1,13 +1,9 @@
+/*------------------------------ DIVS ------------------------------ */
 div.login {
   display: block;
   margin-left: auto;
   margin-right: auto;
   padding: 100px;
-}
-
-body {
-  background: linear-gradient(to bottom, #FC7D7D, white);
-  margin: 0px;
 }
 
 /*------------------------------ FORM ------------------------------ */
@@ -20,9 +16,25 @@ input {
   margin-left: auto;
   margin-right: auto;
   font-size:large;
+  padding: 1ch;
+
+
+  border-style: solid;
+  border-width: 2px;
+  border-color: black;
+  border-radius: 4px;
 }
 
 button {
+  font-family: "Fredoka One";
+  background-color: #C7261A;
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  border-style: solid;
+  border-width: 4px;
+  border-color: black;
+  cursor: pointer;
   display: block;
   width: 200px;
   height: 80px;
@@ -32,6 +44,12 @@ button {
   margin-right: auto;
 
   font-size: large;
+}
+
+button:disabled{
+	cursor: default;
+	background: dimgray;
+	font-size: 18px;
 }
 
 /*------------------------------ TEXTO ------------------------------ */
