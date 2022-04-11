@@ -1,0 +1,25 @@
+<div class="torneo">
+    <div class="search-bar">
+        <input id="searchbox" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Puedes buscar torneos aqui">
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Jugadores</th>
+                <th>Reglas</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let t of torneoData | filter:searchText">
+                <td>{{t.name}}</td>
+                <td>{{t.jugadores}}/9</td>
+                <td>{{t.reglas}}</td>
+                <td>
+                    <button>UNIRSE</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

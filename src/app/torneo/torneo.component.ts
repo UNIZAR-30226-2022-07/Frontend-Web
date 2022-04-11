@@ -1,0 +1,37 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-torneo',
+  templateUrl: './torneo.component.html',
+  styleUrls: ['./torneo.component.css']
+})
+export class TorneoComponent implements OnInit {
+  torneoData: any;
+  searchText!: string;
+  constructor() { }
+
+  ngOnInit(): void {
+    //TODO: Request a backend para tener torneos
+    //TODO: Paginar los torneos?
+
+    //Pruebas:
+    this.torneoData = [
+      {
+        name: "prueba",
+        reglas: "regla1, regla2",
+        jugadores: 4
+      },
+      {
+        name: "prueba2",
+        reglas: "regla3",
+        jugadores: 2
+      },
+      {
+        name: "prueba3",
+        reglas: "regla1, regla3",
+        jugadores: 7
+      }
+    ]
+  }
+
+}

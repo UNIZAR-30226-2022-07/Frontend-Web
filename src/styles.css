@@ -18,7 +18,7 @@ h4, h5, h6 {
   font-family: "Permanent Marker";
 }
 
-p, label, input {
+p, label, input, th, td {
   font-family: "Fredoka One";
 }
 /*
