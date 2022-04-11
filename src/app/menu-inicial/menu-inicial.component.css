@@ -1,52 +1,41 @@
-html, body{
-  margin: 0;
-  padding: 0;
+/*------------------------------------DIVS-----------------------------------------*/
+div.mid-container{
+  width: auto;
+  height: 500px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 
-body{
-  background: url("../../assets/img/fondo.png");
+div.botones {
+  padding-top: 20vh;
 }
 
 /*------------------------------------TOOLBAR-----------------------------------------*/
-
-.toolbar{
-
+mat-toolbar {
+  background-color: #6b67667e;
+  padding: 2ch;
 }
 
-.clasif_menu{
-  position: relative;
-  height: 50px;
-  width: 50px;
-  margin-top: 1%;
-
-}
-.amigos_menu{
-  
- 
-  margin-top: 1%;
-  height: 50px;
-  width: 50px;
+span.spacer {
+  flex: 1 1 auto;
 }
 
-
-
-.notis_menu{
-
-margin-top: 1%;
-height: 50px;
-  width: 50px;
-
+.mat-icon-button{
+  height: 10vh;
+  width: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.icon{
-  
-  
+.mat-icon {
+  display: inline;
+  font-size: 6vh;
 }
 
-
-
-
-.pop-container{
+/*------------------------------------POPUP-----------------------------------------*/
+/* .pop-container{
   background-color: #6b6766;
   font-family: 'Courier New', Courier, monospace;
   display: inline-block;
@@ -61,83 +50,49 @@ height: 50px;
   bottom: 0;
   opacity: 0%;
   z-index: -2;
-}
-
+} */
 
 .pop-container2{
-  background-color: #6b6766;
- 
-  display:block;
+  display: block;
+  height: auto;
+  width: 75vw;
+  margin: auto;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 20vh;
 
   align-items: center;
   justify-content: center;
-  height: auto;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: auto;
-
-  left:auto;
-  right: auto;
-
-  position: relative;
-
-  width: 500px;
-
-
+  background-color: #6b6766;
   
-
- 
-  opacity: 100%;
   z-index: 20;
 }
 
 
+/*------------------------------------BOTONES-----------------------------------------*/
 
-
-.mid-container{
-  width: auto;
-  height: 500px;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-}
-
-
-
-.example-spacer {
-  flex: 1 1 auto;
-}
-
-
-
-
-
-
-
-
-.boton1 a{
-  text-decoration: none;
+.botones a {
   display: block;
-  border: 1px solid transparent;
   width: 200px;
   height: 35px;
-  text-align: center;
   padding-top: 15px;
   margin: auto;
-  transition: 0.15s;
-
-
-  
-  background-color: #080808;
-  color:white;
-
-  
   margin-bottom: 100px;
   margin-top: 100px;
 
+  text-align: center;
+  text-decoration: none;
+  
+  background-color: #080808;
+  color:white;
+  border: 1px solid transparent;
   border-radius: 15px;
+  
+  transition: 0.15s;
 }
 
-.boton1 a:hover{
-    width:300px;
+.botones a:hover{
+    width: 250px;
 }

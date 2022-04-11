@@ -1,8 +1,10 @@
 html,body {
-  margin: 0px;
-}
-body {
   height: 100vh;
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
   background: url("assets/img/bg.png");
   background-position: 150px 150px; 
 }
