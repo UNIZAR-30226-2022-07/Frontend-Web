@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class TorneoEsperaComponent implements OnInit {
   tournamentID: string | null = null;
   players!: Array<any>;
+  reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
 
   constructor(private route: ActivatedRoute, public router: Router) { }
 
@@ -33,6 +34,7 @@ export class TorneoEsperaComponent implements OnInit {
         pais: "Ucrania"
       },
     ];
+    this.reglas = [true, true, true, true, true, true];
   }
   //Ejecutado cuando un jugador se quiere sale del torneo
   exit() {

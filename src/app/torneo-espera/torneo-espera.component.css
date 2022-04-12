@@ -1,12 +1,18 @@
 /*------------------------------ DIVS ------------------------------ */
-div.right {
+div.status {
   width: 25%;
   position: absolute;
   right: 15%;
-  top: 40vh;
+  top: 65vh;
 
   align-items: center;
-  text-align: center;
+}
+
+div.reglas {
+  width: 35%;
+  position: absolute;
+  right: 10%;
+  top: 20vh;
 }
 
 
@@ -19,6 +25,10 @@ h1 {
 
 h3 {
   margin-left:25%;
+}
+
+h2 {
+  text-align: center;
 }
 
 /*------------------------------ TABLA ------------------------------ */
