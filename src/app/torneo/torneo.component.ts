@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-torneo',
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class TorneoComponent implements OnInit {
   torneoData: any;
   searchText!: string;
-  constructor() { }
+  constructor(public router: Router) { }
 
   ngOnInit(): void {
     //TODO: Request a backend para tener torneos
@@ -17,21 +18,20 @@ export class TorneoComponent implements OnInit {
     //Pruebas:
     this.torneoData = [
       {
-        name: "prueba",
+        name: "3nsaladita",
         reglas: "regla1, regla2",
         jugadores: 4
       },
       {
-        name: "prueba2",
+        name: "Vicks8",
         reglas: "regla3",
         jugadores: 2
       },
       {
-        name: "prueba3",
+        name: "Helios",
         reglas: "regla1, regla3",
         jugadores: 7
       }
     ]
   }
-
 }

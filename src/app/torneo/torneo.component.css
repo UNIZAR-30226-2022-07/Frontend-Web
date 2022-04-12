@@ -24,6 +24,10 @@ table {
   margin:1%;
   margin-left: auto;
   margin-right: auto;
+
+  border:1px solid;
+  border-collapse: separate;
+  border-spacing: 2vw;
 }
 
 td {
@@ -33,4 +37,42 @@ td {
 
 thead {
   font-size: x-large;
+}
+
+button {
+  height: 6vh;
+  width: 8vw;
+
+  font-size: x-large;
+
+  background-color: black;
+  color: white;
+  border-style: none;
+
+  cursor: pointer;
+
+  transition: all 0.2s;
+}
+
+button:hover {
+  font-size: xx-large;
+}
+/*------------------------------ OTHER ------------------------------ */
+.mat-icon-button{
+  height: 10vh;
+  width: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 1vh;
+  left: 1vw;
+
+  background-color:black;
+}
+
+.mat-icon {
+  display: inline;
+  font-size: 6vh;
+  color:white;
 }

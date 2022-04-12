@@ -1,11 +1,16 @@
 <div class="torneo">
+    <div class="back">
+        <button mat-icon-button (click)="this.router.navigateByUrl('/menuInicial')">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+    </div>
     <div class="search-bar">
         <input id="searchbox" class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Puedes buscar torneos aqui">
     </div>
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Nombre</th>
+                <th>Creado por</th>
                 <th>Jugadores</th>
                 <th>Reglas</th>
                 <th></th>
