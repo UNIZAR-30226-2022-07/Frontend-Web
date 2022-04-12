@@ -1,0 +1,43 @@
+/*------------------------------------DIVS-----------------------------------------*/
+div.popup {
+  width: 30%;
+  height: auto;
+  padding: 25px;
+  position: fixed;
+  top: 30%;
+  left: 35%;
+
+  background-color: gray;
+  z-index: 100000;
+  text-align: center;
+}
+
+div.right {
+  display: inline-block;
+  width: 50%;
+  vertical-align: top;
+}
+
+/*------------------------------------BOTONES-----------------------------------------*/
+button {
+  margin: 1ch;
+}
+
+/*------------------------------------REGLAS-----------------------------------------*/
+
+form {
+  display: inline-block;
+  text-align: left;
+  width: 40%;
+  margin-left: 10%;
+}
+
+label {
+  margin-left: 5px;
+}
+
+br {
+  display: block;
+  content: ""; /* Chrome es un mojon y necesita esta linea */
+  margin-top: 1vh;
+}

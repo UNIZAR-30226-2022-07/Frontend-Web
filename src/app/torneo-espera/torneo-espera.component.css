@@ -75,22 +75,31 @@ mat-spinner {
   margin: 0 auto;
 }
 
-/*------------------------------ OTHER ------------------------------ */
-div.back .mat-icon-button{
+/*------------------------------ BOTONES ------------------------------ */
+div.boton .mat-icon-button{
   height: 10vh;
   width: 10vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  top: 1vh;
-  left: 1vw;
 
   background-color:black;
 }
 
-div.back .mat-icon {
+div.boton .mat-icon {
   display: inline;
   font-size: 6vh;
   color:white;
+}
+
+div.back .mat-icon-button{
+  position: absolute;
+  top: 1vh;
+  left: 1vw;
+}
+
+div.settings .mat-icon-button{
+  position: absolute;
+  top: 1vh;
+  left: 93vw;
 }

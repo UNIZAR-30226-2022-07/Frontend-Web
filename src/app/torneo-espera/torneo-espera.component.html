@@ -1,7 +1,12 @@
 <div class="torneoEspera">
-    <div class="back">
+    <div class="boton back">
         <button mat-icon-button (click)="exit()">
             <mat-icon>arrow_back</mat-icon>
+          </button>
+    </div>
+    <div class="boton settings">
+        <button mat-icon-button (click)="popupAdmin()">
+            <mat-icon>settings</mat-icon>
           </button>
     </div>
     <h1>Torneo de {{players[0].nombre}}</h1>
