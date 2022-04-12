@@ -34,5 +34,10 @@ export class TorneoEsperaComponent implements OnInit {
       },
     ];
   }
+  //Ejecutado cuando un jugador se quiere sale del torneo
+  exit() {
+    //TODO: desapuntarse del torneo
+    this.router.navigateByUrl('/torneo')
+  }
 
 }

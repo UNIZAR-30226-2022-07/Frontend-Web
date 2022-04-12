@@ -1,4 +1,9 @@
 <div class="torneoEspera">
+    <div class="back">
+        <button mat-icon-button (click)="exit()">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+    </div>
     <h1>Torneo de {{players[0].nombre}}</h1>
     <h3>Jugadores:  {{players.length}}/9</h3>
     <table>

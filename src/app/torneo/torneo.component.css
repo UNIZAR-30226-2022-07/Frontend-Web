@@ -58,7 +58,7 @@ button:hover {
   font-size: xx-large;
 }
 /*------------------------------ OTHER ------------------------------ */
-.mat-icon-button{
+div.back .mat-icon-button{
   height: 10vh;
   width: 10vh;
   display: flex;
@@ -71,7 +71,7 @@ button:hover {
   background-color:black;
 }
 
-.mat-icon {
+div.back .mat-icon {
   display: inline;
   font-size: 6vh;
   color:white;
