@@ -1,0 +1,66 @@
+/*------------------------------ DIVS ------------------------------ */
+div.right {
+  width: 25%;
+  position: absolute;
+  right: 15%;
+  top: 40vh;
+
+  align-items: center;
+  text-align: center;
+}
+
+
+
+/*------------------------------ TEXTO ------------------------------ */
+h1 {
+  text-align: center;
+  padding-top: 2vh;
+}
+
+h3 {
+  margin-left:25%;
+}
+
+/*------------------------------ TABLA ------------------------------ */
+table {
+  width: 100%;
+  margin-left:25%;
+  width: 50%;
+}
+
+mat-icon {
+  display: inline;
+  font-size: 6vh;
+}
+
+mat-icon.filled {
+  color: red;
+}
+
+div.persona {
+  display: inline-block;
+
+  border: 1ch;
+  border-style: solid;
+  border-color: black;
+}
+
+div.filled {
+  border-color: red;
+}
+
+div.datos {
+  display: table-cell;
+  width: 100%;
+  padding-left: 1ch;
+
+  font-size: x-large;
+  vertical-align: middle;
+}
+
+/*------------------------------ OTHER ------------------------------ */
+
+mat-spinner {
+  stroke: black;
+  margin: 0 auto;
+}

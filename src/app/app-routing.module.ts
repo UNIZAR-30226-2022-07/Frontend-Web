@@ -6,6 +6,7 @@ import { GameComponent } from './game/game.component';
 import { LoginComponent } from './login/login.component';
 import { MenuInicialComponent } from './menu-inicial/menu-inicial.component';
 import { RegisterComponent } from './register/register.component';
+import { TorneoEsperaComponent } from './torneo-espera/torneo-espera.component';
 import { TorneoComponent } from './torneo/torneo.component';
 import { TosComponent } from './tos/tos.component';
 
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: "tos", component: TosComponent }, 
   { path: "game", component: GameComponent }, 
   { path: "torneo", component: TorneoComponent },
+  { path: "torneoEspera/:id", component: TorneoEsperaComponent },
 ];
 
 @NgModule({

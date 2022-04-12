@@ -18,16 +18,19 @@ export class TorneoComponent implements OnInit {
     //Pruebas:
     this.torneoData = [
       {
+        id: 1,
         name: "3nsaladita",
         reglas: "regla1, regla2",
         jugadores: 4
       },
       {
+        id: 2,
         name: "Vicks8",
         reglas: "regla3",
         jugadores: 2
       },
       {
+        id: 3,
         name: "Helios",
         reglas: "regla1, regla3",
         jugadores: 7

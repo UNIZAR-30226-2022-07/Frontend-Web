@@ -1,0 +1,25 @@
+<div class="torneoEspera">
+    <h1>Torneo de {{players[0].nombre}}</h1>
+    <h3>Jugadores:  {{players.length}}/9</h3>
+    <table>
+        <tr *ngFor="let i of [0,1,2,3,4,5,6,7,8]">
+            <div class="persona" *ngIf="players[i] === undefined">
+                <mat-icon class="empty">person</mat-icon>
+            </div>
+            <div class="persona filled" *ngIf="players[i] !== undefined">
+                <mat-icon class="filled">person</mat-icon>
+            </div>
+
+            <div class="datos" *ngIf="players[i] !== undefined">
+                <b>{{players[i].nombre}}</b> - {{players[i].puntos}} puntos - {{players[i].pais}}
+            </div>
+        </tr>
+    </table>
+    <div class="right" *ngIf="players.length == 9">
+        <h2>La partida comenzara pronto...</h2>
+    </div>
+    <div class="right" *ngIf="players.length != 9">
+        <h2>Esperando a jugadores</h2>
+        <mat-spinner class="spinner"></mat-spinner>
+    </div>
+</div>
