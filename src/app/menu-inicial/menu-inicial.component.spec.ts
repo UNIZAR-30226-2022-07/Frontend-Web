@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { MenuInicialComponent } from './menu-inicial.component';
 
 describe('MenuInicialComponent', () => {
@@ -8,7 +9,14 @@ describe('MenuInicialComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MenuInicialComponent ]
+      declarations: [ MenuInicialComponent ],
+      imports: [ OverlayModule,
+                 MatDialogModule ],
+      providers: [
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: {} },
+        MatDialog
+    ]
     })
     .compileComponents();
   });

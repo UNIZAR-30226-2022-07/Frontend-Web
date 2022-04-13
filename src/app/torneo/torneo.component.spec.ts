@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { RouterTestingModule } from '@angular/router/testing';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { TorneoComponent } from './torneo.component';
 
 describe('TorneoComponent', () => {
@@ -8,7 +9,9 @@ describe('TorneoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TorneoComponent ]
+      declarations: [ TorneoComponent ],
+      imports: [ RouterTestingModule,
+                 Ng2SearchPipeModule ]
     })
     .compileComponents();
   });

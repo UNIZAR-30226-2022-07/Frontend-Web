@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { TorneoEsperaComponent } from './torneo-espera.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('TorneoEsperaComponent', () => {
   let component: TorneoEsperaComponent;
@@ -8,7 +10,15 @@ describe('TorneoEsperaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TorneoEsperaComponent ]
+      declarations: [ TorneoEsperaComponent ],
+      imports: [ OverlayModule,
+                 MatDialogModule,
+                 RouterTestingModule ],
+      providers: [
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: {} },
+        MatDialog
+    ]
     })
     .compileComponents();
   });
