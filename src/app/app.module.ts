@@ -5,15 +5,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppRoutingModule } from './app-routing.module';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { DialogContent, MenuInicialComponent } from './menu-inicial/menu-inicial.component';
+import { DialogContent, MenuInicialComponent, NotisContent } from './menu-inicial/menu-inicial.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { TosComponent } from './tos/tos.component';
 import { ChoseColorComponent, GameComponent } from './game/game.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
+import { TorneoComponent } from './torneo/torneo.component';
+import { TorneoEsperaComponent } from './torneo-espera/torneo-espera.component';
 
 
 
@@ -28,7 +31,10 @@ import { MaterialModule } from './material/material.module';
     TosComponent,
     GameComponent,
     DialogContent,
-    ChoseColorComponent
+    NotisContent,
+    ChoseColorComponent,
+    TorneoComponent,
+    TorneoEsperaComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +42,8 @@ import { MaterialModule } from './material/material.module';
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    Ng2SearchPipeModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

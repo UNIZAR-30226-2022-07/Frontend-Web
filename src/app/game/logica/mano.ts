@@ -1,7 +1,7 @@
 import { Carta } from "./carta";
 
 export class Mano {
-  cartas: Carta[] = [];
+  private cartas: Carta[] = [];
 
   has(card: Carta) {
     if (!card) return false;

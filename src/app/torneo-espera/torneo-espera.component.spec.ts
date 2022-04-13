@@ -1,17 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { MenuInicialComponent } from './menu-inicial.component';
+import { TorneoEsperaComponent } from './torneo-espera.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
-describe('MenuInicialComponent', () => {
-  let component: MenuInicialComponent;
-  let fixture: ComponentFixture<MenuInicialComponent>;
+describe('TorneoEsperaComponent', () => {
+  let component: TorneoEsperaComponent;
+  let fixture: ComponentFixture<TorneoEsperaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MenuInicialComponent ],
+      declarations: [ TorneoEsperaComponent ],
       imports: [ OverlayModule,
-                 MatDialogModule ],
+                 MatDialogModule,
+                 RouterTestingModule ],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: {} },
@@ -22,7 +24,7 @@ describe('MenuInicialComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MenuInicialComponent);
+    fixture = TestBed.createComponent(TorneoEsperaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

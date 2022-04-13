@@ -20,6 +20,8 @@ export class GameComponent implements OnInit {
   direccion:util.Direccion =  util.Direccion.NORMAL;
   //Vector de numeros aleatorios para la rotacion de las cartas de la pila central
   randomRotation: number[] = Array.from({length: 108}, () => Math.floor(Math.random() * 360)); 
+  //Variables temporales
+  tempJugador: Jugador|undefined;
   //Pruebas
   victor: Jugador = new Jugador("victor"); 
   marcos: Jugador = new Jugador("marcos"); 
@@ -35,6 +37,7 @@ export class GameComponent implements OnInit {
     this.victor.mano.add(new Carta(util.Valor.TRES,util.Color.ROJO));
     this.victor.mano.add(new Carta(util.Valor.CUATRO,util.Color.ROJO));
     this.victor.mano.add(new Carta(util.Valor.WILD,util.Color.INDEFINIDO));
+    this.victor.mano.add(new Carta(util.Valor.DRAW4,util.Color.INDEFINIDO));
     this.jugadores.push(this.victor);
 
     this.cesar.mano.add(new Carta(util.Valor.UNO,util.Color.ROJO));
@@ -55,11 +58,46 @@ export class GameComponent implements OnInit {
     if(util.sePuedeJugar(this.pilaCartas[this.pilaCartas.length-1],c)) {
       //Borrar carta de la mano
       this.jugadores[this.indexYo].mano.remove(c);
+      //Efectos especiales
       if(util.isWild(c.value)) {
         await this.popupColor(c);
       }
+      if(c.value == util.Valor.REVERSE) {
+        if (this.direccion == util.Direccion.NORMAL) {
+          this.direccion = util.Direccion.INVERSA;
+        }
+        else {
+          this.direccion = util.Direccion.NORMAL;
+        }
+        
+      }
       //Añadirla al centro
       this.pilaCartas.push(c)
+    }
+  }
+
+  //Ejecutado cuando el jugador presiona el boton UNO de otro jugador para recordarle que no lo ha presionado
+  //index es el indice del jugador en el array "jugadores"
+  sayUno(index:number) {
+    //TODO
+    return;
+  }
+
+  //Ejecutado cuando se quiere pasar al siguiente turno.
+  siguienteTurno() {
+    if (this.direccion == util.Direccion.NORMAL) {
+      this.tempJugador = this.jugadores.shift();
+      if (this.tempJugador !== undefined) {
+        this.jugadores.push(this.tempJugador);
+        this.indexYo = (this.indexYo-1) % this.jugadores.length;
+      }
+    }
+    else {
+      this.tempJugador = this.jugadores.pop();
+      if (this.tempJugador !== undefined) {
+        this.jugadores.unshift(this.tempJugador);
+        this.indexYo = (this.indexYo+1) % this.jugadores.length;
+      }
     }
   }
 

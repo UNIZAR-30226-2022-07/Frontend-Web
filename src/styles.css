@@ -1,3 +1,15 @@
+html,body {
+  height: 100vh;
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  background: url("assets/img/bg.png");
+  background-position: 150px 150px; 
+}
+
+
 @font-face {
   font-family: "Permanent Marker";
   src: local("Permanent Marker"), url(./assets/fonts/PermanentMarker-Regular.ttf) format("truetype");
@@ -13,21 +25,6 @@ h4, h5, h6 {
   font-family: "Permanent Marker";
 }
 
-p, label, input, select {
+p, label, input, th, td {
   font-family: "Fredoka One";
-}
-
-button {
-  font-family: "Fredoka One";
-  background-color: #C7261A;
-  color: white;
-  padding: 20px;
-  border-radius: 12px;
-	cursor: pointer;
-}
-  
-button:disabled{
-	cursor: default;
-	background: dimgray;
-	font-size: 18px;
 }

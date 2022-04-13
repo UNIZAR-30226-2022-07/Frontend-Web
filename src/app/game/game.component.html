@@ -6,20 +6,19 @@
     <body>
 
         <div class="game">
+            <hr>
             <div class="otrosJugadores">
-                <hr>
-                <table *ngFor="let item of jugadores;let indice=index">
-                    <caption>
-                        <h2>{{item.nombre}}</h2>
-                    </caption>
-                    <tr>
+                <div class="player" *ngFor="let item of jugadores;let indice=index">
+                    <h2>{{item.nombre}}</h2>
+                    <div class="group">
                         <img class="otrosJugadores" src="assets/img/cartas/back.png">
                         <p class="otrosJugadores">x {{item.mano.length()}}</p>
-                        <!-- <button *ngIf="item.mano.length() == 1" class="uno">UNO</button> -->
-                    </tr>
-                </table>
-                <hr>
+                    </div>
+                    <br>
+                    <button mat-fab color="primary" *ngIf="(item.mano.length()==1) && (indice != this.indexYo)" class="uno-other" (click)="sayUno(indice)">UNO</button>
+                </div>
             </div>
+            <hr>
 
 
             <div class="cartaCentro" *ngFor="let item of pilaCartas;let indice=index">
@@ -39,10 +38,6 @@
                 </div>
             </div>
             <button mat-fab color="primary" class="uno">UNO</button>
-
-            
-            
-            
         </div>
     </body>
 </html>

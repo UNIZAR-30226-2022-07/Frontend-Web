@@ -22,6 +22,12 @@ export class MenuInicialComponent implements OnInit {
       console.log(`Dialog result: ${result}`);
     })
   }
+    openNotis(){
+      const dialogRef = this.dialog.open(NotisContent);
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(`Dialog result: ${result}`);
+      })
+    }
 
 
 }
@@ -32,3 +38,10 @@ export class MenuInicialComponent implements OnInit {
   styleUrls: ['./menu-inicial.component.css']
 })
 export class DialogContent {}
+
+@Component({
+  selector: 'notis-content',
+  templateUrl: 'notis-content.html' ,
+  styleUrls: ['./menu-inicial.component.css']
+})
+export class NotisContent {}

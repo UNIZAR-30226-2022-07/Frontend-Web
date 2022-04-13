@@ -1,6 +1,18 @@
 /* ---------------------------- LISTA JUGADORES ---------------------------- */
 
 div.otrosJugadores {
+  display: flex;
+  justify-content: center;
+}
+
+div.player {
+  display: inline;
+  width: 10%;
+  height: auto;
+  text-align: center;
+}
+
+div.group {
   display: inline-block;
 }
 
@@ -16,16 +28,15 @@ img.otrosJugadores {
 
 p.otrosJugadores {
   height: 5ch;
-  display: table-cell;
-  vertical-align: middle;
+  display: inline;
+  line-height: 5ch;
   text-align: left;
-
   font-size: xx-large;
 }
 
 h2 {
-  display: table-cell;
   margin: 0%;
+  text-align: center;
 }
 
 /* ---------------------------- PILA CENTRAL ---------------------------- */
@@ -42,8 +53,8 @@ img.cartaCentro {
   border-radius: 16px;
 
   position: absolute;
-  top:30%;
-  left: 50%;
+  top: 40%;
+  left: 47%;
 }
 
 /* ---------------------------- MANO ---------------------------- */
@@ -88,7 +99,7 @@ img.carta:hover {
 
 button.uno {
   position: absolute;
-  top:57%;
+  top: 57%;
   left: 90%;
   width: 7vw;
   height: 7vw;

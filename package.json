@@ -7,22 +7,26 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "heroku-postbuild": "ng build --aot --prod"
+    "heroku-postbuild": "ng build --aot --prod",
+    "build:prod": "ng build --prod",
+    "test:prod": "ng test --browsers=ChromeHeadless --watch=false --code-coverage"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "~13.0.0",
+    "@angular/cdk": "^13.3.2",
     "@angular/cli": "^13.3.1",
     "@angular/common": "~13.0.0",
     "@angular/compiler": "~13.0.0",
     "@angular/compiler-cli": "~13.0.0",
     "@angular/core": "~13.0.0",
     "@angular/forms": "~13.0.0",
-    "@angular/material": "^13.3.1",
+    "@angular/material": "^13.3.2",
     "@angular/platform-browser": "~13.0.0",
     "@angular/platform-browser-dynamic": "~13.0.0",
     "@angular/router": "~13.0.0",
     "express": "^4.17.3",
+    "ng2-search-filter": "^0.5.1",
     "ngx-cookie-service": "^13.1.2",
     "path": "^0.12.7",
     "rxjs": "~7.4.0",
@@ -44,5 +48,8 @@
     "karma-jasmine-html-reporter": "~1.7.0",
     "typescript": "~4.4.3"
   },
-  "engines": { "node": "14.17.3", "npm": "7.20.5" }
+  "engines": {
+    "node": "14.17.3",
+    "npm": "7.20.5"
+  }
 }

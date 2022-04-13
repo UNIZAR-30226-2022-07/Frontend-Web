@@ -21,6 +21,7 @@ export class RegisterComponent implements OnInit {
   serviceError: boolean = false;
   serviceErrorMessage: string = "";
   userError: boolean = false;
+  userErrorMessage: string = "";
 
   constructor(public userService: UsersService, public router: Router) { }
 
@@ -38,9 +39,16 @@ export class RegisterComponent implements OnInit {
     this.userService.register(user).subscribe({
       next: (v) => {this.router.navigateByUrl('/login'); },
       error: (e) => {
-        console.error(e)
-        this.serviceError = true
-        this.serviceErrorMessage = e.message
+        if (e.error.message != undefined) {
+          console.error(e);
+          this.userError = true;
+          this.userErrorMessage = e.error.message;
+        }
+        else {
+          console.error(e);
+          this.serviceError = true;
+          this.serviceErrorMessage = e.message;
+        }
       }
     });
   }
