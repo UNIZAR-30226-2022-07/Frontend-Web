@@ -13,10 +13,20 @@ body{
 /*------------------------------------TOOLBAR-----------------------------------------*/
 
 
+.mat-toolbar{
+  background-color: #6b67667e;
+  padding: 2ch;
+  margin-bottom: 5%;
+}
+
+.mat-icon{
+  display:inline;
+  font-size: 6vh;
+}
+
 .clasif_menu{
   position: relative;
-  height: 50px;
-  width: 50px;
+  
   margin-top: 1%;
 
 }
@@ -24,8 +34,7 @@ body{
   
  
   margin-top: 1%;
-  height: 50px;
-  width: 50px;
+
 /*
   background: red;
   border: 3px solid #fff;
@@ -42,12 +51,11 @@ body{
 .notis_menu{
 
 margin-top: 1%;
-height: 50px;
-  width: 50px;
 
 }
 
 
+/*----------------------------------------------------CUERPO MENU--------------------------------------*/
 
 
 
