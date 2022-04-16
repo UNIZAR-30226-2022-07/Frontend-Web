@@ -11,9 +11,12 @@ import {MatDialog} from '@angular/material/dialog';
 })
 export class MenuInicialComponent implements OnInit {
 
+  
+
   constructor(public dialog:MatDialog) { }
 
   ngOnInit(): void {
+    
   }
 
   openDialog(){
@@ -37,7 +40,18 @@ export class MenuInicialComponent implements OnInit {
   templateUrl: 'dialog-content.html',
   styleUrls: ['./menu-inicial.component.css']
 })
-export class DialogContent {}
+export class DialogContent {
+
+  listaAmigos: any;
+  
+
+  constructor(public dialog:MatDialog) { }
+
+  ngOnInit(): void {
+    this.listaAmigos = [{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"}]  
+  }
+  
+}
 
 @Component({
   selector: 'notis-content',

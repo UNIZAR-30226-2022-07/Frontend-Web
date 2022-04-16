@@ -38,3 +38,4 @@ $frontend-web-theme: mat.define-light-theme((
 // that you are using.
 @include mat.all-component-themes($frontend-web-theme);
 
+// Changing some palette properties of a theme and applying it to a component
