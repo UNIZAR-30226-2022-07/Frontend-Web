@@ -162,16 +162,17 @@ margin-top: 1%;
 
 
 
-.posicion-nombre{
-  width: 3ch;
-  height: 3ch;
+.lista-amigos{
+
   display: flex;
   justify-content: center;
   align-items: center;
   margin-left: auto;
   margin-right: auto;
 
-  font-size: xx-large;
-  background-color: black;
-  color: white;
+
+  
+
+
+
 }

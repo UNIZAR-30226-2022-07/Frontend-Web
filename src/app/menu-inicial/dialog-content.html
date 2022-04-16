@@ -1,22 +1,24 @@
-<div class="pop-container2">
-
-
-</div>
 
 
 <mat-dialog-content class="mat-typography">
   <h3>
     <mat-list>
       <div *ngFor="let friend of listaAmigos;">
-        <tr>
+        <tr class="lista-amigos">
           <td><mat-icon>account_box</mat-icon></td>
+          <span class="example-spacer"></span>
           <td class=>{{friend.nombre}}</td>
+          <span class="example-spacer"></span>
+          <td>
+            <button mat-button>
+              <mat-icon>delete</mat-icon>
+            </button></td>
         </tr>
         <mat-divider></mat-divider>
       
       
       </div>
-      
+   
       </mat-list>
 
   </h3>
@@ -25,3 +27,4 @@
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
 </mat-dialog-actions>
+
