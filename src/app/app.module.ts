@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { TorneoComponent } from './torneo/torneo.component';
 import { TorneoEsperaComponent } from './torneo-espera/torneo-espera.component';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 
 
 
@@ -34,7 +35,8 @@ import { TorneoEsperaComponent } from './torneo-espera/torneo-espera.component';
     NotisContent,
     ChoseColorComponent,
     TorneoComponent,
-    TorneoEsperaComponent
+    TorneoEsperaComponent,
+    LeaderboardComponent
   ],
   imports: [
     BrowserModule,

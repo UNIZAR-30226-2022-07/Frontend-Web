@@ -1,0 +1,60 @@
+<div class="leaderboard">
+    <mat-tab-group mat-align-tabs="center">
+        <mat-tab label="Amigos">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Posicion</th>
+                        <th>Jugador</th>
+                        <th>Puntos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let t of dataAmigos; let indice=index">
+                        <td><div class="pos">{{indice==0 ? '🥇' : (indice==1 ? '🥈' : (indice==2 ? '🥉' : (indice+1).toString()))}}</div></td>
+                        <td>{{t.nombre}}</td>
+                        <td>{{t.puntos}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-tab>
+
+        <mat-tab label="Nacional">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Posicion</th>
+                        <th>Jugador</th>
+                        <th>Puntos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let t of dataNacional; let indice=index">
+                        <td><div class="pos">{{indice==0 ? '🥇' : (indice==1 ? '🥈' : (indice==2 ? '🥉' : (indice+1).toString()))}}</div></td>
+                        <td>{{t.nombre}}</td>
+                        <td>{{t.puntos}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-tab>
+
+        <mat-tab label="Global">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Posicion</th>
+                        <th>Jugador</th>
+                        <th>Puntos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let t of dataGlobal; let indice=index">
+                        <td><div class="pos">{{indice==0 ? '🥇' : (indice==1 ? '🥈' : (indice==2 ? '🥉' : (indice+1).toString()))}}</div></td>
+                        <td>{{t.nombre}}</td>
+                        <td>{{t.puntos}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-tab>
+    </mat-tab-group>
+</div>

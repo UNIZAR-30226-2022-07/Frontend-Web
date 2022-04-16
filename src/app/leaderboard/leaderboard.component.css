@@ -1,0 +1,36 @@
+
+
+table {
+  width: 50%;
+
+  margin:1%;
+  margin-left: auto;
+  margin-right: auto;
+
+  border-spacing: 2vw;
+
+  background-color: #6b67667e;
+}
+
+td {
+  text-align: center;
+  font-size: x-large;
+}
+
+thead {
+  font-size: x-large;
+}
+
+div.pos {
+  width: 3ch;
+  height: 3ch;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+
+  font-size: xx-large;
+  background-color: black;
+  color: white;
+}
