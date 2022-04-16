@@ -1,13 +1,4 @@
 div.popup {
-  width: 20%;
-  height: auto;
-  padding: 25px;
-  position: fixed;
-  top: 30%;
-  left: 40%;
-
-  background-color: gray;
-  z-index: 100000;
   text-align: center;
 }
 
