@@ -18,6 +18,10 @@ $frontend-web-accent: mat.define-palette(mat.$red-palette, A200, A100, A400);
 // The warn palette is optional (defaults to red).
 $frontend-web-warn: mat.define-palette(mat.$red-palette);
 
+$frontend-web-typography: mat.define-typography-config(
+  $font-family: 'Fredoka One',
+);
+
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
 $frontend-web-theme: mat.define-light-theme((
@@ -25,7 +29,8 @@ $frontend-web-theme: mat.define-light-theme((
     primary: $frontend-web-primary,
     accent: $frontend-web-accent,
     warn: $frontend-web-warn,
-  )
+  ),
+  typography: $frontend-web-typography,
 ));
 
 // Include theme styles for core and each component used in your app.
