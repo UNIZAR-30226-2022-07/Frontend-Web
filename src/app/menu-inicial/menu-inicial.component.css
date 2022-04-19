@@ -78,7 +78,7 @@ margin-top: 1%;
 
 
 .pop-container2{
-  background-color: #6b6766;
+ 
  
   display:block;
 
@@ -161,18 +161,38 @@ margin-top: 1%;
 /*-----------------------------------------------------POP UPS-------------------------------------------- */
 
 
+.tamanyo-popup{
+  display:block;
+
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+
+  left:auto;
+  right: auto;
+
+  position: relative;
+
+  width: 500px;
+
+}
+
+
 
 .lista-amigos{
 
-  display: flex;
+  display:flex;
   justify-content: center;
   align-items: center;
   margin-left: auto;
   margin-right: auto;
 
 
-  
-
 
 
 }
+
+
