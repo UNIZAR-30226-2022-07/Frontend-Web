@@ -18,6 +18,7 @@ import { MaterialModule } from './material/material.module';
 import { TorneoComponent } from './torneo/torneo.component';
 import { TorneoEsperaComponent } from './torneo-espera/torneo-espera.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
+import { PartidaPrivadaComponent } from './partida-privada/partida-privada.component';
 
 
 
@@ -36,7 +37,8 @@ import { LeaderboardComponent } from './leaderboard/leaderboard.component';
     ChoseColorComponent,
     TorneoComponent,
     TorneoEsperaComponent,
-    LeaderboardComponent
+    LeaderboardComponent,
+    PartidaPrivadaComponent
   ],
   imports: [
     BrowserModule,

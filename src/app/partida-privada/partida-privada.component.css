@@ -1,0 +1,105 @@
+/*------------------------------ DIVS ------------------------------ */
+div.status {
+    width: 25%;
+    position: absolute;
+    right: 15%;
+    top: 65vh;
+  
+    align-items: center;
+  }
+  
+  div.reglas {
+    width: 35%;
+    position: absolute;
+    right: 10%;
+    top: 20vh;
+  }
+  
+  
+  
+  /*------------------------------ TEXTO ------------------------------ */
+  h1 {
+    text-align: center;
+    padding-top: 2vh;
+  }
+  
+  h3 {
+    margin-left:25%;
+  }
+  
+  h2 {
+    text-align: center;
+  }
+  
+  /*------------------------------ TABLA ------------------------------ */
+  table {
+    width: 100%;
+    margin-left:25%;
+    width: 50%;
+  }
+  
+  mat-icon {
+    display: inline;
+    font-size: 6vh;
+  }
+  
+  mat-icon.filled {
+    color: red;
+  }
+  
+  div.persona {
+    display: inline-block;
+  
+    border: 1ch;
+    border-style: solid;
+    border-color: black;
+  }
+  
+  div.filled {
+    border-color: red;
+  }
+  
+  div.datos {
+    display: table-cell;
+    width: 100%;
+    padding-left: 1ch;
+  
+    font-size: x-large;
+    vertical-align: middle;
+  }
+  
+  /*------------------------------ OTHER ------------------------------ */
+  
+  mat-spinner {
+    stroke: black;
+    margin: 0 auto;
+  }
+  
+  /*------------------------------ BOTONES ------------------------------ */
+  div.boton .mat-icon-button{
+    height: 10vh;
+    width: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    background-color:black;
+  }
+  
+  div.boton .mat-icon {
+    display: inline;
+    font-size: 6vh;
+    color:white;
+  }
+  
+  div.back .mat-icon-button{
+    position: absolute;
+    top: 1vh;
+    left: 1vw;
+  }
+  
+  div.settings .mat-icon-button{
+    position: absolute;
+    top: 1vh;
+    left: 93vw;
+  }

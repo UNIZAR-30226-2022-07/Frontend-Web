@@ -1,0 +1,50 @@
+<div class="torneoEspera">
+    <div class="boton back">
+        <button mat-icon-button routerLink="/menuInicial">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+    </div>
+   <!-- <div class="boton settings">
+        <button mat-icon-button (click)="popupAdmin()">
+            <mat-icon>settings</mat-icon>
+          </button>
+    </div>-->
+    <h1>Partida privada de {{players[0].nombre}}</h1>
+    <h3>Jugadores:  {{players.length}}/{{nJugadores}}</h3>
+    <table>
+        <td *ngFor="let i of [1 , nJugadores]">
+            <div class="persona" *ngIf="players[i] === undefined">
+                <mat-icon class="empty">person</mat-icon>
+            </div>
+            <div class="persona filled" *ngIf="players[i] !== undefined">
+                <mat-icon class="filled">person</mat-icon>
+            </div>
+
+            <div class="datos" *ngIf="players[i] !== undefined">
+                <b>{{players[i].nombre}}</b> - {{players[i].puntos}} puntos - {{players[i].pais}}
+            </div>
+        </td>
+    </table>
+    <div class="status" *ngIf="players.length == nJugadores">
+        <h2>La partida comenzara pronto...</h2>
+    </div>
+    <div class="status" *ngIf="players.length != nJugadores">
+        <h2>Esperando a jugadores</h2>
+        <mat-spinner class="spinner"></mat-spinner>
+    </div>
+
+    <div class="reglas">
+        <h2>Reglas activas:</h2>
+        <ul>
+            <li *ngIf="reglas[0]"><b>0 switch</b>: Cada vez que un usuario juegue la carta normal con numero 0, todos los jugadores pasan su mano al siguiente jugador en el sentido del juego.</li>
+            <li *ngIf="reglas[1]"><b>Crazy 7</b>: Cada vez que un jugador juegue la carta normal con numero 7, podra elegir a otro jugador para intercambiar su mano. </li>
+            <li *ngIf="reglas[2]"><b>Progressive draw</b>: Cuando en la cima de la pila de descartes haya una carta +2 o +4, el jugador que tenga el turno puede evitar robar jugando otra carta +2 si son del mismo color o +4, acumulando la cantidad de cartas pendientes por robar para el siguiente jugador.</li>
+            <li *ngIf="reglas[3]"><b>Chaos draw</b>: Si en algun momento el jugador debe robar cartas, el jugador robara una cantidad aleatoria entre 0 y 6 cartas.</li>
+            <li *ngIf="reglas[4]"><b>Block draw</b>: Si el jugador anterior ha jugado una carta +2 o +4, el jugador que tenga el turno puede evitar robar jugando la carta Bloqueo, saltando su propio turno y dejando las cartas pendientes de robar al siguiente jugador. El siguiente jugador puede encadenar otra carta de Bloqueo y evitar robar tambien.</li>
+            <li *ngIf="reglas[5]"><b>Repeat draw</b>: Si es el turno de un jugador y no puede jugar ninguna de las cartas de su mano, el jugador debera robar cartas de 1 en 1 hasta que pueda jugar una.</li>
+        </ul>
+    </div>
+    <div class="codigo">
+
+    </div>
+</div>
