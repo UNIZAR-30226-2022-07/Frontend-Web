@@ -18,12 +18,7 @@ import { MaterialModule } from './material/material.module';
 import { TorneoComponent } from './torneo/torneo.component';
 import { TorneoEsperaComponent } from './torneo-espera/torneo-espera.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
-<<<<<<< HEAD
-import { PartidaPrivadaComponent } from './partida-privada/partida-privada.component';
-import { AuthInterceptor } from './auth.interceptor';
-=======
 import { PartidaPrivadaComponent, ReglasPartidaComponent } from './partida-privada/partida-privada.component';
->>>>>>> 3613d113fe69c18228288833e53b8bd78fa8e47c
 
 
 
