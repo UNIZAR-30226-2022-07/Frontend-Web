@@ -1,5 +1,6 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 
 export interface IncomingMessage {
   // assume that we receive serialized json that adheres to this interface
@@ -15,8 +16,9 @@ export interface InicioPartida {
 }
 
 
-@Injectable({ providedIn: 'root' }) 
+@Injectable({ providedIn: 'root' })
 export class WebsocketService {
+  constructor(private http: HttpClient) {}
 
   /**
    * Emit the deserialized incoming messages
@@ -25,12 +27,13 @@ export class WebsocketService {
 
   private buffer: OutgoingMessage[] | undefined;
   private socket: WebSocket | undefined;
+  public direction: string = "";
 
   /**
    * Start the websocket connection
    */
   connect(): void {
-      this.socket = new WebSocket('wss://demo.piesocket.com/v3/channel_1?api_key=oCdCMcMPQpbvNjUIzqtvF1d2X2okWpDQj4AwARJuAgtjhzKxVEjQU6IdCjwm&notify_self');
+      this.socket = new WebSocket(this.direction);
       this.buffer = [];
       this.socket.addEventListener('message', this.onMessage);
       this.socket.addEventListener('open', this.onOpen);
@@ -89,4 +92,21 @@ export class WebsocketService {
   private onClose = (event: CloseEvent): void => {
       console.info('websocket closed', event);
   };
+
+
+  public newMatch(user:string): void {
+    console.log({playerName: user});
+    let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/create", {playerName: user})
+    test.subscribe({
+      next: (v: any) => {
+        console.log(v);
+        this.direction = "https://onep1.herokuapp.com/topic/connect/"+v.id;
+
+        // this.connect()
+      },
+      error: (e:any) => {
+        console.error(e);
+      }
+    });;
+  }
 }
