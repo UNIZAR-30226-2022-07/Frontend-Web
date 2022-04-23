@@ -12,18 +12,18 @@
     <h1>Partida privada de {{players[0].nombre}}</h1>
     <h3>Jugadores:  {{players.length}}/{{nJugadores}}</h3>
     <table>
-        <td *ngFor="let i of [1 , nJugadores]">
-            <div class="persona" *ngIf="players[i] === undefined">
+        <tr *ngFor="let player of players">
+            <div class="persona" *ngIf="player === undefined">
                 <mat-icon class="empty">person</mat-icon>
             </div>
-            <div class="persona filled" *ngIf="players[i] !== undefined">
+            <div class="persona filled" *ngIf="player !== undefined">
                 <mat-icon class="filled">person</mat-icon>
             </div>
 
-            <div class="datos" *ngIf="players[i] !== undefined">
-                <b>{{players[i].nombre}}</b> - {{players[i].puntos}} puntos - {{players[i].pais}}
+            <div class="datos" *ngIf="player !== undefined">
+                <b>{{player.nombre}}</b> - {{player.puntos}} puntos - {{player.pais}}
             </div>
-        </td>
+        </tr>
     </table>
     <div class="status" *ngIf="players.length == nJugadores">
         <h2>La partida comenzara pronto...</h2>

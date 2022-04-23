@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class PartidaPrivadaComponent implements OnInit {
 
   matchID: string | null = null;
-  nJugadores: number = 2;
+  nJugadores: number = 6;
   tiempoTurno: number = 10;
   players!: Array<any>;
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw

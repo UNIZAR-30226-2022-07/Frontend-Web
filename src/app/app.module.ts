@@ -18,7 +18,7 @@ import { MaterialModule } from './material/material.module';
 import { TorneoComponent } from './torneo/torneo.component';
 import { TorneoEsperaComponent } from './torneo-espera/torneo-espera.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
-import { PartidaPrivadaComponent } from './partida-privada/partida-privada.component';
+import { PartidaPrivadaComponent, ReglasPartidaComponent } from './partida-privada/partida-privada.component';
 
 
 
@@ -38,7 +38,8 @@ import { PartidaPrivadaComponent } from './partida-privada/partida-privada.compo
     TorneoComponent,
     TorneoEsperaComponent,
     LeaderboardComponent,
-    PartidaPrivadaComponent
+    PartidaPrivadaComponent,
+    ReglasPartidaComponent
   ],
   imports: [
     BrowserModule,
