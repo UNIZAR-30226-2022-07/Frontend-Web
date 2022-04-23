@@ -12,9 +12,6 @@ export class AppComponent implements OnInit{
   constructor(public WebSocketService: WebsocketService) { }  
 
   ngOnInit(): void {
-    this.WebSocketService.connect();
-    this.WebSocketService.incoming.subscribe((data) => {
-      console.log(data);
-    });
+    this.WebSocketService.newMatch("3nsalada")
   }
 }
