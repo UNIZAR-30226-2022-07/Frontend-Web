@@ -9,6 +9,11 @@ export interface OutgoingMessage {
   // we send serialized json that adheres to this interface
 }
 
+export interface InicioPartida {
+  roomId: string;
+  username: string;
+}
+
 
 @Injectable({ providedIn: 'root' }) 
 export class WebsocketService {
