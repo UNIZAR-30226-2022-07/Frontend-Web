@@ -1,25 +1,27 @@
-<mat-toolbar>
-  <button mat-icon-button class ="clasif_menu">
+
+
+<mat-toolbar class="toolbar">
+  <button mat-icon-button class ="clasif_menu" onclick="location.href='/leaderboard'">
     <mat-icon>stars</mat-icon>
   </button>
 
-  <span class="spacer"></span>
+  <span class="example-spacer"></span>
 
   <button mat-icon-button mat-button (click)="openNotis()" class= "notis_menu">
     <mat-icon>chat</mat-icon>
   </button>
-  <span class="spacer"></span> 
+  <span class="example-spacer"></span> 
   <button mat-icon-button mat-button (click)="openDialog()" class = "amigos_menu">
     <mat-icon>supervisor_account</mat-icon>
   </button>
 </mat-toolbar>
 
-
+<span class="head-body-spacer"></span>
 <div class="mid-container">
-  <div class="botones">
+  <div class="boton1">
     <a routerLink="/game">Partida rápida</a>
     <a href="#about">Unirse P.Privada</a>
-    <a href="#about">Crear P.Privada</a>
+    <a href="/reglasPartida">Crear P.Privada</a>
     <a href="/torneo"> Buscar Torneo</a>
   </div>
 </div>

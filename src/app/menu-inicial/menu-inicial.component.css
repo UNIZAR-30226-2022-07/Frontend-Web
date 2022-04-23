@@ -1,41 +1,65 @@
-/*------------------------------------DIVS-----------------------------------------*/
-div.mid-container{
-  width: auto;
-  height: 500px;
-  align-items: center;
-  justify-content: center;
-  display: flex;
+
+
+
+html, body{
+  margin: 0;
+  padding: 0;
 }
 
-div.botones {
-  padding-top: 20vh;
+body{
+  background: url("../../assets/img/fondo.png");
 }
 
 /*------------------------------------TOOLBAR-----------------------------------------*/
-mat-toolbar {
+
+
+.mat-toolbar{
   background-color: #6b67667e;
   padding: 2ch;
+  margin-bottom: 5%;
 }
 
-span.spacer {
-  flex: 1 1 auto;
-}
-
-.mat-icon-button{
-  height: 10vh;
-  width: 10vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mat-icon {
-  display: inline;
+.mat-icon{
+  display:inline;
   font-size: 6vh;
 }
 
-/*------------------------------------POPUP-----------------------------------------*/
-/* .pop-container{
+.clasif_menu{
+  position: relative;
+  
+  margin-top: 1%;
+
+}
+.amigos_menu{
+  
+ 
+  margin-top: 1%;
+
+/*
+  background: red;
+  border: 3px solid #fff;
+  border-radius: 100%;
+  box-shadow: 0 -2px 0 3px darken(red, 40%) inset, 0 5px 5px rgba(darken(red, 10%), 0.17), 0 15px rgba(#fff, 0.25) inset;
+  cursor: pointer;
+  display: inline-block;
+ */
+}
+
+
+
+
+.notis_menu{
+
+margin-top: 1%;
+
+}
+
+
+/*----------------------------------------------------CUERPO MENU--------------------------------------*/
+
+
+
+.pop-container{
   background-color: #6b6766;
   font-family: 'Courier New', Courier, monospace;
   display: inline-block;
@@ -50,49 +74,125 @@ span.spacer {
   bottom: 0;
   opacity: 0%;
   z-index: -2;
-} */
+}
+
 
 .pop-container2{
-  display: block;
-  height: auto;
-  width: 75vw;
-  margin: auto;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 20vh;
+ 
+ 
+  display:block;
 
   align-items: center;
   justify-content: center;
-  background-color: #6b6766;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+
+  left:auto;
+  right: auto;
+
+  position: relative;
+
+  width: 500px;
+
+
   
+
+ 
+  opacity: 100%;
   z-index: 20;
 }
 
 
-/*------------------------------------BOTONES-----------------------------------------*/
 
-.botones a {
+
+.mid-container{
+  width: auto;
+  height: 500px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+
+
+
+
+
+
+
+.boton1 a{
+  text-decoration: none;
   display: block;
+  border: 1px solid transparent;
   width: 200px;
   height: 35px;
+  text-align: center;
   padding-top: 15px;
   margin: auto;
-  margin-bottom: 100px;
-  margin-top: 100px;
+  transition: 0.15s;
 
-  text-align: center;
-  text-decoration: none;
+
   
   background-color: #080808;
   color:white;
-  border: 1px solid transparent;
-  border-radius: 15px;
+
   
-  transition: 0.15s;
+  margin-bottom: 100px;
+  margin-top: 100px;
+
+  border-radius: 15px;
 }
 
-.botones a:hover{
-    width: 250px;
+.boton1 a:hover{
+    width:300px;
 }
+
+
+
+
+/*-----------------------------------------------------POP UPS-------------------------------------------- */
+
+
+.tamanyo-popup{
+  display:block;
+
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+
+  left:auto;
+  right: auto;
+
+  position: relative;
+
+  width: 500px;
+
+}
+
+
+
+.lista-amigos{
+
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+
+
+
+
+}
+
+

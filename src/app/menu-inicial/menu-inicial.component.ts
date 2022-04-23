@@ -1,4 +1,5 @@
 
+import { coerceStringArray } from '@angular/cdk/coercion';
 import { Component, OnInit } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 
@@ -11,9 +12,12 @@ import {MatDialog} from '@angular/material/dialog';
 })
 export class MenuInicialComponent implements OnInit {
 
+  
+
   constructor(public dialog:MatDialog) { }
 
   ngOnInit(): void {
+    
   }
 
   openDialog(){
@@ -37,11 +41,30 @@ export class MenuInicialComponent implements OnInit {
   templateUrl: 'dialog-content.html',
   styleUrls: ['./menu-inicial.component.css']
 })
-export class DialogContent {}
+export class DialogContent {
+
+  listaAmigos: any;
+  
+
+  constructor(public dialog:MatDialog) { }
+
+  ngOnInit(): void {
+    this.listaAmigos = [{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"}]  
+  }
+  
+}
 
 @Component({
   selector: 'notis-content',
   templateUrl: 'notis-content.html' ,
   styleUrls: ['./menu-inicial.component.css']
 })
-export class NotisContent {}
+export class NotisContent {
+  listaNotis: any;
+
+  constructor(public dialog:MatDialog){}
+
+  ngOnInit(): void{
+    this.listaNotis = [{nombre:"cesar",mensaje:"te ha invitado a su partida"},{nombre:"victor",mensaje:"quiere ser tu amigo"},{nombre:"paula",mensaje:"quiere ser tu amigo"}]
+  }
+}
