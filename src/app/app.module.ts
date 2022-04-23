@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from "@angular/forms";
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -19,6 +19,7 @@ import { TorneoComponent } from './torneo/torneo.component';
 import { TorneoEsperaComponent } from './torneo-espera/torneo-espera.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { PartidaPrivadaComponent } from './partida-privada/partida-privada.component';
+import { AuthInterceptor } from './auth.interceptor';
 
 
 
@@ -49,7 +50,13 @@ import { PartidaPrivadaComponent } from './partida-privada/partida-privada.compo
     MaterialModule,
     Ng2SearchPipeModule
   ],
-  providers: [CookieService],
+  providers: [CookieService,
+              // {
+              //   provide: HTTP_INTERCEPTORS,
+              //   useClass: AuthInterceptor,
+              //   multi: true,
+              // }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

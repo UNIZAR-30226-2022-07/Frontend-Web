@@ -1,6 +1,7 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, Subject } from "rxjs";
+import { UsersService } from "./users.service";
 
 export interface IncomingMessage {
   // assume that we receive serialized json that adheres to this interface
@@ -18,7 +19,7 @@ export interface InicioPartida {
 
 @Injectable({ providedIn: 'root' })
 export class WebsocketService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, public userService: UsersService) {}
 
   /**
    * Emit the deserialized incoming messages
@@ -95,8 +96,14 @@ export class WebsocketService {
 
 
   public newMatch(user:string): void {
-    console.log({playerName: user});
-    let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/create", {playerName: user})
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': "Bearer "+this.userService.getToken()
+      }),
+      withCredentials: true,
+      // 
+     };
+    let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/create", {playerName: "3nsalada"},httpOptions)
     test.subscribe({
       next: (v: any) => {
         console.log(v);
