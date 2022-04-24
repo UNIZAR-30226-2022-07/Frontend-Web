@@ -19,6 +19,7 @@ import { TorneoComponent } from './torneo/torneo.component';
 import { TorneoEsperaComponent } from './torneo-espera/torneo-espera.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { PartidaPrivadaComponent, ReglasPartidaComponent } from './partida-privada/partida-privada.component';
+import { AuthInterceptor } from './auth.interceptor';
 
 
 
@@ -51,11 +52,11 @@ import { PartidaPrivadaComponent, ReglasPartidaComponent } from './partida-priva
     Ng2SearchPipeModule
   ],
   providers: [CookieService,
-              // {
-              //   provide: HTTP_INTERCEPTORS,
-              //   useClass: AuthInterceptor,
-              //   multi: true,
-              // }
+              {
+                provide: HTTP_INTERCEPTORS,
+                useClass: AuthInterceptor,
+                multi: true,
+              }
   ],
   bootstrap: [AppComponent]
 })

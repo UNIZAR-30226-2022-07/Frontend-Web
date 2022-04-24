@@ -39,8 +39,7 @@ export class WebsocketService {
    * Start the websocket connection
    */
   connect(): void {
-
-  const ws = new SockJS(this.direction);
+  const ws = new SockJS("https://onep1.herokuapp.com/onep1-game");
   this.stompClient = Stomp.over(ws);
   const that = this;
   // tslint:disable-next-line:only-arrow-functions

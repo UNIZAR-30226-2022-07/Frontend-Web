@@ -1,15 +1,21 @@
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { UsersService } from './users.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor() {}
+  constructor(public userService: UsersService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    request = request.clone({
-      withCredentials: true
-  });
-  return next.handle(request);
+    console.log(request.url)
+    // if request
+    // request = request.clone({
+    //   headers: new HttpHeaders({
+    //     'Authorization': "Bearer "+this.userService.getToken()
+    //   }),
+    //   withCredentials: true
+    // });
+    return next.handle(request);
   }
 }
