@@ -1,9 +1,17 @@
 /*------------------------------ DIVS ------------------------------ */
-div.status {
+div.caja_abajo{
+  display: block;
+  justify-content: center;
+  position: relative;
+  margin-top: 10%;
+}
+
+div.div.status {
     width: 25%;
     position: absolute;
-    right: 15%;
-    top: 65vh;
+    margin-right: auto;
+    margin-left: auto;
+  
   
     align-items: center;
   }
@@ -11,9 +19,20 @@ div.status {
   div.reglas {
     width: 35%;
     position: absolute;
-    right: 10%;
-    top: 20vh;
+    
+    top: 40vh;
   }
+
+  
+
+  .posicion-clipboard{
+    display: flex;
+    justify-items: center;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
   
   
   

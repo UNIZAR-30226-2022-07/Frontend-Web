@@ -12,7 +12,7 @@
     <h1>Partida privada de {{players[0].nombre}}</h1>
     <h3>Jugadores:  {{players.length}}/{{nJugadores}}</h3>
     <table>
-        <tr *ngFor="let player of players">
+        <td *ngFor="let player of players">
             <div class="persona" *ngIf="player === undefined">
                 <mat-icon class="empty">person</mat-icon>
             </div>
@@ -21,18 +21,15 @@
             </div>
 
             <div class="datos" *ngIf="player !== undefined">
-                <b>{{player.nombre}}</b> - {{player.puntos}} puntos - {{player.pais}}
+                <b>{{player.nombre}}</b>
             </div>
-        </tr>
+        </td>
     </table>
     <div class="status" *ngIf="players.length == nJugadores">
         <h2>La partida comenzara pronto...</h2>
     </div>
-    <div class="status" *ngIf="players.length != nJugadores">
-        <h2>Esperando a jugadores</h2>
-        <mat-spinner class="spinner"></mat-spinner>
-    </div>
-
+    
+    <!--
     <div class="reglas">
         <h2>Reglas activas:</h2>
         <ul>
@@ -44,7 +41,16 @@
             <li *ngIf="reglas[5]"><b>Repeat draw</b>: Si es el turno de un jugador y no puede jugar ninguna de las cartas de su mano, el jugador debera robar cartas de 1 en 1 hasta que pueda jugar una.</li>
         </ul>
     </div>
-    <div class="codigo">
-
+-->
+    <div class="caja_abajo">
+        <div class="status" *ngIf="players.length != nJugadores">
+            <h2>Esperando a jugadores</h2>
+            <mat-spinner class="spinner"></mat-spinner>
+        </div>
+        <div class="codigo">
+            <h2>Código: XCRT45</h2>
+            <mat-icon class="posicion-clipboard">content_copy</mat-icon>
+        </div>    
     </div>
+    
 </div>
