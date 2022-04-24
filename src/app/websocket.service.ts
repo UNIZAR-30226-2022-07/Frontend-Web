@@ -47,8 +47,7 @@ export class WebsocketService {
     console.log("frame:",frame);
     that.stompClient.subscribe('https://onep1.herokuapp.com/topic/connect/'+that.id, (message: any) => {
       if (message.body) {
-        that.msg.push(message.body);
-        console.log(message.body)
+        console.log(message.body);
       }
     });
   });
