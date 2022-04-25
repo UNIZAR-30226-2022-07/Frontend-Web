@@ -9,22 +9,22 @@
             <mat-icon>settings</mat-icon>
           </button>
     </div>-->
+    
     <h1>Partida privada de {{players[0].nombre}}</h1>
     <h3>Jugadores:  {{players.length}}/{{nJugadores}}</h3>
-    <table>
-        <td *ngFor="let player of players">
+    <div class="center">
+        <div class="pack" *ngFor="let player of players">
             <div class="persona" *ngIf="player === undefined">
                 <mat-icon class="empty">person</mat-icon>
             </div>
             <div class="persona filled" *ngIf="player !== undefined">
                 <mat-icon class="filled">person</mat-icon>
             </div>
-
             <div class="datos" *ngIf="player !== undefined">
                 <b>{{player.nombre}}</b>
             </div>
-        </td>
-    </table>
+        </div>
+    </div>
     <div class="status" *ngIf="players.length == nJugadores">
         <h2>La partida comenzara pronto...</h2>
     </div>

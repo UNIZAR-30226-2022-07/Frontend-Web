@@ -7,118 +7,123 @@ div.caja_abajo{
 }
 
 div.div.status {
-    width: 25%;
-    position: absolute;
-    margin-right: auto;
-    margin-left: auto;
+  width: 25%;
+  position: absolute;
+  margin-right: auto;
+  margin-left: auto;
+
+  align-items: center;
+}
   
+div.reglas {
+  width: 35%;
+  position: absolute;
   
-    align-items: center;
-  }
-  
-  div.reglas {
-    width: 35%;
-    position: absolute;
-    
-    top: 40vh;
-  }
+  top: 40vh;
+}
+
+div.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
   
 
-  .posicion-clipboard{
-    display: flex;
-    justify-items: center;
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  
-  
-  
-  /*------------------------------ TEXTO ------------------------------ */
-  h1 {
-    text-align: center;
-    padding-top: 2vh;
-  }
-  
-  h3 {
-    margin-left:25%;
-  }
-  
-  h2 {
-    text-align: center;
-  }
-  
-  /*------------------------------ TABLA ------------------------------ */
-  table {
-    width: 100%;
-    margin-left:25%;
-    width: 50%;
-  }
-  
-  mat-icon {
-    display: inline;
-    font-size: 6vh;
-  }
-  
-  mat-icon.filled {
-    color: red;
-  }
-  
-  div.persona {
-    display: inline-block;
-  
-    border: 1ch;
-    border-style: solid;
-    border-color: black;
-  }
-  
-  div.filled {
-    border-color: red;
-  }
-  
-  div.datos {
-    display: table-cell;
-    width: 100%;
-    padding-left: 1ch;
-  
-    font-size: x-large;
-    vertical-align: middle;
-  }
-  
-  /*------------------------------ OTHER ------------------------------ */
-  
-  mat-spinner {
-    stroke: black;
-    margin: 0 auto;
-  }
-  
-  /*------------------------------ BOTONES ------------------------------ */
-  div.boton .mat-icon-button{
-    height: 10vh;
-    width: 10vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  
-    background-color:black;
-  }
-  
-  div.boton .mat-icon {
-    display: inline;
-    font-size: 6vh;
-    color:white;
-  }
-  
-  div.back .mat-icon-button{
-    position: absolute;
-    top: 1vh;
-    left: 1vw;
-  }
-  
-  div.settings .mat-icon-button{
-    position: absolute;
-    top: 1vh;
-    left: 93vw;
-  }
+.posicion-clipboard{
+  display: flex;
+  justify-items: center;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/*------------------------------ TEXTO ------------------------------ */
+h1 {
+  text-align: center;
+  padding-top: 2vh;
+}
+
+h3 {
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
+}
+
+/*------------------------------ TABLA ------------------------------ */
+mat-icon {
+  display: inline;
+  font-size: 6vh;
+}
+
+mat-icon.filled {
+  color: red;
+}
+
+div.persona {
+  display: block;
+
+  border: 1ch;
+  border-style: solid;
+  border-color: black;
+}
+
+div.pack {
+  display: flex;
+  flex-flow: column wrap;
+  margin: 2ch;
+  align-items: center;
+  justify-content: center;
+  width: 10%;
+}
+
+div.filled {
+  border-color: red;
+}
+
+div.datos {
+  display: table-cell;
+  width: 100%;
+  margin-top: 0.5ch;
+  text-align: center;
+
+  font-size: x-large;
+}
+
+/*------------------------------ OTHER ------------------------------ */
+
+mat-spinner {
+  stroke: black;
+  margin: 0 auto;
+}
+
+/*------------------------------ BOTONES ------------------------------ */
+div.boton .mat-icon-button{
+  height: 10vh;
+  width: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color:black;
+}
+
+div.boton .mat-icon {
+  display: inline;
+  font-size: 6vh;
+  color:white;
+}
+
+div.back .mat-icon-button{
+  position: absolute;
+  top: 1vh;
+  left: 1vw;
+}
+
+div.settings .mat-icon-button{
+  position: absolute;
+  top: 1vh;
+  left: 93vw;
+}
