@@ -40,17 +40,24 @@ export class WebsocketService {
    */
   connect(): void {
   const ws = new SockJS("https://onep1.herokuapp.com/onep1-game");
+  ws.onmessage = function(e:any) {
+    console.log("onmessage:",e);
+  }
   this.stompClient = Stomp.over(ws);
   const that = this;
   // tslint:disable-next-line:only-arrow-functions
   this.stompClient.connect({"Authorization": "Bearer " + this.userService.getToken()}, function(frame: any) {
     console.log("frame:",frame);
     that.stompClient.subscribe('https://onep1.herokuapp.com/topic/connect/'+that.id, (message: any) => {
+      console.log("MENSAJE RECIBIDO:",message)
       if (message.body) {
         console.log(message.body);
       }
-    });
+    // });
+    },{"Authorization": "Bearer " + that.userService.getToken()});
   });
+
+  
 
 
       // this.socket = new WebSocket(this.direction);
@@ -59,6 +66,24 @@ export class WebsocketService {
       // this.socket.addEventListener('open', this.onOpen);
       // this.socket.addEventListener('close', this.onClose);
       // this.socket.addEventListener('error', this.onError);
+  }
+
+
+  connectdos(): void {
+    const ws = new SockJS("https://onep1.herokuapp.com/onep1-game");
+    this.stompClient = Stomp.over(ws);
+    const that = this;
+    // tslint:disable-next-line:only-arrow-functions
+    this.stompClient.connect({"Authorization": "Bearer " + this.userService.getToken()}, function(frame: any) {
+      console.log("frame:",frame);
+      that.stompClient.subscribe('https://onep1.herokuapp.com/topic/connect/'+that.id, (message: any) => {
+        console.log("MENSAJE RECIBIDO:",message)
+        if (message.body) {
+          console.log(message.body);
+        }
+      // });
+      },{"Authorization": "Bearer " + that.userService.getToken()});
+    });
   }
 
   /**

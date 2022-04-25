@@ -16,4 +16,14 @@ export class AppComponent implements OnInit{
   boton() {
     this.WebSocketService.newMatch("3nsalada")
   }
+
+  botondos() {
+    this.WebSocketService.connectdos()
+  }
+
+  actualice(e:any) {
+    console.log(e);
+    console.log(e.target.value);
+    this.WebSocketService.id = e.target.value;
+  }
 }
