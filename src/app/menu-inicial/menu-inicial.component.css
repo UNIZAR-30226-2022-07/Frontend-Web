@@ -139,7 +139,7 @@ margin-top: 1%;
   margin: auto;
   transition: 0.15s;
 
-
+  font-family: "Permanent Marker";
   
   background-color: #080808;
   color:white;
@@ -154,6 +154,40 @@ margin-top: 1%;
 .boton1 a:hover{
     width:300px;
 }
+
+
+.boton1 button{
+  text-decoration: none;
+  display: block;
+  border: 1px solid transparent;
+  width: 200px;
+  height: 50px;
+  text-align: center;
+ 
+
+  
+  margin: auto;
+  transition: 0.15s;
+
+  
+  
+  background-color: #080808;
+  color:white;
+
+  font-family: "Permanent Marker";
+  
+  
+  margin-bottom: 100px;
+  margin-top: 100px;
+
+  border-radius: 15px;
+}
+
+.boton1 button:hover{
+    width:300px;
+}
+
+
 
 
 
@@ -190,9 +224,19 @@ margin-top: 1%;
   margin-left: auto;
   margin-right: auto;
 
+}
+
+
+div.popup {
+  text-align: center;
+}
 
 
 
+/*--------Pedir código P.Privada----------*/
+.example-container .mat-form-field + .mat-form-field + .mat-label {
+  margin-left: 8px;
+  text-align: center;
 }
 
 
