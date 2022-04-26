@@ -104,3 +104,8 @@ button.uno {
   width: 7vw;
   height: 7vw;
 }
+
+/* ---------------------------- OTHER ---------------------------- */
+body {
+  background: #5bab63;
+}
