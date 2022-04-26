@@ -2,6 +2,7 @@
 import { coerceStringArray } from '@angular/cdk/coercion';
 import { Component, OnInit } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
+import { FormControl,Validators } from '@angular/forms';
 
 
 
@@ -28,6 +29,13 @@ export class MenuInicialComponent implements OnInit {
   }
     openNotis(){
       const dialogRef = this.dialog.open(NotisContent);
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(`Dialog result: ${result}`);
+      })
+    }
+
+    pedirCodigo(){
+      const dialogRef = this.dialog.open(FormFieldErrorExample);
       dialogRef.afterClosed().subscribe(result => {
         console.log(`Dialog result: ${result}`);
       })
@@ -66,5 +74,23 @@ export class NotisContent {
 
   ngOnInit(): void{
     this.listaNotis = [{nombre:"cesar",mensaje:"te ha invitado a su partida"},{nombre:"victor",mensaje:"quiere ser tu amigo"},{nombre:"paula",mensaje:"quiere ser tu amigo"}]
+  }
+}
+
+
+@Component({
+  selector: 'form-field-error-example',
+  templateUrl: 'form-field-error-example.html',
+  styleUrls: ['./menu-inicial.component.css'],
+})
+export class FormFieldErrorExample {
+  email = new FormControl('', [Validators.required, Validators.email]);
+
+  getErrorMessage() {
+    if (this.email.hasError('required')) {
+      return 'You must enter a value';
+    }
+
+    return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 }

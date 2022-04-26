@@ -9,7 +9,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { DialogContent, MenuInicialComponent, NotisContent } from './menu-inicial/menu-inicial.component';
+import { DialogContent, MenuInicialComponent, NotisContent, FormFieldErrorExample } from './menu-inicial/menu-inicial.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { TosComponent } from './tos/tos.component';
 import { ChoseColorComponent, GameComponent } from './game/game.component';
@@ -40,7 +40,8 @@ import { AuthInterceptor } from './auth.interceptor';
     TorneoEsperaComponent,
     LeaderboardComponent,
     PartidaPrivadaComponent,
-    ReglasPartidaComponent
+    ReglasPartidaComponent,
+    FormFieldErrorExample,
   ],
   imports: [
     BrowserModule,
