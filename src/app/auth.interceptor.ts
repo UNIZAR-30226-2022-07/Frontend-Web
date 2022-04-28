@@ -8,7 +8,7 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(public userService: UsersService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log(request.url)
+    console.log(request)
     // if request
     // request = request.clone({
     //   headers: new HttpHeaders({

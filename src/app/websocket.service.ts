@@ -49,20 +49,16 @@ export class WebsocketService {
   }
 
   /**
-   * Stop the websocket connection
-   */
-  // disconnect(): void {
-  //     if (!this.socket) {
-  //         throw new Error('websocket not connected');
-  //     }
-  //     this.socket.removeEventListener('message', this.onMessage);
-  //     this.socket.removeEventListener('open', this.onOpen);
-  //     this.socket.removeEventListener('close', this.onClose);
-  //     this.socket.removeEventListener('error', this.onError);
-  //     this.socket.close();
-  //     this.socket = undefined;
-  //     this.buffer = undefined;
-  // }
+   * Cierra el socket
+   * @returns void
+  */
+  disconnect(): void {
+      if (!this.stompClient) {
+          throw new Error('Socket not connected');
+      }
+
+      //TODO: cerrar stompclient
+  }
 
   /**
    * Envia un mensaje al backend a traves del socket
@@ -72,7 +68,7 @@ export class WebsocketService {
   */
   send(message:any, dir:string): void {
     if (!this.stompClient) {
-      throw new Error('websocket not connected');
+      throw new Error('Socket not connected');
     }
     this.stompClient.send(dir+this.id,{"Authorization": "Bearer " + this.userService.getToken(),"username":this.userService.username},JSON.stringify(message));
   }
@@ -89,9 +85,6 @@ export class WebsocketService {
     this.incoming.next(msg);
   };
 
-  // private onError = (event: Event): void => {
-  //     console.error('websocket error', event);
-  // };
 
   /**
    * Crea una partida y se conecta
@@ -107,9 +100,9 @@ export class WebsocketService {
     console.log(this.userService.username);
     let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/create",
     {
-      playerName: this.userService.username,
-      nPlayers: 5,
-      tTurn: 10
+      playername: this.userService.username,
+      nplayers: 5,
+      tturn: 10
     },
     httpOptions)
     test.subscribe({
@@ -123,4 +116,6 @@ export class WebsocketService {
       }
     });
   }
+
+
 }
