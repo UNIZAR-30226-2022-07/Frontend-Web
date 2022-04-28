@@ -28,139 +28,99 @@ export class WebsocketService {
    */
   readonly incoming = new Subject<IncomingMessage>();
   
-  private buffer: OutgoingMessage[] | undefined;
   msg: any;
   id:string = "";
-  private socket: WebSocket | undefined;
-  public direction: string = "";
   public stompClient: any;
 
   /**
-   * Start the websocket connection
-   */
-  connect(): void {
-  const ws = new SockJS("https://onep1.herokuapp.com/onep1-game");
-  ws.onmessage = function(e:any) {
-    console.log("onmessage:",e);
-  }
-  this.stompClient = Stomp.over(ws);
-  const that = this;
-  // tslint:disable-next-line:only-arrow-functions
-  this.stompClient.connect({"Authorization": "Bearer " + this.userService.getToken()}, function(frame: any) {
-    console.log("frame:",frame);
-    that.stompClient.subscribe('https://onep1.herokuapp.com/topic/connect/'+that.id, (message: any) => {
-      console.log("MENSAJE RECIBIDO:",message)
-      if (message.body) {
-        console.log(message.body);
-      }
-    // });
-    },{"Authorization": "Bearer " + that.userService.getToken()});
-  });
-
-  
-
-
-      // this.socket = new WebSocket(this.direction);
-      // this.buffer = [];
-      // this.socket.addEventListener('message', this.onMessage);
-      // this.socket.addEventListener('open', this.onOpen);
-      // this.socket.addEventListener('close', this.onClose);
-      // this.socket.addEventListener('error', this.onError);
-  }
-
-
-  connectdos(): void {
+   * Crea un socket y se conecta, suscribiendose a "/topic/connect/<id>"
+   * @returns void
+  */
+  private connect(): void {
     const ws = new SockJS("https://onep1.herokuapp.com/onep1-game");
     this.stompClient = Stomp.over(ws);
+
     const that = this;
-    // tslint:disable-next-line:only-arrow-functions
     this.stompClient.connect({"Authorization": "Bearer " + this.userService.getToken()}, function(frame: any) {
-      console.log("frame:",frame);
-      that.stompClient.subscribe('https://onep1.herokuapp.com/topic/connect/'+that.id, (message: any) => {
-        console.log("MENSAJE RECIBIDO:",message)
-        if (message.body) {
-          console.log(message.body);
-        }
-      // });
-      },{"Authorization": "Bearer " + that.userService.getToken()});
+
+      that.stompClient.subscribe('/topic/connect/'+that.id, that.onMessage,{"Authorization": "Bearer " + that.userService.getToken()});
+
     });
   }
 
   /**
    * Stop the websocket connection
    */
-  disconnect(): void {
-      if (!this.socket) {
-          throw new Error('websocket not connected');
-      }
-      this.socket.removeEventListener('message', this.onMessage);
-      this.socket.removeEventListener('open', this.onOpen);
-      this.socket.removeEventListener('close', this.onClose);
-      this.socket.removeEventListener('error', this.onError);
-      this.socket.close();
-      this.socket = undefined;
-      this.buffer = undefined;
+  // disconnect(): void {
+  //     if (!this.socket) {
+  //         throw new Error('websocket not connected');
+  //     }
+  //     this.socket.removeEventListener('message', this.onMessage);
+  //     this.socket.removeEventListener('open', this.onOpen);
+  //     this.socket.removeEventListener('close', this.onClose);
+  //     this.socket.removeEventListener('error', this.onError);
+  //     this.socket.close();
+  //     this.socket = undefined;
+  //     this.buffer = undefined;
+  // }
+
+  /**
+   * Envia un mensaje al backend a traves del socket
+   * @param message JSON que se envia en body
+   * @param dir Lugar a donde enviar el mensaje. Debe terminar en '/'. Ej: "/game/connect/"
+   * @returns void
+  */
+  send(message:any, dir:string): void {
+    if (!this.stompClient) {
+      throw new Error('websocket not connected');
+    }
+    this.stompClient.send(dir+this.id,{"Authorization": "Bearer " + this.userService.getToken(),"username":this.userService.username},JSON.stringify(message));
   }
 
-  send(msg: OutgoingMessage): void {
-      if (!this.socket) {
-          throw new Error('websocket not connected');
-      }
-      if (this.buffer) {
-          this.buffer.push(msg);
-      } else {
-          this.socket.send(JSON.stringify(msg));
-      }
-  }
 
-  private onMessage = (event: MessageEvent): void => {
-      const msg = JSON.parse(event.data);
-      this.incoming.next(msg);
+  /**
+   * Gestiona un mensaje recibido
+   * @param message Mensaje recibido
+   * @returns void
+  */
+  private onMessage(message:any): void {
+    const msg = JSON.parse(message.body);
+    console.info("Mensaje recibido: ", message);
+    this.incoming.next(msg);
   };
 
-  private onOpen = (event: Event): void => {
-      console.log('websocket opened', event);
-      const buffered = this.buffer;
-      if (!buffered) {
-          return;
-      }
-      this.buffer = undefined;
-      for (const msg of buffered) {
-          this.send(msg);
-      }
-  };
+  // private onError = (event: Event): void => {
+  //     console.error('websocket error', event);
+  // };
 
-  private onError = (event: Event): void => {
-      console.error('websocket error', event);
-  };
-
-  private onClose = (event: CloseEvent): void => {
-      console.info('websocket closed', event);
-  };
-
-
-  public newMatch(user:string): void {
+  /**
+   * Crea una partida y se conecta
+   * @returns void
+  */
+  public newMatch(): void {
     const httpOptions = {
       headers: new HttpHeaders({
         'Authorization': "Bearer "+this.userService.getToken()
       }),
-      withCredentials: true,
-      // 
+      withCredentials: true
     };
-
-    let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/create", {playerName: "3nsalada"},httpOptions)
+    console.log(this.userService.username);
+    let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/create",
+    {
+      playerName: this.userService.username,
+      nPlayers: 5,
+      tTurn: 10
+    },
+    httpOptions)
     test.subscribe({
       next: (v: any) => {
-        console.log(v);
+        console.log("Partida creada:",v);
         this.id = v.id
-        this.direction = "https://onep1.herokuapp.com/onep1-game/"+v.id;
         this.connect()
       },
       error: (e:any) => {
         console.error(e);
       }
-    });;
-
-    
+    });
   }
 }

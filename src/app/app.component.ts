@@ -11,19 +11,19 @@ export class AppComponent implements OnInit{
 
   constructor(public WebSocketService: WebsocketService) { }  
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
+
   boton() {
-    this.WebSocketService.newMatch("3nsalada")
+    this.WebSocketService.newMatch()
   }
 
-  botondos() {
-    this.WebSocketService.connectdos()
+  sendmsg() {
+    this.WebSocketService.send(
+      {
+        "test": "hola"
+      },
+      "/game/connect"
+    )
   }
 
-  actualice(e:any) {
-    console.log(e);
-    console.log(e.target.value);
-    this.WebSocketService.id = e.target.value;
-  }
 }
