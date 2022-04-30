@@ -48,20 +48,3 @@ export class PartidaPrivadaComponent implements OnInit {
 }
 
 
-@Component({
-  selector: 'reglasPartida',
-  templateUrl: 'reglasPartida.html',
-  styleUrls: ['reglasPartida.css']
-})
-export class ReglasPartidaComponent {
-  component!: PartidaPrivadaComponent
-  constructor(public dialogRef: MatDialogRef<ReglasPartidaComponent>) {}
-
-  changeNplayers(e: any) {
-    this.component.nJugadores = e.target.value;
-  }
-  
-  changeTturno(e: any) {
-    this.component.tiempoTurno = e.target.value;
-  }
-}

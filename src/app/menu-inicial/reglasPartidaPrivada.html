@@ -1,0 +1,77 @@
+
+  
+  <div class="">
+      <h2 mat-dialog-title>Configuracion de la partida</h2>
+      <div class="center">
+          <form class="custom-form">
+              <input
+              type="number" max="6" min="2"
+              class="form-control"
+              (change)="changeNplayers($event)"
+              [value]="nJugadores"
+              />
+              <label> Nº de jugadores</label>
+          </form>
+      </div>
+      <form class="custom-form">
+          <h3>Reglas:</h3>
+          <input
+          type="checkbox"
+          [checked]="reglas[0]"
+          (change)="reglas[0] = !reglas[0]"
+          />
+          <label (click)="reglas[0] = !reglas[0]"> 0 Switch</label>
+          <br>
+          <input
+            type="checkbox"
+            [checked]="reglas[1]"
+            (change)="reglas[1] = reglas[1]"
+          />
+          <label (click)="reglas[1] = !reglas[1]"> Crazy 7</label>
+          <br>
+          <input
+            type="checkbox"
+            [checked]="reglas[2]"
+            (change)="reglas[2] = !reglas[2]"
+          />
+          <label (click)="reglas[2] = !reglas[2]"> Progressive draw</label>
+          <br>
+          <input
+            type="checkbox"
+            [checked]="reglas[3]"
+            (change)="reglas[3] = !reglas[3]"
+          />
+          <label (click)="reglas[3] = !reglas[3]"> Chaos draw</label>
+          <br>
+          <input
+            type="checkbox"
+            [checked]="reglas[4]"
+            (change)="reglas[4] = !reglas[4]"
+          />
+          <label (click)="reglas[4] = !reglas[4]"> Block draw</label>
+          <br>
+          <input
+            type="checkbox"
+            [checked]="reglas[5]"
+            (change)="reglas[5] = !reglas[5]"
+          />
+          <label (click)="reglas[5] = !reglas[5]"> Repeat draw</label>
+          <br>
+      </form>
+      <div class="right">
+          <h3>Tiempo de turno:</h3>
+          <form class="custom-form">
+              <select (change)="changeTturno($event)" [value]="tiempoTurno">
+                  <option value="10"> 10 segundos </option>
+                  <option value="15"> 15 segundos </option>
+                  <option value="20"> 20 segundos </option>
+              </select>
+          </form>
+      </div>
+  
+      <mat-dialog-actions align="end">
+          <button mat-button mat-dialog-close>Cancel</button>
+          <button mat-icon-button onclick="location.href='/partidaPrivada'">Crear</button>
+      </mat-dialog-actions>
+      
+  </div>

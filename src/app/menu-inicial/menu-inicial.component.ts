@@ -1,7 +1,7 @@
 
 import { coerceStringArray } from '@angular/cdk/coercion';
 import { Component, OnInit } from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import { FormControl,Validators } from '@angular/forms';
 
 
@@ -40,7 +40,12 @@ export class MenuInicialComponent implements OnInit {
         console.log(`Dialog result: ${result}`);
       })
     }
-
+    crearPPrivada(){
+      const dialogRef = this.dialog.open(ReglasPartidaComponent);
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(`Dialog result: ${result}`);
+      })
+    }
 
 }
 
@@ -92,5 +97,29 @@ export class FormFieldErrorExample {
     }
 
     return this.email.hasError('email') ? 'Not a valid email' : '';
+  }
+}
+
+
+
+@Component({
+  selector: 'reglasPartidaPrivada',
+  templateUrl: 'reglasPartidaPrivada.html',
+  styleUrls: ['./menu-inicial.component.css']
+})
+export class ReglasPartidaComponent {
+  matchID: string | null = null;
+  nJugadores: number = 6;
+  tiempoTurno: number = 10;
+  players!: Array<any>;
+  reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
+  constructor(public dialogRef: MatDialogRef<ReglasPartidaComponent>) {}
+
+  changeNplayers(e: any) {
+    this.nJugadores = e.target.value;
+  }
+  
+  changeTturno(e: any) {
+    this.tiempoTurno = e.target.value;
   }
 }

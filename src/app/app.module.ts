@@ -9,7 +9,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { DialogContent, MenuInicialComponent, NotisContent, FormFieldErrorExample } from './menu-inicial/menu-inicial.component';
+import { DialogContent, MenuInicialComponent, NotisContent, FormFieldErrorExample , ReglasPartidaComponent} from './menu-inicial/menu-inicial.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { TosComponent } from './tos/tos.component';
 import { ChoseColorComponent, GameComponent } from './game/game.component';
@@ -18,8 +18,9 @@ import { MaterialModule } from './material/material.module';
 import { TorneoComponent } from './torneo/torneo.component';
 import { TorneoEsperaComponent } from './torneo-espera/torneo-espera.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
-import { PartidaPrivadaComponent, ReglasPartidaComponent } from './partida-privada/partida-privada.component';
+import { PartidaPrivadaComponent } from './partida-privada/partida-privada.component';
 import { AuthInterceptor } from './auth.interceptor';
+
 
 
 
@@ -40,8 +41,9 @@ import { AuthInterceptor } from './auth.interceptor';
     TorneoEsperaComponent,
     LeaderboardComponent,
     PartidaPrivadaComponent,
-    ReglasPartidaComponent,
     FormFieldErrorExample,
+    ReglasPartidaComponent,
+   
   ],
   imports: [
     BrowserModule,
