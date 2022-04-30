@@ -69,9 +69,13 @@
           </form>
       </div>
   
+      <div *ngIf = "nJugadores < 7 && nJugadores > 1">
       <mat-dialog-actions align="end">
           <button mat-button mat-dialog-close>Cancel</button>
           <button mat-icon-button onclick="location.href='/partidaPrivada'">Crear</button>
       </mat-dialog-actions>
-      
+    </div>
+        <div *ngIf = "nJugadores > 6 || nJugadores < 2">
+           <p style="color:red;"> El número de jugadores tiene que estar entre 2 y 6.</p>
+        </div>
   </div>
