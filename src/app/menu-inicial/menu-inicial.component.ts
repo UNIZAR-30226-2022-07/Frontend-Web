@@ -3,6 +3,9 @@ import { coerceStringArray } from '@angular/cdk/coercion';
 import { Component, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import { FormControl,Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { Input } from '@angular/core';
+import { ActivatedRoute,Params, Router } from '@angular/router';
 
 
 
@@ -13,12 +16,17 @@ import { FormControl,Validators } from '@angular/forms';
 })
 export class MenuInicialComponent implements OnInit {
 
+
+  nombre: string | null = null;
+
+  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog) {
+  }
   
-
-  constructor(public dialog:MatDialog) { }
-
   ngOnInit(): void {
     
+    // Se coge el nombre del parametro que te pasan desde el log-in
+    this.nombre = this.route.snapshot.paramMap.get('username');
+
   }
 
   openDialog(){
@@ -47,6 +55,8 @@ export class MenuInicialComponent implements OnInit {
       })
     }
 
+    
+
 }
 
 @Component({
@@ -58,6 +68,9 @@ export class DialogContent {
 
   listaAmigos: any;
   searchText!: string;
+
+  
+
   
 
   constructor(public dialog:MatDialog) { }
@@ -65,6 +78,28 @@ export class DialogContent {
   ngOnInit(): void {
     this.listaAmigos = [{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"}]  
   }
+
+  friend_reqButton(friend : Observable<any>): void{
+
+
+
+
+    /*this.userService.register(user).subscribe({
+    const username = { user.username};
+      next: (v) => {this.router.navigateByUrl('/login'); },
+      error: (e) => {
+        if (e.error.message != undefined) {
+          console.error(e);
+          this.userError = true;
+          this.userErrorMessage = e.error.message;
+        }
+        else {
+          console.error(e);
+          this.serviceError = true;
+          this.serviceErrorMessage = e.message;
+        }
+        */
+  }  
   
 }
 

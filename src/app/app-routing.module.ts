@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: "", component: AppComponent },
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
-  { path: "menuInicial", component: MenuInicialComponent },
+  { path: "menuInicial/:username", component: MenuInicialComponent},
   { path: "forgotPassword", component: ForgotPasswordComponent }, 
   { path: "tos", component: TosComponent }, 
   { path: "game", component: GameComponent }, 
