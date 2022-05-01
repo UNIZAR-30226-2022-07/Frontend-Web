@@ -57,6 +57,7 @@ export class MenuInicialComponent implements OnInit {
 export class DialogContent {
 
   listaAmigos: any;
+  searchText!: string;
   
 
   constructor(public dialog:MatDialog) { }
@@ -108,6 +109,9 @@ export class FormFieldErrorExample {
   styleUrls: ['./menu-inicial.component.css']
 })
 export class ReglasPartidaComponent {
+
+  
+
   matchID: string | null = null;
   nJugadores: number = 6;
   tiempoTurno: number = 10;

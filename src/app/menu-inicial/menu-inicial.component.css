@@ -215,7 +215,7 @@ margin-top: 1%;
 }
 
 
-
+ /*----------------------------POP UP FRIENDS------------------------- */
 .lista-amigos{
 
   display:flex;
@@ -225,6 +225,62 @@ margin-top: 1%;
   margin-right: auto;
 
 }
+
+.searcher-friends{
+
+    display: block;
+    position: relative;
+    height: 3ch;
+    width: 80%;
+  
+    margin:1%;
+    margin-left: auto;
+    margin-right: auto;
+  
+  
+    font-size: large;
+
+}
+
+
+.searcher-users{
+
+ 
+
+  display: block;
+  position: relative;
+  height: 4ch;
+  width: 40%;
+
+
+  
+  margin-right: auto;
+
+
+
+}
+.buscador-amigos{
+  display: flex;
+}
+
+.buscador-amigos button{
+  position: absolute;
+  padding-left: 10px;
+  right: 50%;
+
+}
+
+
+.buscador-amigos button .mat-icon{
+
+  
+
+}
+
+/* tabla amigos */
+
+
+
 
 
 div.popup {
