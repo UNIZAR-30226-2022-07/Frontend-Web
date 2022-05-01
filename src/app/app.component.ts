@@ -19,9 +19,7 @@ export class AppComponent implements OnInit{
 
   sendmsg() {
     this.WebSocketService.send(
-      {
-        "test": "hola"
-      },
+      { },
       "/game/connect"
     )
   }
