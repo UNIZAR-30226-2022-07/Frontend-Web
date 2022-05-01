@@ -26,8 +26,10 @@
     
   </mat-dialog-content>
   <div class = "buscador-amigos">
-    <input class="searcher-users" id="searchbox1" type="text" name="search1"  autocomplete="off" placeholder="&#61442;  Puedes buscar usuarios aquí"> 
-    <button mat-icon-button >
+    <input class="searcher-users" id="nameUser2Search-input" type="text" name="nameUser2Search"  [(ngModel)]="nameUser2Search" autocomplete="off" placeholder="&#61442;  Puedes buscar usuarios aquí"> 
+    
+    
+    <button  type="submit" id="user-search-btn" (click)="friend_reqButton()" mat-icon-button >
       <mat-icon>send</mat-icon>
     </button>
   </div>

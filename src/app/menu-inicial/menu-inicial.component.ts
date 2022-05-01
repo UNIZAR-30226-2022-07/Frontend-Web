@@ -1,11 +1,13 @@
 
 import { coerceStringArray } from '@angular/cdk/coercion';
-import { Component, OnInit } from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
+import {MatDialog, MatDialogRef, MatDialogConfig,MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormControl,Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Input } from '@angular/core';
 import { ActivatedRoute,Params, Router } from '@angular/router';
+import { UsersService } from '../users.service';
+
 
 
 
@@ -30,7 +32,8 @@ export class MenuInicialComponent implements OnInit {
   }
 
   openDialog(){
-    const dialogRef = this.dialog.open(DialogContent);
+    
+    const dialogRef = this.dialog.open(DialogContent, {data: {name: this.nombre}});
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     })
@@ -69,38 +72,32 @@ export class DialogContent {
   listaAmigos: any;
   searchText!: string;
 
-  
+  name : string | null = null;
+  nameUser2Search : string | null = null;
 
   
 
-  constructor(public dialog:MatDialog) { }
+  
 
+  constructor(@Inject(MAT_DIALOG_DATA) public data:any,public userService: UsersService) {
+    this.name = data.name;
+  }
+  
   ngOnInit(): void {
     this.listaAmigos = [{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"}]  
+    console.log(this.name);
   }
 
-  friend_reqButton(friend : Observable<any>): void{
+  friend_reqButton(): void{
+ /* this.userService.sendFriendReq(this.name,friend).subscribe({
+    
+        
+    } )*/
 
-
-
-
-    /*this.userService.register(user).subscribe({
-    const username = { user.username};
-      next: (v) => {this.router.navigateByUrl('/login'); },
-      error: (e) => {
-        if (e.error.message != undefined) {
-          console.error(e);
-          this.userError = true;
-          this.userErrorMessage = e.error.message;
-        }
-        else {
-          console.error(e);
-          this.serviceError = true;
-          this.serviceErrorMessage = e.message;
-        }
-        */
-  }  
+    console.log(this.nameUser2Search);
+    console.log(this.name);
   
+  }
 }
 
 @Component({
