@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UsersService } from './users.service';
@@ -16,8 +16,15 @@ export class FriendService {
    * @returns Observable de la peticion
   */
   addRequest(friendname: string): Observable<any> {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': "Bearer "+this.userService.getToken()
+      }),
+      withCredentials: true
+    };
     let body = { username:this.userService.username, friendname:friendname };
-    return this.http.post("https://onep1.herokuapp.com/friends/send/friend-request", body);
+    return this.http.post("https://onep1.herokuapp.com/friends/send/friend-request", body, httpOptions);
   }
 
   /**

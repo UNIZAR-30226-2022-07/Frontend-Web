@@ -1,6 +1,38 @@
+<div class="chat">
+    <div class="title">
+      <h2>Lista de amigos</h2>
+    </div>
+    <div class="zone">
+      <div *ngFor="let friend of listaAmigos;">
+        <tr class="lista-amigos1">
+          <td><mat-icon>account_box</mat-icon></td>
+          <span class="example-spacer"></span>
+          <td>{{friend.nombre}}</td>
+          <span class="example-spacer"></span>
+          <td>
+            <button mat-button>
+              <mat-icon>delete</mat-icon>
+            </button></td>
+        </tr>
+        <mat-divider></mat-divider>
+      
+      </div>
 
-<!--ng-init = "mostrarAmigos()"*/ -->
-  <div  class="pop-container2">
+
+
+  
+    <div class="group">
+        <input type="text" id="nameUser2Search-input" name="nameUser2Search" [(ngModel)]="nameUser2Search" autocomplete="off" placeholder="&#61442;  Puedes buscar usuarios aquí"> 
+        <button mat-icon-button mat-button click="friend_reqButton()" class="openChat">
+            <mat-icon>send</mat-icon>
+        </button>
+    </div>
+</div>
+
+<!--ng-init = "mostrarAmigos()"*/ 
+
+<div  class="lista-amigos">
+
 <mat-dialog-content class="mat-typography">
 
   <input class="searcher-friends" id="searchbox" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Puedes buscar amigos aquí">
@@ -8,7 +40,7 @@
     <mat-list>
 
         <div *ngFor="let friend of listaAmigos;">
-          <tr class="lista-amigos">
+          <tr class="lista-amigos1">
             <td><mat-icon>account_box</mat-icon></td>
             <span class="example-spacer"></span>
             <td>{{friend.nombre}}</td>
@@ -38,3 +70,4 @@
 </mat-dialog-actions>
 
 </div>
+-->

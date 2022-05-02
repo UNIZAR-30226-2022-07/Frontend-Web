@@ -8,6 +8,7 @@ import { Input } from '@angular/core';
 import { ActivatedRoute,Params, Router } from '@angular/router';
 import { UsersService } from '../users.service';
 import { FriendService } from '../friend.service';
+import { LIFECYCLE_HOOKS_VALUES } from '@angular/compiler/src/lifecycle_reflector';
 
 
 
@@ -33,12 +34,19 @@ export class MenuInicialComponent implements OnInit {
   }
 
   openDialog(){
-    
-    const dialogRef = this.dialog.open(DialogContent, {data: {name: this.nombre}});
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    })
-  }
+      const dialogRef2 = this.dialog.open(DialogContent,
+        {
+          data: this.nombre,
+          position: {
+            top: '0px',
+            right: '0px'
+           
+          },
+          height: '100vh',
+          width: '25%'
+        });
+    }
+  
     openNotis(){
       const dialogRef = this.dialog.open(NotisContent);
       dialogRef.afterClosed().subscribe(result => {
@@ -87,7 +95,7 @@ export class DialogContent {
   }
   
   ngOnInit(): void {
-     
+     this.listaAmigos = [{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"}]
     console.log(this.name);
   }
 
