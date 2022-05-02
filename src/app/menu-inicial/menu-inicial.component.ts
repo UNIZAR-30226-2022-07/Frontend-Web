@@ -142,7 +142,7 @@ export class DialogContent {
 @Component({
   selector: 'notis-content',
   templateUrl: 'notis-content.html' ,
-  styleUrls: ['./menu-inicial.component.css']
+  styleUrls: ['./notis-content.css']
 })
 export class NotisContent {
   listaNotis: any;

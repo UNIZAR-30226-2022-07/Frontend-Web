@@ -1,0 +1,198 @@
+
+
+
+html, body{
+    margin: 0;
+    padding: 0;
+  }
+  
+  body{
+    background: url("../../assets/img/fondo.png");
+  }
+  
+  /*------------------------------------TOOLBAR-----------------------------------------*/
+  
+  
+  .mat-toolbar{
+    background-color: #6b67667e;
+    padding: 2ch;
+    margin-bottom: 5%;
+  }
+  
+  .mat-icon{
+    display:inline;
+    font-size: 6vh;
+  }
+  
+  .clasif_menu{
+    position: relative;
+    
+    margin-top: 1%;
+  
+  }
+  .amigos_menu{
+    
+   
+    margin-top: 1%;
+  
+  /*
+    background: red;
+    border: 3px solid #fff;
+    border-radius: 100%;
+    box-shadow: 0 -2px 0 3px darken(red, 40%) inset, 0 5px 5px rgba(darken(red, 10%), 0.17), 0 15px rgba(#fff, 0.25) inset;
+    cursor: pointer;
+    display: inline-block;
+   */
+  }
+  
+  
+  
+  
+  .notis_menu{
+  
+  margin-top: 1%;
+  
+  }
+  
+  
+  /*----------------------------------------------------CUERPO MENU--------------------------------------*/
+  
+  
+  
+  .pop-container{
+    background-color: #6b6766;
+    font-family: 'Courier New', Courier, monospace;
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    height: 500px;
+    margin: 0;
+    width: 500px;
+    position: absolute;
+    left: 50px;
+   
+    bottom: 0;
+    opacity: 0%;
+    z-index: -2;
+  }
+  
+  
+  .pop-container2{
+   
+   
+    display:block;
+  
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+  
+    left:auto;
+    right: auto;
+  
+    position: relative;
+  
+    width: 500px;
+  
+  
+    
+  
+   
+    opacity: 100%;
+    z-index: 20;
+  }
+  
+  
+  
+  
+  .mid-container{
+    width: auto;
+    height: 500px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+  
+  
+  
+  .example-spacer {
+    flex: 1 1 auto;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  .boton1 a{
+    text-decoration: none;
+    display: block;
+    border: 1px solid transparent;
+    width: 200px;
+    height: 35px;
+    text-align: center;
+    padding-top: 15px;
+    margin: auto;
+    transition: 0.15s;
+  
+  
+    
+    background-color: #080808;
+    color:white;
+  
+    
+    margin-bottom: 100px;
+    margin-top: 100px;
+  
+    border-radius: 15px;
+  }
+  
+  .boton1 a:hover{
+      width:300px;
+  }
+  
+  
+  
+  
+  /*-----------------------------------------------------POP UPS-------------------------------------------- */
+  
+  
+  .tamanyo-popup{
+    display:block;
+  
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+  
+    left:auto;
+    right: auto;
+  
+    position: relative;
+  
+    width: 500px;
+  
+  }
+  
+  
+  
+  .lista-amigos{
+  
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+  
+  
+  
+  
+  }
+  
+  

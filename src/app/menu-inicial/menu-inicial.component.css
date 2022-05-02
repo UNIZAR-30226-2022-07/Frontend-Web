@@ -246,7 +246,7 @@ div.zone {
   overflow-y: scroll;
 }
 
-input {
+.input-user {
   width: 70%;
 }
 
@@ -322,11 +322,6 @@ input {
 }
 
 
-.buscador-amigos button .mat-icon{
-
-  
-
-}
 
 /* tabla amigos */
 
