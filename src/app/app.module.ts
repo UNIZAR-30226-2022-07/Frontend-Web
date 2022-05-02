@@ -12,7 +12,7 @@ import { RegisterComponent } from './register/register.component';
 import { DialogContent, MenuInicialComponent, NotisContent, FormFieldErrorExample , ReglasPartidaComponent} from './menu-inicial/menu-inicial.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { TosComponent } from './tos/tos.component';
-import { ChoseColorComponent, GameComponent } from './game/game.component';
+import { ChatComponent, ChoseColorComponent, GameComponent } from './game/game.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { TorneoComponent } from './torneo/torneo.component';
@@ -43,7 +43,7 @@ import { AuthInterceptor } from './auth.interceptor';
     PartidaPrivadaComponent,
     FormFieldErrorExample,
     ReglasPartidaComponent,
-   
+    ChatComponent,
   ],
   imports: [
     BrowserModule,
