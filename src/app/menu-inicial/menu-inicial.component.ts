@@ -84,7 +84,7 @@ export class DialogContent {
   }
   
   ngOnInit(): void {
-    this.listaAmigos = [{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"}]  
+     
     console.log(this.name);
   }
 
@@ -94,9 +94,37 @@ export class DialogContent {
         
     } )*/
 
+
+    const info = {username: this.name, friendname: this.nameUser2Search};
+    this.userService.sendFriendReq(info).subscribe({
+      next: (v) => {
+        console.log("Ha ido bien");
+
+      },
+      error: (e) =>{
+        console.log("Ha ido mal");
+      }
+    })
+
     console.log(this.nameUser2Search);
     console.log(this.name);
   
+  }
+
+
+  mostrarAmigos(): void{
+    const username = {username : this.name};
+    this.userService.mostrarAmigos(username).subscribe({
+      next: (v) => {
+        console.log("Ha ido bien la lista de amigos");
+        this.listaAmigos = v.username;
+
+
+      },
+      error: (e) =>{
+        console.log("Ha ido mal");
+      }
+    })
   }
 }
 
