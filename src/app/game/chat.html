@@ -1,0 +1,13 @@
+<div class="chat">
+    <div class="zone">
+        <div *ngFor="let item of historyPopup" [ngClass]="'message ' + ((item.sender==this.userService.username) ? 'sent' : 'recieved')">
+            {{item.message}}
+        </div>
+    </div>
+    <div class="group">
+        <input type="text" id="msg" name="msg" [(ngModel)]="msg">
+        <button mat-icon-button mat-button class="openChat">
+            <mat-icon>send</mat-icon>
+        </button>
+    </div>
+</div>

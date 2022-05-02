@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, Inject, OnInit, ViewContainerRef } from '@angular/core';
 import { Carta } from './logica/carta';
 import { Jugador } from './logica/jugador';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as util from "./logica/util";
+import { Message } from './message';
+import { UsersService } from '../users.service';
 
 @Component({
   selector: 'app-game',
@@ -10,6 +12,8 @@ import * as util from "./logica/util";
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit {
+  //Chat
+  history: Message[] = [];
   //Lista de jugadores
   jugadores: Jugador[] = [];
   //Index del array jugadores que eres tu. NOTE: Cambiar cada vez que se cambia el turno
@@ -27,7 +31,7 @@ export class GameComponent implements OnInit {
   marcos: Jugador = new Jugador("marcos"); 
   cesar: Jugador = new Jugador("cesar"); 
 
-  constructor(public dialog:MatDialog) { }
+  constructor(public dialog:MatDialog,public dialog2:MatDialog) { }
 
   ngOnInit(): void {
     //TODO: Request a backend de todos los datos. Por ahora son datos falsos
@@ -109,9 +113,22 @@ export class GameComponent implements OnInit {
     })
   }
 
+  //TODO: Al recibir un mensaje ejecutar dialogRef2.addMsg(m) si el popup esta abierto
 
-  
+  openChat(){
+    const dialogRef2 = this.dialog2.open(ChatComponent,
+      {
+        data: this.history,
+        position: {
+          top: '0px',
+          left: '0px'
+        },
+        height: '100vh',
+        width: '25%'
+      });
+  }
 }
+
 @Component({
   selector: 'chosecolor',
   templateUrl: 'chosecolor.html',
@@ -121,5 +138,25 @@ export class ChoseColorComponent {
   constructor(public dialogRef: MatDialogRef<ChoseColorComponent>) {}
   close(n: number) {
     this.dialogRef.close(n);
+  }
+}
+
+@Component({
+  selector: 'chat',
+  templateUrl: 'chat.html',
+  styleUrls: ['chat.css']
+})
+export class ChatComponent{
+  constructor(public dialogRef: MatDialogRef<ChatComponent>,@Inject(MAT_DIALOG_DATA) public data: Message[], public userService: UsersService) {this.historyPopup = data}
+  historyPopup!: Message[]
+  msg !: string;
+
+  addMsg(m:Message) {
+    this.historyPopup.push(m);
+  }
+
+  sendMsg() {
+    //TODO
+    console.log("Enviando "+this.msg);
   }
 }
