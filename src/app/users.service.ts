@@ -28,6 +28,10 @@ export class UsersService {
     return this.http.post("<DIRECCION WEB API>", user);
   }
 
+  sendFriendReq(user:any, friend:any): Observable<any>{
+    return this.http.post("https://onep1.herokuapp.com/friends/send/friend-request",user,friend);
+  }
+
   //----------------------------- Cookies -----------------------------//
   setToken(token: string) {
     this.cookies.set("token", token);

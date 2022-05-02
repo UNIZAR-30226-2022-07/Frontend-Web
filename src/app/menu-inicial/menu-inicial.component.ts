@@ -1,8 +1,13 @@
 
 import { coerceStringArray } from '@angular/cdk/coercion';
-import { Component, OnInit } from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
+import {MatDialog, MatDialogRef, MatDialogConfig,MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormControl,Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { Input } from '@angular/core';
+import { ActivatedRoute,Params, Router } from '@angular/router';
+import { UsersService } from '../users.service';
+
 
 
 
@@ -13,16 +18,22 @@ import { FormControl,Validators } from '@angular/forms';
 })
 export class MenuInicialComponent implements OnInit {
 
+
+  nombre: string | null = null;
+
+  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog) {
+  }
   
-
-  constructor(public dialog:MatDialog) { }
-
   ngOnInit(): void {
     
+    // Se coge el nombre del parametro que te pasan desde el log-in
+    this.nombre = this.route.snapshot.paramMap.get('username');
+
   }
 
   openDialog(){
-    const dialogRef = this.dialog.open(DialogContent);
+    
+    const dialogRef = this.dialog.open(DialogContent, {data: {name: this.nombre}});
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     })
@@ -47,6 +58,8 @@ export class MenuInicialComponent implements OnInit {
       })
     }
 
+    
+
 }
 
 @Component({
@@ -57,14 +70,34 @@ export class MenuInicialComponent implements OnInit {
 export class DialogContent {
 
   listaAmigos: any;
+  searchText!: string;
+
+  name : string | null = null;
+  nameUser2Search : string | null = null;
+
   
 
-  constructor(public dialog:MatDialog) { }
+  
 
-  ngOnInit(): void {
-    this.listaAmigos = [{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"}]  
+  constructor(@Inject(MAT_DIALOG_DATA) public data:any,public userService: UsersService) {
+    this.name = data.name;
   }
   
+  ngOnInit(): void {
+    this.listaAmigos = [{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"}]  
+    console.log(this.name);
+  }
+
+  friend_reqButton(): void{
+ /* this.userService.sendFriendReq(this.name,friend).subscribe({
+    
+        
+    } )*/
+
+    console.log(this.nameUser2Search);
+    console.log(this.name);
+  
+  }
 }
 
 @Component({
@@ -108,6 +141,9 @@ export class FormFieldErrorExample {
   styleUrls: ['./menu-inicial.component.css']
 })
 export class ReglasPartidaComponent {
+
+  
+
   matchID: string | null = null;
   nJugadores: number = 6;
   tiempoTurno: number = 10;
