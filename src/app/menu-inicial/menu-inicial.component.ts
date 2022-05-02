@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { Input } from '@angular/core';
 import { ActivatedRoute,Params, Router } from '@angular/router';
 import { UsersService } from '../users.service';
+import { FriendService } from '../friend.service';
 
 
 
@@ -73,14 +74,16 @@ export class DialogContent {
   searchText!: string;
 
   name : string | null = null;
-  nameUser2Search : string | null = null;
+  nameUser2Search : string = "";
 
   
 
   
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data:any,public userService: UsersService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data:any,public friendService: FriendService) {
     this.name = data.name;
+
+
   }
   
   ngOnInit(): void {
@@ -95,8 +98,8 @@ export class DialogContent {
     } )*/
 
 
-    const info = {username: this.name, friendname: this.nameUser2Search};
-    this.userService.sendFriendReq(info).subscribe({
+    
+    this.friendService.addRequest(this.nameUser2Search).subscribe({
       next: (v) => {
         console.log("Ha ido bien");
 
@@ -111,7 +114,7 @@ export class DialogContent {
   
   }
 
-
+/*
   mostrarAmigos(): void{
     const username = {username : this.name};
     this.userService.mostrarAmigos(username).subscribe({
@@ -125,7 +128,7 @@ export class DialogContent {
         console.log("Ha ido mal");
       }
     })
-  }
+  }*/
 }
 
 @Component({
