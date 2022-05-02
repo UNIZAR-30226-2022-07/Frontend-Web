@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
       next: (v) => {
         this.userService.setInfo(v.username,v.email,v.pais,v.puntos)
         this.userService.setToken(v.accessToken)
+
         // NOTE(Marcos): Para borrar la cookie (hacer logout): this.cookies.delete("token");
 
         // Se pasa el nombre como parametro al menu 
