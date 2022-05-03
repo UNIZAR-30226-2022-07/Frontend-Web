@@ -145,14 +145,44 @@ export class DialogContent {
   styleUrls: ['./notis-content.css']
 })
 export class NotisContent {
-  listaNotis: any;
+  
+  listaNotis: Array<Object> = [];
+ 
 
-  constructor(public dialog:MatDialog){}
+  constructor(public dialog:MatDialog, public friendService: FriendService){
+  
+  }
 
   ngOnInit(): void{
-    this.listaNotis = [{nombre:"cesar",mensaje:"te ha invitado a su partida"},{nombre:"victor",mensaje:"quiere ser tu amigo"},{nombre:"paula",mensaje:"quiere ser tu amigo"}]
+    console.log("Vamos a pedir mensajes")
+    this.friendService.getRequests().subscribe({
+      next: (data) => {
+        const mensaje = JSON.stringify(data);
+        const nombre = mensaje.split("\"");
+        console.log(mensaje);
+        console.log(nombre);
+        this.listaNotis = mensaje.split(",");
+        
+        
+    
+
+      },
+      error: (e) => {
+        if (e.status == 401) {
+          console.log("ha ido mal")
+        }
+        else {
+          console.error(e);
+          
+        }
+      }
+    })
+    //this.listaNotis = [{nombre:"cesar",mensaje:"te ha invitado a su partida"},{nombre:"victor",mensaje:"quiere ser tu amigo"},{nombre:"paula",mensaje:"quiere ser tu amigo"}]
   }
+
 }
+  
+
 
 
 @Component({

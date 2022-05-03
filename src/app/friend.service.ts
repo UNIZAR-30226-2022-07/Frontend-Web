@@ -32,8 +32,14 @@ export class FriendService {
    * @returns Observable de la peticion
   */
   getRequests(): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': "Bearer "+this.userService.getToken()
+      }),
+      withCredentials: true
+    };
     let body = { username:this.userService.username };
-    return this.http.post("https://onep1.herokuapp.com/friends/receive/friend-request", body);
+    return this.http.post("https://onep1.herokuapp.com/friends/receive/friend-request", body,httpOptions);
   }
 
   /**
