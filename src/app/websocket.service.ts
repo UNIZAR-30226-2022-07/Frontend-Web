@@ -7,17 +7,26 @@ declare var SockJS: any;
 declare var Stomp: any;
 
 export interface IncomingMessage {
-  // assume that we receive serialized json that adheres to this interface
+  //Vacio
+}
+
+export interface DisconnectMessage extends IncomingMessage {
+  playerName: string;
+  gameId: string;
 }
 
 export interface OutgoingMessage {
-  // we send serialized json that adheres to this interface
+  //Vacio
 }
 
-export interface InicioPartida {
-  roomId: string;
-  username: string;
+export interface InicioPartida extends OutgoingMessage {
+  //Vacio
 }
+
+export interface InicioPartida extends OutgoingMessage {
+
+}
+
 
 
 @Injectable({ providedIn: 'root' })
@@ -43,7 +52,8 @@ export class WebsocketService {
     const that = this;
     this.stompClient.connect({"Authorization": "Bearer " + this.userService.getToken()}, function(frame: any) {
 
-      that.stompClient.subscribe('/topic/connect/'+that.id, that.onMessage,{"Authorization": "Bearer " + that.userService.getToken()});
+      that.stompClient.subscribe('/topic/game/'+that.id, that.onMessage, {"Authorization": "Bearer " + that.userService.getToken()});
+      that.stompClient.subscribe('/user/'+that.userService.username+'/game/'+that.id, that.onMessage, {"Authorization": "Bearer " + that.userService.getToken()});
 
     });
   }
@@ -101,7 +111,7 @@ export class WebsocketService {
     let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/create",
     {
       playername: this.userService.username,
-      nplayers: 5,
+      nplayers: 1,
       tturn: 10
     },
     httpOptions)

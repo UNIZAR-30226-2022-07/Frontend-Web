@@ -20,7 +20,14 @@ export class AppComponent implements OnInit{
   sendmsg() {
     this.WebSocketService.send(
       { },
-      "/game/connect"
+      "/game/connect/"
+    )
+  }
+
+  sendmsg2() {
+    this.WebSocketService.send(
+      { },
+      "/game/begin/"
     )
   }
 
