@@ -136,23 +136,41 @@ export class DialogContent {
 })
 export class NotisContent {
   
-  listaNotis: Array<Object> = [];
+  listaNotis: Array<String> = [];
+  cuerpo_mensaje: any;
+  mensaje_final:any;
+  
  
 
   constructor(public dialog:MatDialog, public friendService: FriendService){
-  
+     
   }
 
   ngOnInit(): void{
     console.log("Vamos a pedir mensajes")
     this.friendService.getRequests().subscribe({
       next: (data) => {
+
+
+        const msg = data.message;
+      
+        this.cuerpo_mensaje = msg.split("\"");
+       
+
+        console.info("Mensaje recibido: ", data.message);
+        for (let n = 0; (2*n + 1) < this.cuerpo_mensaje.length; n++) {
+          this.listaNotis.push(this.cuerpo_mensaje[2*n + 1]);
+          
+        }
+       
+
+        /*
         const mensaje = JSON.stringify(data);
         const nombre = mensaje.split("\"");
         console.log(mensaje);
         console.log(nombre);
         this.listaNotis = mensaje.split(",");
-        
+        */
         
     
 
