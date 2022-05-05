@@ -1,14 +1,9 @@
 
-import { coerceStringArray } from '@angular/cdk/coercion';
 import { Component, OnInit, Inject } from '@angular/core';
-import {MatDialog, MatDialogRef, MatDialogConfig,MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { FormControl,Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { Input } from '@angular/core';
+import {MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { ActivatedRoute,Params, Router } from '@angular/router';
-import { UsersService } from '../users.service';
 import { FriendService } from '../friend.service';
-import { LIFECYCLE_HOOKS_VALUES } from '@angular/compiler/src/lifecycle_reflector';
+import { WebsocketService } from '../websocket.service';
 
 
 
@@ -55,16 +50,11 @@ export class MenuInicialComponent implements OnInit {
     }
 
     pedirCodigo(){
-      const dialogRef = this.dialog.open(FormFieldErrorExample);
-      dialogRef.afterClosed().subscribe(result => {
-        console.log(`Dialog result: ${result}`);
-      })
+      const dialogRef = this.dialog.open(UnirsePrivada);
     }
+    
     crearPPrivada(){
       const dialogRef = this.dialog.open(ReglasPartidaComponent);
-      dialogRef.afterClosed().subscribe(result => {
-        console.log(`Dialog result: ${result}`);
-      })
     }
 
     
@@ -186,20 +176,20 @@ export class NotisContent {
 
 
 @Component({
-  selector: 'form-field-error-example',
-  templateUrl: 'form-field-error-example.html',
+  selector: 'unirse-privada',
+  templateUrl: 'unirse-privada.html',
   styleUrls: ['./menu-inicial.component.css'],
 })
-export class FormFieldErrorExample {
-  email = new FormControl('', [Validators.required, Validators.email]);
+export class UnirsePrivada {
+  id: string = ""
+  constructor(public dialogRef: MatDialogRef<UnirsePrivada>, public websocketService: WebsocketService, public router: Router) {}
 
-  getErrorMessage() {
-    if (this.email.hasError('required')) {
-      return 'You must enter a value';
-    }
-
-    return this.email.hasError('email') ? 'Not a valid email' : '';
+  joinGame() {
+    this.websocketService.joinMatch(this.id);
+    this.router.navigateByUrl('/partidaPrivada/'+this.id);
+    this.dialogRef.close();
   }
+
 }
 
 
@@ -210,15 +200,10 @@ export class FormFieldErrorExample {
   styleUrls: ['./menu-inicial.component.css']
 })
 export class ReglasPartidaComponent {
-
-  
-
-  matchID: string | null = null;
   nJugadores: number = 6;
   tiempoTurno: number = 10;
-  players!: Array<any>;
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
-  constructor(public dialogRef: MatDialogRef<ReglasPartidaComponent>) {}
+  constructor(public dialogRef: MatDialogRef<ReglasPartidaComponent>, public websocketService: WebsocketService, public router: Router) {}
 
   changeNplayers(e: any) {
     this.nJugadores = e.target.value;
@@ -226,5 +211,11 @@ export class ReglasPartidaComponent {
   
   changeTturno(e: any) {
     this.tiempoTurno = e.target.value;
+  }
+
+  async crearPartida() {
+    await this.websocketService.newMatch(this.nJugadores,this.tiempoTurno);
+    this.router.navigateByUrl('/partidaPrivada/'+this.websocketService.id);
+    this.dialogRef.close();
   }
 }

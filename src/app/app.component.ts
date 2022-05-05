@@ -14,7 +14,7 @@ export class AppComponent implements OnInit{
   ngOnInit(): void { }
 
   boton() {
-    this.WebSocketService.newMatch()
+    this.WebSocketService.newMatch(1,10)
   }
 
   sendmsg() {

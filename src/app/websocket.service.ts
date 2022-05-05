@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable, Subject } from "rxjs";
+import { EventEmitter, Injectable } from "@angular/core";
+import { lastValueFrom, Observable, Subject } from "rxjs";
 import { UsersService } from "./users.service";
 // Declare SockJS and Stomp
 declare var SockJS: any;
@@ -31,16 +31,12 @@ export interface InicioPartida extends OutgoingMessage {
 
 @Injectable({ providedIn: 'root' })
 export class WebsocketService {
-  constructor(private http: HttpClient, public userService: UsersService) {}
-  /**
-   * Emit the deserialized incoming messages
-   */
-  readonly incoming = new Subject<IncomingMessage>();
+  public messageReceived = new EventEmitter<any>();
   
-  msg: any;
   id:string = "";
   public stompClient: any;
-
+  
+  constructor(private http: HttpClient, public userService: UsersService) {}
   /**
    * Crea un socket y se conecta, suscribiendose a "/topic/connect/<id>"
    * @returns void
@@ -52,12 +48,12 @@ export class WebsocketService {
     const that = this;
     this.stompClient.connect({"Authorization": "Bearer " + this.userService.getToken()}, function(frame: any) {
 
-      that.stompClient.subscribe('/topic/game/'+that.id, that.onMessage, {"Authorization": "Bearer " + that.userService.getToken()});
-      that.stompClient.subscribe('/user/'+that.userService.username+'/game/'+that.id, that.onMessage, {"Authorization": "Bearer " + that.userService.getToken()});
+      that.stompClient.subscribe('/topic/game/'+that.id, (message: any) => that.onMessage(message, that.messageReceived), {"Authorization": "Bearer " + that.userService.getToken()});
+      that.stompClient.subscribe('/user/'+that.userService.username+'/msg', (message: any) => that.onMessage(message, that.messageReceived), {"Authorization": "Bearer " + that.userService.getToken()});
 
     });
   }
-
+  
   /**
    * Cierra el socket
    * @returns void
@@ -85,22 +81,25 @@ export class WebsocketService {
 
 
   /**
-   * Gestiona un mensaje recibido
+   * Gestiona un mensaje recibido, emitiendolo por this.messageReceived
    * @param message Mensaje recibido
+   * @param emitter Emisor de mensajes
    * @returns void
   */
-  private onMessage(message:any): void {
-    const msg = JSON.parse(message.body);
+  onMessage(message:any, emitter:any): void {
+    let msg = JSON.parse(message.body);
     console.info("Mensaje recibido: ", message);
-    this.incoming.next(msg);
+    emitter.emit(msg);
   };
 
 
   /**
    * Crea una partida y se conecta
+   * @param nplayers Numero de jugadores de la partida
+   * @param tturn Tiempo de turno de cada jugador
    * @returns void
   */
-  public newMatch(): void {
+  public async newMatch(nplayers:number, tturn:number){ //TODO: Pasar las reglas a esta funcion
     const httpOptions = {
       headers: new HttpHeaders({
         'Authorization': "Bearer "+this.userService.getToken()
@@ -111,20 +110,33 @@ export class WebsocketService {
     let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/create",
     {
       playername: this.userService.username,
-      nplayers: 1,
-      tturn: 10
+      nplayers: nplayers,
+      tturn: tturn
     },
     httpOptions)
     test.subscribe({
       next: (v: any) => {
         console.log("Partida creada:",v);
-        this.id = v.id
-        this.connect()
+        this.id = v.id;
+        this.connect();
       },
       error: (e:any) => {
         console.error(e);
       }
     });
+    const response = await lastValueFrom(test); //Esperar la respuesta
+    return;
+  }
+
+  /**
+   * Se une a una partida
+   * @param id ID de la partida
+   * @returns void
+  */
+  public async joinMatch(id:string){
+    this.id = id;
+    this.connect();
+    return;
   }
 
 
