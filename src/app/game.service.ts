@@ -6,31 +6,9 @@ import { UsersService } from "./users.service";
 declare var SockJS: any;
 declare var Stomp: any;
 
-export interface IncomingMessage {
-  //Vacio
-}
-
-export interface DisconnectMessage extends IncomingMessage {
-  playerName: string;
-  gameId: string;
-}
-
-export interface OutgoingMessage {
-  //Vacio
-}
-
-export interface InicioPartida extends OutgoingMessage {
-  //Vacio
-}
-
-export interface InicioPartida extends OutgoingMessage {
-
-}
-
-
 
 @Injectable({ providedIn: 'root' })
-export class WebsocketService {
+export class GameService {
   public messageReceived = new EventEmitter<any>();
   
   id:string = "";
@@ -124,7 +102,7 @@ export class WebsocketService {
         console.error(e);
       }
     });
-    const response = await lastValueFrom(test); //Esperar la respuesta
+    await lastValueFrom(test); //Esperar la respuesta
     return;
   }
 

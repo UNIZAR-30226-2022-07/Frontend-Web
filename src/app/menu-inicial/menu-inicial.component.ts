@@ -3,7 +3,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { ActivatedRoute,Params, Router } from '@angular/router';
 import { FriendService } from '../friend.service';
-import { WebsocketService } from '../websocket.service';
+import { GameService } from '../game.service';
 
 
 
@@ -200,10 +200,10 @@ export class NotisContent {
 })
 export class UnirsePrivada {
   id: string = ""
-  constructor(public dialogRef: MatDialogRef<UnirsePrivada>, public websocketService: WebsocketService, public router: Router) {}
+  constructor(public dialogRef: MatDialogRef<UnirsePrivada>, public GameService: GameService, public router: Router) {}
 
   joinGame() {
-    this.websocketService.joinMatch(this.id);
+    this.GameService.joinMatch(this.id);
     this.router.navigateByUrl('/partidaPrivada/'+this.id);
     this.dialogRef.close();
   }
@@ -221,7 +221,7 @@ export class ReglasPartidaComponent {
   nJugadores: number = 6;
   tiempoTurno: number = 10;
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
-  constructor(public dialogRef: MatDialogRef<ReglasPartidaComponent>, public websocketService: WebsocketService, public router: Router) {}
+  constructor(public dialogRef: MatDialogRef<ReglasPartidaComponent>, public GameService: GameService, public router: Router) {}
 
   changeNplayers(e: any) {
     this.nJugadores = e.target.value;
@@ -232,8 +232,8 @@ export class ReglasPartidaComponent {
   }
 
   async crearPartida() {
-    await this.websocketService.newMatch(this.nJugadores,this.tiempoTurno);
-    this.router.navigateByUrl('/partidaPrivada/'+this.websocketService.id);
+    await this.GameService.newMatch(this.nJugadores,this.tiempoTurno);
+    this.router.navigateByUrl('/partidaPrivada/'+this.GameService.id);
     this.dialogRef.close();
   }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { WebsocketService } from '../websocket.service';
+import { GameService } from '../game.service';
 
 @Component({
   selector: 'app-partida-privada',
@@ -17,10 +17,10 @@ export class PartidaPrivadaComponent implements OnInit {
   players!: Array<any>;
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
 
-  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog,public websocketService: WebsocketService) { }
+  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog,public GameService: GameService) { }
 
   ngOnInit(): void {
-    this.websocketService.messageReceived.subscribe({
+    this.GameService.messageReceived.subscribe({
       next: (message: any) => {
         console.log("recibido en componente: ",message);
       }

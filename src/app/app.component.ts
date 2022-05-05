@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WebsocketService } from './websocket.service';
+import { GameService } from './game.service';
 
 @Component({
   selector: 'app-root',
@@ -9,25 +9,32 @@ import { WebsocketService } from './websocket.service';
 export class AppComponent implements OnInit{
   title = 'frontend-web';
 
-  constructor(public WebSocketService: WebsocketService) { }  
+  constructor(public GameService: GameService) { }  
 
   ngOnInit(): void { }
 
   boton() {
-    this.WebSocketService.newMatch(1,10)
+    this.GameService.newMatch(1,10)
   }
 
   sendmsg() {
-    this.WebSocketService.send(
+    this.GameService.send(
       { },
       "/game/connect/"
     )
   }
 
   sendmsg2() {
-    this.WebSocketService.send(
+    this.GameService.send(
       { },
       "/game/begin/"
+    )
+  }
+
+  sendmsg3() {
+    this.GameService.send(
+      { },
+      "/game/disconnect/"
     )
   }
 
