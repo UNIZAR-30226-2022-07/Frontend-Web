@@ -12,6 +12,7 @@ export class GameService {
   public messageReceived = new EventEmitter<any>();
   
   id:string = "";
+
   public stompClient: any;
   
   constructor(private http: HttpClient, public userService: UsersService) {}
@@ -114,6 +115,10 @@ export class GameService {
   public async joinMatch(id:string){
     this.id = id;
     this.connect();
+    this.send(
+      { },
+      "/game/connect/"
+    );
     return;
   }
 
