@@ -2,6 +2,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { ActivatedRoute,Params, Router } from '@angular/router';
+import { isYieldExpression } from 'typescript';
 import { FriendService } from '../friend.service';
 import { GameService } from '../game.service';
 
@@ -68,11 +69,16 @@ export class MenuInicialComponent implements OnInit {
 })
 export class DialogContent {
 
-  listaAmigos: any;
+
   searchText!: string;
 
   name : string | null = null;
   nameUser2Search : string = "";
+
+  /*listaAmigos: Array<String> = [];*/
+  listaAmigos:any;
+  cuerpo_mensaje: any;
+  mensaje_final:any;
 
   
 
@@ -85,18 +91,12 @@ export class DialogContent {
   }
   
   ngOnInit(): void {
-     this.listaAmigos = [{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"}]
+     this.listaAmigos = [{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"}]
     console.log(this.name);
   }
 
   friend_reqButton(): void{
- /* this.userService.sendFriendReq(this.name,friend).subscribe({
-    
-        
-    } )*/
-
-
-    
+ 
     this.friendService.addRequest(this.nameUser2Search).subscribe({
       next: (v) => {
         console.log("Ha ido bien");
@@ -113,20 +113,35 @@ export class DialogContent {
   }
 
 /*
-  mostrarAmigos(): void{
+  cargar_amigos(): void{
     const username = {username : this.name};
-    this.userService.mostrarAmigos(username).subscribe({
-      next: (v) => {
-        console.log("Ha ido bien la lista de amigos");
-        this.listaAmigos = v.username;
+    this.friendService.getFriends().subscribe({
+      next: (data) => {
+        
+        const msg = data.message;
+      
+        this.cuerpo_mensaje = msg.split("\"");
+       
 
+        console.info("Mensaje recibido: ", data.message);
+        for (let n = 0; (2*n + 1) < this.cuerpo_mensaje.length; n++) {
+          this.listaAmigos.push(this.cuerpo_mensaje[2*n + 1]);
+          
+        }
 
       },
       error: (e) =>{
-        console.log("Ha ido mal");
+        if (e.status == 401) {
+          console.log("ha ido mal")
+        }
+        else {
+          console.error(e);
+          
+        }
       }
     })
-  }*/
+  }
+  */
 }
 
 @Component({
