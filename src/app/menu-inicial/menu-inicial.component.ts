@@ -75,8 +75,8 @@ export class DialogContent {
   name : string | null = null;
   nameUser2Search : string = "";
 
-  /*listaAmigos: Array<String> = [];*/
-  listaAmigos:any;
+  listaAmigos: Array<String> = [];
+  
   cuerpo_mensaje: any;
   mensaje_final:any;
 
@@ -91,8 +91,34 @@ export class DialogContent {
   }
   
   ngOnInit(): void {
-     this.listaAmigos = [{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"}]
-    console.log(this.name);
+    // this.listaAmigos = [{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"}]
+    console.log("hola");
+   
+    this.friendService.getFriends().subscribe({
+      next: (data) => {
+        
+        const msg = data.message;
+      
+        this.cuerpo_mensaje = msg.split("\"");
+       
+
+        console.info("Mensaje recibido: ", data.message);
+        for (let n = 0; (2*n + 1) < this.cuerpo_mensaje.length; n++) {
+          this.listaAmigos.push(this.cuerpo_mensaje[2*n + 1]);
+          
+        }
+
+      },
+      error: (e) =>{
+        if (e.status == 401) {
+          console.log("ha ido mal");
+        }
+        else {
+          console.error(e);
+          
+        }
+      }
+    })
   }
 
   friend_reqButton(): void{
@@ -112,36 +138,10 @@ export class DialogContent {
   
   }
 
-/*
-  cargar_amigos(): void{
-    const username = {username : this.name};
-    this.friendService.getFriends().subscribe({
-      next: (data) => {
-        
-        const msg = data.message;
-      
-        this.cuerpo_mensaje = msg.split("\"");
-       
+  
 
-        console.info("Mensaje recibido: ", data.message);
-        for (let n = 0; (2*n + 1) < this.cuerpo_mensaje.length; n++) {
-          this.listaAmigos.push(this.cuerpo_mensaje[2*n + 1]);
-          
-        }
 
-      },
-      error: (e) =>{
-        if (e.status == 401) {
-          console.log("ha ido mal")
-        }
-        else {
-          console.error(e);
-          
-        }
-      }
-    })
-  }
-  */
+
 }
 
 @Component({
@@ -151,7 +151,7 @@ export class DialogContent {
 })
 export class NotisContent {
   
-  listaNotis: Array<String> = [];
+  listaNotis: Array<string> = [];
   cuerpo_mensaje: any;
   mensaje_final:any;
   
@@ -177,18 +177,6 @@ export class NotisContent {
           this.listaNotis.push(this.cuerpo_mensaje[2*n + 1]);
           
         }
-       
-
-        /*
-        const mensaje = JSON.stringify(data);
-        const nombre = mensaje.split("\"");
-        console.log(mensaje);
-        console.log(nombre);
-        this.listaNotis = mensaje.split(",");
-        */
-        
-    
-
       },
       error: (e) => {
         if (e.status == 401) {
@@ -201,6 +189,19 @@ export class NotisContent {
       }
     })
     //this.listaNotis = [{nombre:"cesar",mensaje:"te ha invitado a su partida"},{nombre:"victor",mensaje:"quiere ser tu amigo"},{nombre:"paula",mensaje:"quiere ser tu amigo"}]
+  }
+
+  aceptarAmigo(amigo:string): void{
+    console.log("Entramos en la funcion y el amigo es " + amigo);
+    this.friendService.acceptRequest(amigo).subscribe({
+      next:(data) => {
+        console.log("Ha ido bien");
+      },
+      error: (e) => {
+        console.log("Ha ido mal");
+      }
+    })
+    
   }
 
 }
