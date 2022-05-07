@@ -202,8 +202,8 @@ export class UnirsePrivada {
   id: string = ""
   constructor(public dialogRef: MatDialogRef<UnirsePrivada>, public GameService: GameService, public router: Router) {}
 
-  joinGame() {
-    this.GameService.joinMatch(this.id);
+  async joinGame() {
+    await this.GameService.joinMatch(this.id);
     this.router.navigateByUrl('/partidaPrivada/'+this.id);
     this.dialogRef.close();
   }

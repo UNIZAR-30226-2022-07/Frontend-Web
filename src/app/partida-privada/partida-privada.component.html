@@ -11,17 +11,17 @@
     </div>-->
     
     <h1>Partida privada de {{players[0].nombre}}</h1>
-    <h3>Jugadores:  {{players.length}}/{{nJugadores}}</h3>
+    <h3>Jugadores:  {{players.length}} / {{nJugadores}}</h3>
     <div class="center">
-        <div class="pack" *ngFor="let player of players">
-            <div class="persona" *ngIf="player === undefined">
+        <div class="pack" *ngFor="let e of [].constructor(nJugadores); let i = index">
+            <div class="persona" *ngIf="players[i] === undefined">
                 <mat-icon class="empty">person</mat-icon>
             </div>
-            <div class="persona filled" *ngIf="player !== undefined">
+            <div class="persona filled" *ngIf="players[i] !== undefined">
                 <mat-icon class="filled">person</mat-icon>
             </div>
-            <div class="datos" *ngIf="player !== undefined">
-                <b>{{player.nombre}}</b>
+            <div class="datos" *ngIf="players[i] !== undefined">
+                <b>{{players[i].nombre}}</b>
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
             <mat-spinner class="spinner"></mat-spinner>
         </div>
         <div class="codigo">
-            <h2>Código: XCRT45</h2>
+            <h2>Código: {{this.matchID}}</h2>
             <mat-icon class="posicion-clipboard">content_copy</mat-icon>
         </div>    
     </div>

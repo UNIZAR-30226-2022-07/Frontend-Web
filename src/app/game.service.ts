@@ -12,26 +12,30 @@ export class GameService {
   public messageReceived = new EventEmitter<any>();
   
   id:string = "";
+  partida:any;
 
   public stompClient: any;
   
   constructor(private http: HttpClient, public userService: UsersService) {}
   /**
    * Crea un socket y se conecta, suscribiendose a "/topic/connect/<id>"
-   * @returns void
+   * @returns Promesa de cumplimiento
   */
-  private connect(): void {
-    const ws = new SockJS("https://onep1.herokuapp.com/onep1-game");
-    this.stompClient = Stomp.over(ws);
+  private async connect(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      const ws = new SockJS("https://onep1.herokuapp.com/onep1-game");
+      this.stompClient = Stomp.over(ws);
 
-    const that = this;
-    this.stompClient.connect({"Authorization": "Bearer " + this.userService.getToken()}, function(frame: any) {
+      const that = this;
+      this.stompClient.connect({"Authorization": "Bearer " + this.userService.getToken()}, function(frame: any) {
 
-      that.stompClient.subscribe('/topic/game/'+that.id, (message: any) => that.onMessage(message, that.messageReceived), {"Authorization": "Bearer " + that.userService.getToken()});
-      that.stompClient.subscribe('/user/'+that.userService.username+'/msg', (message: any) => that.onMessage(message, that.messageReceived), {"Authorization": "Bearer " + that.userService.getToken()});
-
+        that.stompClient.subscribe('/topic/game/'+that.id, (message: any) => that.onMessage(message, that.messageReceived), {"Authorization": "Bearer " + that.userService.getToken()});
+        that.stompClient.subscribe('/user/'+that.userService.username+'/msg', (message: any) => that.onMessage(message, that.messageReceived), {"Authorization": "Bearer " + that.userService.getToken()});
+        resolve(true);
+      });
     });
   }
+  
   
   /**
    * Cierra el socket
@@ -85,7 +89,6 @@ export class GameService {
       }),
       withCredentials: true
     };
-    console.log(this.userService.username);
     let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/create",
     {
       playername: this.userService.username,
@@ -94,10 +97,11 @@ export class GameService {
     },
     httpOptions)
     test.subscribe({
-      next: (v: any) => {
+      next: async (v: any) => {
         console.log("Partida creada:",v);
         this.id = v.id;
-        this.connect();
+        this.partida = v;
+        await this.connect().then()
       },
       error: (e:any) => {
         console.error(e);
@@ -114,11 +118,12 @@ export class GameService {
   */
   public async joinMatch(id:string){
     this.id = id;
-    this.connect();
-    this.send(
-      { },
-      "/game/connect/"
-    );
+    await this.connect().then(x => {
+      this.send(
+        { },
+        "/game/connect/"
+      );
+    })
     return;
   }
 
