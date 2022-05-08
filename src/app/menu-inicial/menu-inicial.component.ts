@@ -69,24 +69,26 @@ export class MenuInicialComponent implements OnInit {
 })
 export class DialogContent {
 
-
+  
   searchText!: string;
 
   name : string | null = null;
   nameUser2Search : string = "";
-
-  listaAmigos: Array<String> = [];
+  
+  listaAmigos: Array<string> = [];
   
   cuerpo_mensaje: any;
   mensaje_final:any;
-
+  
+  
+  amigos_vacio:boolean;
   
 
   
 
   constructor(@Inject(MAT_DIALOG_DATA) public data:any,public friendService: FriendService) {
     this.name = data.name;
-
+    this.amigos_vacio = true;
 
   }
   
@@ -98,15 +100,20 @@ export class DialogContent {
       next: (data) => {
         
         const msg = data.message;
-      
         this.cuerpo_mensaje = msg.split("\"");
-       
 
-        console.info("Mensaje recibido: ", data.message);
-        for (let n = 0; (2*n + 1) < this.cuerpo_mensaje.length; n++) {
-          this.listaAmigos.push(this.cuerpo_mensaje[2*n + 1]);
-          
+        if (data == null){
+          console.log("no tengo amigos");
+          this.amigos_vacio = true;
+        }else{
+          this.amigos_vacio = false;
+          console.info("Mensaje recibido: ", data.message);
+          for (let n = 0; (2*n + 1) < this.cuerpo_mensaje.length; n++) {
+            this.listaAmigos.push(this.cuerpo_mensaje[2*n + 1]);
+          }
+            
         }
+      
 
       },
       error: (e) =>{
@@ -136,6 +143,16 @@ export class DialogContent {
     console.log(this.nameUser2Search);
     console.log(this.name);
   
+  }
+
+  borrar_amigo(friend:string): void{
+    this.friendService.removeFriend(friend).subscribe({
+      next: (v) => {
+        console.log("Ha ido bien");
+      },error : (e) => {
+
+      }
+    })
   }
 
   
@@ -170,6 +187,8 @@ export class NotisContent {
         const msg = data.message;
       
         this.cuerpo_mensaje = msg.split("\"");
+
+    
        
 
         console.info("Mensaje recibido: ", data.message);
@@ -177,6 +196,8 @@ export class NotisContent {
           this.listaNotis.push(this.cuerpo_mensaje[2*n + 1]);
           
         }
+       
+        
       },
       error: (e) => {
         if (e.status == 401) {
@@ -202,6 +223,17 @@ export class NotisContent {
       }
     })
     
+  }
+
+  borrar_noti(amigo:string): void{
+    this.friendService.cancelRequest(amigo).subscribe({
+      next:(data) => {
+        console.log("Ha ido bien");
+      },
+      error: (e) => {
+        console.log("Ha ido mal");
+      }
+    })
   }
 
 }

@@ -258,7 +258,13 @@ div.friend {
 
 
 
-  
+.no-amigos{
+  position: relative;
+  text-align: center;
+  margin-top: 50%;
+  margin-bottom: 50%;
+  color: red;
+}
 
 
 
