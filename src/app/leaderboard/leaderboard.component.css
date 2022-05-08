@@ -1,6 +1,8 @@
 
+table.scroll{
 
-table {
+  
+  border: 2px solid black;
   width: 50%;
 
   margin:1%;
@@ -10,7 +12,15 @@ table {
   border-spacing: 2vw;
 
   background-color: #6b67667e;
+
+
+
+ 
+
+ 
 }
+
+
 
 td {
   text-align: center;
@@ -19,6 +29,13 @@ td {
 
 thead {
   font-size: x-large;
+ 
+}
+
+tbody{
+ 
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 div.pos {
@@ -33,4 +50,8 @@ div.pos {
   font-size: xx-large;
   background-color: black;
   color: white;
+}
+
+.cuerpo-clasif{
+  overflow-y: scroll;
 }

@@ -9,6 +9,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatProgressSpinnerModule,
     MatTabsModule,
     MatFormFieldModule,
+    MatTableModule,
   ],
 
   exports: [
@@ -33,6 +35,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatProgressSpinnerModule,
     MatTabsModule,
     MatFormFieldModule,
+    MatTableModule,
   ]
 })
 
