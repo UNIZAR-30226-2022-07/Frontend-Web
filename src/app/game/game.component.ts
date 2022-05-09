@@ -120,8 +120,6 @@ export class GameComponent implements OnInit {
     })
   }
 
-  //TODO: Al recibir un mensaje ejecutar dialogRef2.addMsg(m) si el popup esta abierto
-
   openChat(){
     const dialogRef2 = this.dialog2.open(ChatComponent,
       {
@@ -154,20 +152,22 @@ export class ChoseColorComponent {
   styleUrls: ['chat.css']
 })
 export class ChatComponent{
-  constructor(public dialogRef: MatDialogRef<ChatComponent>,@Inject(MAT_DIALOG_DATA) public data: Message[], public userService: UsersService, public gameService: GameService) {this.historyPopup = data}
+  constructor(public dialogRef: MatDialogRef<ChatComponent>,@Inject(MAT_DIALOG_DATA) public data: Message[], public userService: UsersService, public gameService: GameService) {
+    this.historyPopup = data
+    this.gameService.chat.subscribe({
+      next: (m: Message) => {
+        this.historyPopup.push(m);
+      }
+    });
+  }
   historyPopup!: Message[]
   msg !: string;
-
-  addMsg(m:Message) {
-    this.historyPopup.push(m);
-  }
 
   sendMsg() {
     this.gameService.send(
       { message: this.msg },
-      "/message/"+this.gameService.id+"/"
+      "/message/"
     )
-    this.historyPopup.push(new Message(this.userService.username,this.msg)); //NOTE: No se si esto va aqui. Si los datos que pasamos al popup tienen two-way binding el mensaje se duplicara, ya que tambien sera recibido en gameComponent.
     this.msg = "";
   }
 }
