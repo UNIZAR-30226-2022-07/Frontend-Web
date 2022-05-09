@@ -15,7 +15,7 @@
     <mat-icon>supervisor_account</mat-icon>
   </button>
   
-  <button mat-icon-button mat-button  class = edit_profile onclick="location.href='/edit-profile'">
+  <button mat-icon-button mat-button  class = edit_profile (click)="this.router.navigateByUrl('/edit-profile')">
     <mat-icon>edit</mat-icon>
   </button>
 </mat-toolbar>

@@ -1,4 +1,8 @@
+
 import { Component, OnInit } from '@angular/core';
+import { MatButton } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { UsersService } from '../users.service';
 
 @Component({
@@ -10,7 +14,7 @@ export class EditProfileComponent implements OnInit {
 
   name: string;
   pais: string;
-  constructor(public UsersService: UsersService) {
+  constructor(public UsersService: UsersService, public router:Router, public dialog:MatDialog) {
     this.name = "";
     this.pais = "";
    }
@@ -23,6 +27,7 @@ export class EditProfileComponent implements OnInit {
     this.UsersService.changeName(this.name).subscribe({
       next: (data) => {
         console.log("el nombre es " + this.name);
+        this.router.navigate(['/login']);
       },error:(data) => {
         console.log(" Ha ido mal");
       }
@@ -37,6 +42,13 @@ export class EditProfileComponent implements OnInit {
         console.log(" Ha ido mal");
       }
     })
+  }
+
+
+  openMensajeBorrar(){
+    const dialogRef2 = this.dialog.open(ConfirmarBorrar,
+      {
+      });
   }
 
   public paises = [
@@ -291,4 +303,35 @@ export class EditProfileComponent implements OnInit {
   ]
 
 
+}
+
+
+
+@Component({
+  selector: 'ConfirmarBorrar',
+  templateUrl: './ConfirmarBorrar.html',
+  styleUrls: ['./edit-profile.component.css']
+})
+export class ConfirmarBorrar implements OnInit {
+
+
+  constructor(public UsersService: UsersService, public router:Router, public dialog:MatDialog , public buton: MatButton) {
+  
+   }
+
+  ngOnInit(): void {
+  }
+
+
+  
+  remove_account(): void{
+    this.UsersService.removeAccount().subscribe({
+      next:(data) => {
+        console.log("Cuenta borrada");
+        this.router.navigate(['/login']);
+      },error: (e) => {
+        console.log("Ha ido mal");
+      }
+    })
+  }
 }
