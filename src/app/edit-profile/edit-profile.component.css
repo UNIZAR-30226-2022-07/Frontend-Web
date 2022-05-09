@@ -102,3 +102,29 @@ div.forgot-password {
     margin-bottom: 10pt;
     text-align: center;
   }
+
+
+
+  /*---------------------------CONFIRMAR BORRAR---------------------------*/
+
+  .borrar{
+    font-family: "Fredoka One";
+    background-color: #C7261A;
+    color: white;
+    border-radius: 12px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: black;
+    cursor: pointer;
+    display: inline;
+
+    width: 150px;
+    margin: 10%;
+  }
+
+  .confirmar-borrar {
+    align-items: center;
+    text-align: center;
+  }
+
+  

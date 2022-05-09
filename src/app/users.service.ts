@@ -38,6 +38,13 @@ export class UsersService {
     return this.http.post("https://onep1.herokuapp.com/user/changePais",body);
   }
 
+  removeAccount(): Observable<any>{
+    let body = { username:this.username};
+    return this.http.post("https://onep1.herokuapp.com/user/deleteUser",body);
+  }
+
+  
+
   
 
   //----------------------------- Cookies -----------------------------//
