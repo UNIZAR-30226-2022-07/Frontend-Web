@@ -28,6 +28,16 @@ export class UsersService {
     return this.http.post("<DIRECCION WEB API>", user);
   }
 
+  changeName(nuevo_usuario:string): Observable<any> {
+    let body = { username:this.username, newUsername: nuevo_usuario };
+    return this.http.post("https://onep1.herokuapp.com/user/changeUsername",body)
+  }
+
+  changeCountry(nuevo_pais:string): Observable<any> {
+    let body = { username:this.username, pais:nuevo_pais};
+    return this.http.post("https://onep1.herokuapp.com/user/changePais",body);
+  }
+
   
 
   //----------------------------- Cookies -----------------------------//

@@ -20,6 +20,7 @@ import { TorneoEsperaComponent } from './torneo-espera/torneo-espera.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { PartidaPrivadaComponent } from './partida-privada/partida-privada.component';
 import { AuthInterceptor } from './auth.interceptor';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 
 
@@ -44,6 +45,7 @@ import { AuthInterceptor } from './auth.interceptor';
     UnirsePrivada,
     ReglasPartidaComponent,
     ChatComponent,
+    EditProfileComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,104 @@
+div.forgot-password {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    
+  }
+
+  .mat-toolbar{
+    background-color: #6b67667e;
+    padding: 2ch;
+    margin-bottom: 5%;
+   
+  }
+
+  .title{
+
+    display: inline;
+      position: relative;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      align-items: center;
+
+      font-size: 5vh;
+  }
+  
+  /*------------------------------ FORM ------------------------------ */
+  
+  input {
+    display: block;
+    width: 600px;
+  
+    margin: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size:large;
+    padding: 1ch;
+  
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+    border-radius: 4px;
+  }
+  
+  button {
+    font-family: "Fredoka One";
+    background-color: #C7261A;
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: black;
+    cursor: pointer;
+    display: block;
+    width: 320px;
+  
+    margin: 60px;
+    margin-left: auto;
+    margin-right: auto;
+  
+    font-size: large;
+  }
+
+  .delete{
+    font-family: "Fredoka One";
+    background-color: #C7261A;
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: black;
+    cursor: pointer;
+    display: block;
+    width: 200px;
+  
+    margin-left: 80%;
+    
+   
+  
+    font-size: large;
+  }
+
+  .provincia{
+      position: relative;
+      height: 5vh;
+      
+      text-align: center;
+      align-items: center;
+  }
+  
+  /*------------------------------ TEXTO ------------------------------ */
+  
+  h1 {
+    text-align: center;
+  }
+  
+  .error {
+    color: red;
+    margin-top: 10pt;
+    margin-bottom: 10pt;
+    text-align: center;
+  }
