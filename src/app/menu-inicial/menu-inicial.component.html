@@ -1,7 +1,7 @@
 
 
 <mat-toolbar class="toolbar">
-  <button mat-icon-button class ="clasif_menu" onclick="location.href='/leaderboard'">
+  <button mat-icon-button class ="clasif_menu" onclick="location.href='/leaderboard' ">
     <mat-icon>stars</mat-icon>
   </button>
 
@@ -13,6 +13,10 @@
   <span class="example-spacer"></span> 
   <button mat-icon-button mat-button (click)="openDialog()" class = "amigos_menu">
     <mat-icon>supervisor_account</mat-icon>
+  </button>
+  
+  <button mat-icon-button mat-button  class = edit_profile onclick="location.href='/edit-profile'">
+    <mat-icon>edit</mat-icon>
   </button>
 </mat-toolbar>
 

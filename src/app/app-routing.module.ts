@@ -11,6 +11,7 @@ import { TorneoEsperaComponent } from './torneo-espera/torneo-espera.component';
 import { TorneoComponent } from './torneo/torneo.component';
 import { TosComponent } from './tos/tos.component';
 import { PartidaPrivadaComponent } from './partida-privada/partida-privada.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 
 const routes: Routes = [
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: "torneoEspera/:id", component: TorneoEsperaComponent },
   { path: "leaderboard", component: LeaderboardComponent },
   { path: "partidaPrivada/:id", component:PartidaPrivadaComponent},
+  { path: "edit-profile", component:EditProfileComponent},
 ];
 
 @NgModule({

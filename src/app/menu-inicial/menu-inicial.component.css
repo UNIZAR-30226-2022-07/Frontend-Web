@@ -38,6 +38,8 @@ body{
   
  
   margin-top: 1%;
+  position: relative;
+  right: 2.5%;
   
 
 /*
@@ -57,6 +59,10 @@ body{
 
 margin-top: 1%;
 
+}
+
+.edit_profile{
+  margin-top: 1%;
 }
 
 
