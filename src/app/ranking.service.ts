@@ -26,13 +26,13 @@ export class RankingService {
       }),
       withCredentials: true
     };
-    let body = { username:this.userService.username};
+    let body = { username:this.userService.username };
     return this.http.post("https://onep1.herokuapp.com/ranking/rankingAmigos", body, httpOptions);
   }
 
 
   /**
-   * Devuelve el ranking de los amigos de un pais
+   * Devuelve el ranking de un pais
    * 
    * @returns Observable de la peticion
   */
