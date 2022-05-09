@@ -1,6 +1,6 @@
 <div class="chat">
     <div class="zone">
-        <div *ngFor="let item of historyPopup" [ngClass]="'message ' + ((item.sender==this.userService.username) ? 'sent' : 'recieved')">
+        <div *ngFor="let item of historyPopup" [ngClass]="'message ' + ((item.username==this.userService.username) ? 'sent' : 'recieved')">
             {{item.message}}
         </div>
     </div>

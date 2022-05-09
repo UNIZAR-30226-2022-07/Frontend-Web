@@ -10,6 +10,7 @@ declare var Stomp: any;
 @Injectable({ providedIn: 'root' })
 export class GameService {
   public messageReceived = new EventEmitter<any>();
+  public chat = new EventEmitter<any>();
   
   id:string = "";
   partida:any;
@@ -29,8 +30,9 @@ export class GameService {
       const that = this;
       this.stompClient.connect({"Authorization": "Bearer " + this.userService.getToken()}, function(frame: any) {
 
-        that.stompClient.subscribe('/topic/game/'+that.id, (message: any) => that.onMessage(message, that.messageReceived), {"Authorization": "Bearer " + that.userService.getToken()});
         that.stompClient.subscribe('/user/'+that.userService.username+'/msg', (message: any) => that.onMessage(message, that.messageReceived), {"Authorization": "Bearer " + that.userService.getToken()});
+        that.stompClient.subscribe('/topic/game/'+that.id, (message: any) => that.onMessage(message, that.messageReceived), {"Authorization": "Bearer " + that.userService.getToken()});
+        that.stompClient.subscribe('/topic/game/chat/'+that.id, (message: any) => that.onMessage(message, that.chat), {"Authorization": "Bearer " + that.userService.getToken()});
         resolve(true);
       });
     });
