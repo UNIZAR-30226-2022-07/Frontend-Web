@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
         // NOTE(Marcos): Para borrar la cookie (hacer logout): this.cookies.delete("token");
 
         // Se pasa el nombre como parametro al menu 
-        this.router.navigate(['/menuInicial',this.username]);
+        this.router.navigateByUrl('');
       },
       error: (e) => {
         if (e.status == 401) {

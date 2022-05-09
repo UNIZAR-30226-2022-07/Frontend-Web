@@ -15,10 +15,9 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 
 const routes: Routes = [
-  { path: "", component: AppComponent },
+  { path: "", component: MenuInicialComponent },
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
-  { path: "menuInicial/:username", component: MenuInicialComponent},
   { path: "forgotPassword", component: ForgotPasswordComponent }, 
   { path: "tos", component: TosComponent }, 
   { path: "game", component: GameComponent }, 

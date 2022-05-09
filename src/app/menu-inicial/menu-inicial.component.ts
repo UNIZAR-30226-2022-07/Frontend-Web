@@ -5,6 +5,7 @@ import { ActivatedRoute,Params, Router } from '@angular/router';
 import { isYieldExpression } from 'typescript';
 import { FriendService } from '../friend.service';
 import { GameService } from '../game.service';
+import { UsersService } from '../users.service';
 
 
 
@@ -16,23 +17,16 @@ import { GameService } from '../game.service';
 })
 export class MenuInicialComponent implements OnInit {
 
-
-  nombre: string | null = null;
-
-  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog) {
+  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog, public userService: UsersService) {
   }
   
   ngOnInit(): void {
-    
-    // Se coge el nombre del parametro que te pasan desde el log-in
-    this.nombre = this.route.snapshot.paramMap.get('username');
-
   }
 
   openDialog(){
       const dialogRef2 = this.dialog.open(DialogContent,
         {
-          data: this.nombre,
+          data: this.userService.username,
           position: {
             top: '0px',
             right: '0px'
