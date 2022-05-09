@@ -5,6 +5,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import * as util from "./logica/util";
 import { Message } from './message';
 import { UsersService } from '../users.service';
+import { GameService } from '../game.service';
 
 @Component({
   selector: 'app-game',
@@ -31,9 +32,15 @@ export class GameComponent implements OnInit {
   marcos: Jugador = new Jugador("marcos"); 
   cesar: Jugador = new Jugador("cesar"); 
 
-  constructor(public dialog:MatDialog,public dialog2:MatDialog) { }
+  constructor(public dialog:MatDialog,public dialog2:MatDialog, public gameService: GameService) { }
 
   ngOnInit(): void {
+    this.gameService.chat.subscribe({
+      next: (m: Message) => {
+        this.history.push(m);
+      }
+    });
+
     //TODO: Request a backend de todos los datos. Por ahora son datos falsos
     //Pruebas
     this.victor.mano.add(new Carta(util.Valor.UNO,util.Color.ROJO));
@@ -147,7 +154,7 @@ export class ChoseColorComponent {
   styleUrls: ['chat.css']
 })
 export class ChatComponent{
-  constructor(public dialogRef: MatDialogRef<ChatComponent>,@Inject(MAT_DIALOG_DATA) public data: Message[], public userService: UsersService) {this.historyPopup = data}
+  constructor(public dialogRef: MatDialogRef<ChatComponent>,@Inject(MAT_DIALOG_DATA) public data: Message[], public userService: UsersService, public gameService: GameService) {this.historyPopup = data}
   historyPopup!: Message[]
   msg !: string;
 
@@ -156,7 +163,11 @@ export class ChatComponent{
   }
 
   sendMsg() {
-    //TODO
-    console.log("Enviando "+this.msg);
+    this.gameService.send(
+      { message: this.msg },
+      "/message/"+this.gameService.id+"/"
+    )
+    this.historyPopup.push(new Message(this.userService.username,this.msg)); //NOTE: No se si esto va aqui. Si los datos que pasamos al popup tienen two-way binding el mensaje se duplicara, ya que tambien sera recibido en gameComponent.
+    this.msg = "";
   }
 }
