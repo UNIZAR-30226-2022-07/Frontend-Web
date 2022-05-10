@@ -107,7 +107,14 @@ div.forgot-password {
 
   /*---------------------------CONFIRMAR BORRAR---------------------------*/
 
-  .borrar{
+  
+
+  .confirmar-borrar {
+    align-items: center;
+    text-align: center;
+  }
+
+  mat-button{
     font-family: "Fredoka One";
     background-color: #C7261A;
     color: white;
@@ -118,13 +125,9 @@ div.forgot-password {
     cursor: pointer;
     display: inline;
 
-    width: 150px;
+    height: 30%;
+    width: 40%;
     margin: 10%;
-  }
-
-  .confirmar-borrar {
-    align-items: center;
-    text-align: center;
   }
 
   

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { CookieService } from "ngx-cookie-service";
 
@@ -39,8 +39,17 @@ export class UsersService {
   }
 
   removeAccount(): Observable<any>{
+
+
+    console.log("El nombre de usuario es "+ this.username);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': "Bearer "+this.getToken()
+      }),
+      withCredentials: true
+    };
     let body = { username:this.username};
-    return this.http.post("https://onep1.herokuapp.com/user/deleteUser",body);
+    return this.http.post("https://onep1.herokuapp.com/user/deleteUser",body,httpOptions);
   }
 
   
