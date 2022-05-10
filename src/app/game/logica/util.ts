@@ -1,7 +1,6 @@
 import { Carta } from "./carta"
 
 export enum Valor {
-  // numbers
   CERO = 0,
   UNO = 1,
   DOS = 2,
@@ -12,7 +11,6 @@ export enum Valor {
   SIETE = 7,
   OCHO = 8,
   NUEVE = 9,
-  // special cards
   DRAW2 = 10,
   REVERSE = 11,
   SKIP = 12,
@@ -35,25 +33,25 @@ export enum Direccion {
 
 
 export enum Backend_Valor {
-  CERO = 0,
-  UNO = 1,
-  DOS = 2,
-  TRES = 3, 
-  CUATRO = 4, 
-  CINCO = 5, 
-  SEIS = 6, 
-  SIETE = 7, 
-  OCHO = 8, 
-  NUEVE = 9, 
-  BLOQUEO = 12, 
-  MAS_DOS = 10, 
-  CAMBIO_SENTIDO = 11, 
-  UNDEFINED = 13, 
-  MAS_CUATRO = 14
+CERO = "CERO",
+UNO = "UNO",
+DOS = "DOS",
+TRES = "TRES",
+CUATRO = "CUATRO",
+CINCO = "CINCO",
+SEIS = "SEIS",
+SIETE = "SIETE",
+OCHO = "OCHO",
+NUEVE = "NUEVE",
+DRAW2 = "MAS_DOS",
+REVERSE = "CAMBIO_SENTIDO",
+SKIP = "BLOQUEO",
+WILD = "UNDEFINED",
+DRAW4 = "MAS_CUATRO",
 }
 
 export enum Backend_Color {
-  ROJO = 1, AMARILLO = 4, AZUL = 2, VERDE = 3, CAMBIO_COLOR = 5
+  ROJO = "ROJO", AMARILLO = "AMARILLO", AZUL = "AZUL", VERDE = "VERDE", INDEFINIDO = "CAMBIO_COLOR"
 }
 
   /**
@@ -63,7 +61,7 @@ export enum Backend_Color {
    * @returns Carta con los valores correctos
   */
 export function BTF_carta(color: Backend_Color, valor: Backend_Valor) : Carta {
-  return new Carta(valor as number as Valor, color as number as Color) //Un pequeño hack
+  return new Carta(Object.values(Valor).indexOf(Object.keys(Backend_Valor)[Object.values(Backend_Valor).indexOf(valor)]),Object.values(Color).indexOf(Object.keys(Backend_Color)[Object.values(Backend_Color).indexOf(color)])+1) //Un pequeño hack
 }
 
 export function isSpecial(value: Valor) {

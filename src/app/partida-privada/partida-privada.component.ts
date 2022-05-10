@@ -14,13 +14,13 @@ export class PartidaPrivadaComponent implements OnInit {
   matchID: string | null = null;
   nJugadores: number = 6;
   tiempoTurno: number = 10;
-  players: Array<any> = [];
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
 
   constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog,public GameService: GameService) { }
 
   ngOnInit(): void {
     console.log("Valor en gamservice: ",this.GameService.partida);
+    console.log("Valor en gamservice jug: ",this.GameService.jugadores);
     this.matchID = this.route.snapshot.paramMap.get('id');
     
     this.GameService.messageReceived.subscribe({
@@ -37,12 +37,6 @@ export class PartidaPrivadaComponent implements OnInit {
 
     this.nJugadores = this.GameService.partida.njugadores;
     this.tiempoTurno = this.GameService.partida.tturno;
-
-    this.GameService.partida.jugadores.forEach( (e:any) => {
-      console.log(e);
-      this.players.push({ nombre: e.nombre, puntos: 10, pais: "?" }); //TODO: pillar puntos y pais
-    });
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAa"+this.players)
   }
 
 }
