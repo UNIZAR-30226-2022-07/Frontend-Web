@@ -2,7 +2,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { ActivatedRoute,Params, Router } from '@angular/router';
-import { isYieldExpression } from 'typescript';
 import { FriendService } from '../friend.service';
 import { GameService } from '../game.service';
 import { UsersService } from '../users.service';
@@ -245,7 +244,7 @@ export class UnirsePrivada {
   constructor(public dialogRef: MatDialogRef<UnirsePrivada>, public GameService: GameService, public router: Router) {}
 
   async joinGame() {
-    await this.GameService.joinMatch(this.id);
+    await this.GameService.joinMatch(this.id).then();
     this.router.navigateByUrl('/partidaPrivada/'+this.id);
     this.dialogRef.close();
   }
@@ -274,7 +273,7 @@ export class ReglasPartidaComponent {
   }
 
   async crearPartida() {
-    await this.GameService.newMatch(this.nJugadores,this.tiempoTurno);
+    await this.GameService.newMatch(this.nJugadores,this.tiempoTurno).then();
     this.router.navigateByUrl('/partidaPrivada/'+this.GameService.id);
     this.dialogRef.close();
   }

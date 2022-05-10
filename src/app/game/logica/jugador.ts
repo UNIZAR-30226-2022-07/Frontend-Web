@@ -5,9 +5,9 @@ export class Jugador {
     cartas: Mano = new Mano([]);
     nombre!: String;
 
-    constructor(nombre:string, cartas:any) {
+    constructor(nombre:string, cartas:Mano) {
         this.nombre = nombre;
-        this.cartas = new Mano(cartas);
+        this.cartas = cartas
     }
     //Elimina una carta de la mano del jugador 
     eliminarCarta(carta:Carta){

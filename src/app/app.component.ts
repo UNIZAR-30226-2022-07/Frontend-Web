@@ -14,7 +14,7 @@ export class AppComponent implements OnInit{
   ngOnInit(): void { }
 
   boton() {
-    this.GameService.newMatch(1,10)
+    this.GameService.newMatch(1,10).then()
   }
 
   sendmsg() {

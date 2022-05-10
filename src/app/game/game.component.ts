@@ -14,10 +14,6 @@ import { GameService } from '../game.service';
 export class GameComponent implements OnInit {
   //Chat
   history: Message[] = [];
-  //Index del array jugadores que eres tu. NOTE: Cambiar cada vez que se cambia el turno
-  indexYo = 0; 
-  //Pila de cartas central
-  pilaCartas: Carta[] = []; 
   //Direccion del juego
   direccion:util.Direccion =  util.Direccion.NORMAL;
   //Vector de numeros aleatorios para la rotacion de las cartas de la pila central
@@ -31,17 +27,14 @@ export class GameComponent implements OnInit {
         this.history.push(m);
       }
     });
-
-    
-
-    this.pilaCartas.push(util.BTF_carta(this.gameService.partida.ultimaCartaJugada.color, this.gameService.partida.ultimaCartaJugada.numero));
+    console.log(this.gameService.jugadores[this.gameService.indexYo]);
   }
 
   //Ejecutado cuando se hace click en una carta
   async playCard(c: Carta) {
-    if(util.sePuedeJugar(this.pilaCartas[this.pilaCartas.length-1],c)) {
+    if(util.sePuedeJugar(this.gameService.pilaCartas[this.gameService.pilaCartas.length-1],c)) {
       //Borrar carta de la mano
-      this.gameService.jugadores[this.indexYo].cartas.remove(c);
+      this.gameService.jugadores[this.gameService.indexYo].cartas.remove(c);
       //Efectos especiales
       if(util.isWild(c.value)) {
         await this.popupColor(c);
@@ -55,8 +48,9 @@ export class GameComponent implements OnInit {
         }
         
       }
+      //TODO: Borrar esto y enviar a backend
       //Añadirla al centro
-      this.pilaCartas.push(c)
+      this.gameService.pilaCartas.push(c)
     }
   }
 
@@ -73,14 +67,14 @@ export class GameComponent implements OnInit {
       let tempJugador = this.gameService.jugadores.shift();
       if (tempJugador !== undefined) {
         this.gameService.jugadores.push(tempJugador);
-        this.indexYo = (this.indexYo-1) % this.gameService.jugadores.length;
+        this.gameService.indexYo = (this.gameService.indexYo-1) % this.gameService.jugadores.length;
       }
     }
     else {
       let tempJugador = this.gameService.jugadores.pop();
       if (tempJugador !== undefined) {
         this.gameService.jugadores.unshift(tempJugador);
-        this.indexYo = (this.indexYo+1) % this.gameService.jugadores.length;
+        this.gameService.indexYo = (this.gameService.indexYo+1) % this.gameService.jugadores.length;
       }
     }
   }
