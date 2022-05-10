@@ -2,6 +2,7 @@ import { Carta } from "./carta";
 
 export class Mano {
   private cartas: Carta[] = [];
+  constructor(c: Carta[]) {this.cartas = c;}
 
   has(card: Carta) {
     if (!card) return false;

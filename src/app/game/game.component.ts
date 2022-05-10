@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit, ViewContainerRef } from '@angular/core';
 import { Carta } from './logica/carta';
-import { Jugador } from './logica/jugador';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as util from "./logica/util";
 import { Message } from './message';
@@ -15,8 +14,6 @@ import { GameService } from '../game.service';
 export class GameComponent implements OnInit {
   //Chat
   history: Message[] = [];
-  //Lista de jugadores
-  jugadores: Jugador[] = [];
   //Index del array jugadores que eres tu. NOTE: Cambiar cada vez que se cambia el turno
   indexYo = 0; 
   //Pila de cartas central
@@ -25,12 +22,6 @@ export class GameComponent implements OnInit {
   direccion:util.Direccion =  util.Direccion.NORMAL;
   //Vector de numeros aleatorios para la rotacion de las cartas de la pila central
   randomRotation: number[] = Array.from({length: 108}, () => Math.floor(Math.random() * 360)); 
-  //Variables temporales
-  tempJugador: Jugador|undefined;
-  //Pruebas
-  victor: Jugador = new Jugador("victor"); 
-  marcos: Jugador = new Jugador("marcos"); 
-  cesar: Jugador = new Jugador("cesar"); 
 
   constructor(public dialog:MatDialog,public dialog2:MatDialog, public gameService: GameService) { }
 
@@ -41,34 +32,16 @@ export class GameComponent implements OnInit {
       }
     });
 
-    //TODO: Request a backend de todos los datos. Por ahora son datos falsos
-    //Pruebas
-    this.victor.mano.add(new Carta(util.Valor.UNO,util.Color.ROJO));
-    this.victor.mano.add(new Carta(util.Valor.DOS,util.Color.ROJO));
-    this.victor.mano.add(new Carta(util.Valor.TRES,util.Color.ROJO));
-    this.victor.mano.add(new Carta(util.Valor.CUATRO,util.Color.ROJO));
-    this.victor.mano.add(new Carta(util.Valor.WILD,util.Color.INDEFINIDO));
-    this.victor.mano.add(new Carta(util.Valor.DRAW4,util.Color.INDEFINIDO));
-    this.jugadores.push(this.victor);
+    
 
-    this.cesar.mano.add(new Carta(util.Valor.UNO,util.Color.ROJO));
-    this.jugadores.push(this.cesar);
-
-    this.marcos.mano.add(new Carta(util.Valor.UNO,util.Color.ROJO));
-    this.marcos.mano.add(new Carta(util.Valor.DOS,util.Color.ROJO));
-    this.jugadores.push(this.marcos);
-
-    this.pilaCartas.push(new Carta(util.Valor.UNO,util.Color.AZUL));
-    this.pilaCartas.push(new Carta(util.Valor.DOS,util.Color.AZUL));
-    this.pilaCartas.push(new Carta(util.Valor.TRES,util.Color.AZUL));
-    this.pilaCartas.push(new Carta(util.Valor.CUATRO,util.Color.AZUL));
+    this.pilaCartas.push(util.BTF_carta(this.gameService.partida.ultimaCartaJugada.color, this.gameService.partida.ultimaCartaJugada.numero));
   }
 
   //Ejecutado cuando se hace click en una carta
   async playCard(c: Carta) {
     if(util.sePuedeJugar(this.pilaCartas[this.pilaCartas.length-1],c)) {
       //Borrar carta de la mano
-      this.jugadores[this.indexYo].mano.remove(c);
+      this.gameService.jugadores[this.indexYo].cartas.remove(c);
       //Efectos especiales
       if(util.isWild(c.value)) {
         await this.popupColor(c);
@@ -97,17 +70,17 @@ export class GameComponent implements OnInit {
   //Ejecutado cuando se quiere pasar al siguiente turno.
   siguienteTurno() {
     if (this.direccion == util.Direccion.NORMAL) {
-      this.tempJugador = this.jugadores.shift();
-      if (this.tempJugador !== undefined) {
-        this.jugadores.push(this.tempJugador);
-        this.indexYo = (this.indexYo-1) % this.jugadores.length;
+      let tempJugador = this.gameService.jugadores.shift();
+      if (tempJugador !== undefined) {
+        this.gameService.jugadores.push(tempJugador);
+        this.indexYo = (this.indexYo-1) % this.gameService.jugadores.length;
       }
     }
     else {
-      this.tempJugador = this.jugadores.pop();
-      if (this.tempJugador !== undefined) {
-        this.jugadores.unshift(this.tempJugador);
-        this.indexYo = (this.indexYo+1) % this.jugadores.length;
+      let tempJugador = this.gameService.jugadores.pop();
+      if (tempJugador !== undefined) {
+        this.gameService.jugadores.unshift(tempJugador);
+        this.indexYo = (this.indexYo+1) % this.gameService.jugadores.length;
       }
     }
   }

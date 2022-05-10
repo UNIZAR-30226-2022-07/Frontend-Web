@@ -1,14 +1,14 @@
 <div class="game">
     <hr>
     <div class="otrosJugadores">
-        <div class="player" *ngFor="let item of jugadores;let indice=index">
+        <div class="player" *ngFor="let item of this.gameService.jugadores;let indice=index">
             <h2>{{item.nombre}}</h2>
             <div class="group">
                 <img class="otrosJugadores" src="assets/img/cartas/back.png">
-                <p class="otrosJugadores">x {{item.mano.length()}}</p>
+                <p class="otrosJugadores">x {{item.cartas.length()}}</p>
             </div>
             <br>
-            <button mat-fab color="primary" *ngIf="(item.mano.length()==1) && (indice != this.indexYo)" class="uno-other" (click)="sayUno(indice)">UNO</button>
+            <button mat-fab color="primary" *ngIf="(item.cartas.length()==1) && (indice != this.indexYo)" class="uno-other" (click)="sayUno(indice)">UNO</button>
         </div>
     </div>
     <hr>
@@ -24,9 +24,9 @@
             [style.z-index]="indice"
         >
     </div>
-
+    <!-- Falla aqui: -->
     <div class="mano">
-        <div class="carta" *ngFor="let item of jugadores[this.indexYo].mano.getArray();let indice=index">
+        <div class="carta" *ngFor="let item of this.gameService.jugadores[this.indexYo].cartas.getArray();let indice=index">
             <img class="carta" 
                 src="assets/img/cartas/{{item.color}}-{{item.value}}.png"
                 (click)="playCard(item)"

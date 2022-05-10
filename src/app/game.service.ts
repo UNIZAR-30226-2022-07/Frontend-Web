@@ -1,6 +1,9 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { EventEmitter, Injectable } from "@angular/core";
-import { lastValueFrom, Observable, Subject } from "rxjs";
+import { lastValueFrom, Observable } from "rxjs";
+import { Carta } from "./game/logica/carta";
+import { Jugador } from "./game/logica/jugador";
+import { Mano } from "./game/logica/mano";
 import { UsersService } from "./users.service";
 // Declare SockJS and Stomp
 declare var SockJS: any;
@@ -14,6 +17,10 @@ export class GameService {
   
   id:string = "";
   partida:any;
+
+  //Lista de jugadores
+  jugadores: Jugador[] = [];
+  
 
   public stompClient: any;
   
@@ -102,6 +109,10 @@ export class GameService {
       next: async (v: any) => {
         console.log("Partida creada:",v);
         this.id = v.id;
+        v.jugadores.forEach((e: { nombre: string; cartas: Carta[]; }) => {
+          this.jugadores.push(new Jugador(e.nombre, new Mano(e.cartas)));
+          
+        });
         this.partida = v;
         await this.connect().then()
       },
