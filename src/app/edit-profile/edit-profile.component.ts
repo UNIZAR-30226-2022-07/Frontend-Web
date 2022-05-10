@@ -1,8 +1,11 @@
 
-import { Component, OnInit } from '@angular/core';
+
+
+import { Component, OnInit, Inject } from '@angular/core';
+import {MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { ActivatedRoute,Params, Router } from '@angular/router';
 import { MatButton } from '@angular/material/button';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+
 import { UsersService } from '../users.service';
 
 @Component({
@@ -309,14 +312,13 @@ export class EditProfileComponent implements OnInit {
 
 @Component({
   selector: 'ConfirmarBorrar',
-  templateUrl: './ConfirmarBorrar.html',
+  templateUrl: 'ConfirmarBorrar.html',
   styleUrls: ['./edit-profile.component.css']
 })
-export class ConfirmarBorrar implements OnInit {
+export class ConfirmarBorrar {
 
 
-  constructor(public UsersService: UsersService, public router:Router, public dialog:MatDialog , public buton: MatButton) {
-  
+  constructor(public UsersService: UsersService, public router:Router, public dialog:MatDialog ){
    }
 
   ngOnInit(): void {
