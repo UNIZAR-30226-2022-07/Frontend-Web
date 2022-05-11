@@ -32,12 +32,13 @@ export class GameComponent implements OnInit {
 
   //Ejecutado cuando se hace click en una carta
   async playCard(c: Carta) {
+    //TODO: Parar cuando no sea tu turno
     if(util.sePuedeJugar(this.gameService.pilaCartas[this.gameService.pilaCartas.length-1],c)) {
       //Borrar carta de la mano
       this.gameService.jugadores[this.gameService.indexYo].cartas.remove(c);
       //Efectos especiales
       if(util.isWild(c.value)) {
-        await this.popupColor(c);
+        await this.popupColor(c).then();
       }
       if(c.value == util.Valor.REVERSE) {
         if (this.direccion == util.Direccion.NORMAL) {
@@ -48,6 +49,22 @@ export class GameComponent implements OnInit {
         }
         
       }
+      if(c.value == util.Valor.CERO && false){ //TODO: chequear si esta la regla "0 switch"
+        //TODO: Cambiar todas las manos en sentido del juego
+
+      }
+      if(c.value == util.Valor.SIETE && true){ //TODO: chequear si esta la regla "Crazy 7"
+        //TODO: Popup y cambiar la mano con la seleccion
+        let user = ""
+        await this.popupJugador(user).then(); //TODO: recoger valor de la promise como jugador seleccionado
+        console.log("CAMBIAR MANO CON "+user);
+      }
+      //TODO: Comprobar resto de reglas
+      //Enviar jugada a backend
+      await this.gameService.send(
+        util.FTB_carta(c),
+        "/card/play/"
+      )
       //TODO: Borrar esto y enviar a backend
       //Añadirla al centro
       this.gameService.pilaCartas.push(c)
@@ -79,12 +96,26 @@ export class GameComponent implements OnInit {
     }
   }
 
-  async popupColor(c:Carta) {
-    const dialogRef = this.dialog.open(ChoseColorComponent);
-    dialogRef.disableClose = true;
-    dialogRef.afterClosed().subscribe(result => {
-      c.color = result;
-    })
+  async popupColor(c:Carta): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      const dialogRef = this.dialog.open(ChoseColorComponent);
+      dialogRef.disableClose = true;
+      dialogRef.afterClosed().subscribe(result => {
+        c.color = result;
+        resolve(true)
+      })
+    });
+  }
+
+  async popupJugador(j:string): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      const dialogRef = this.dialog.open(ChosePlayerComponent);
+      dialogRef.disableClose = true;
+      dialogRef.afterClosed().subscribe(result => {
+        j = result;
+        resolve(result);
+      })
+    });
   }
 
   openChat(){
@@ -109,6 +140,18 @@ export class GameComponent implements OnInit {
 export class ChoseColorComponent {
   constructor(public dialogRef: MatDialogRef<ChoseColorComponent>) {}
   close(n: number) {
+    this.dialogRef.close(n);
+  }
+}
+
+@Component({
+  selector: 'choseplayer',
+  templateUrl: 'choseplayer.html',
+  styleUrls: ['choseplayer.css']
+})
+export class ChosePlayerComponent {
+  constructor(public dialogRef: MatDialogRef<ChosePlayerComponent>, public gameService: GameService) {}
+  close(n: string) {
     this.dialogRef.close(n);
   }
 }

@@ -3,7 +3,7 @@ import { Carta } from "./carta";
 
 export class Jugador {
     cartas: Mano = new Mano([]);
-    nombre!: String;
+    nombre!: string;
 
     constructor(nombre:string, cartas:Mano) {
         this.nombre = nombre;

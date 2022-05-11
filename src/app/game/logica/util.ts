@@ -64,6 +64,13 @@ export function BTF_carta(color: Backend_Color, valor: Backend_Valor) : Carta {
   return new Carta(Object.values(Valor).indexOf(Object.keys(Backend_Valor)[Object.values(Backend_Valor).indexOf(valor)]),Object.values(Color).indexOf(Object.keys(Backend_Color)[Object.values(Backend_Color).indexOf(color)])+1) //Un pequeño hack
 }
 
+export function FTB_carta(c:Carta) {
+  return {
+    num: Object.values(Backend_Valor)[Object.keys(Backend_Valor).indexOf(Valor[c.value] as Backend_Valor)],
+    col: Object.values(Backend_Color)[Object.keys(Backend_Color).indexOf(Color[c.color] as Backend_Color)]
+  }
+}
+
 export function isSpecial(value: Valor) {
   return value >= 10
 }
