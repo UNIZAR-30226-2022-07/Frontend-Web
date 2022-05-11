@@ -1,0 +1,40 @@
+<div class="forgot-password">
+    <h1>Cambiar contraseña</h1>
+    <form class="custom-form" method="post">
+        <input
+        type="email"
+        [(ngModel)]="email"
+        name="email"
+        id="email-input"
+        placeholder="Email..."
+        required="required"
+        />
+    </form>
+    <form class="custom-form" method="post">
+        <input
+        type="text"
+        [(ngModel)]="token"
+        name="token"
+        id="token-input"
+        placeholder="Código..."
+        required="required"
+        />
+    </form>
+    <form class="custom-form" method="post">
+        <input
+        type="password"
+        [(ngModel)]="contrasenya"
+        name="contrasenya"
+        id="contra-input"
+        placeholder="Nueva contraseña..."
+        required="required"
+        />
+    </form>
+    <button type="submit" id="login-btn" (click)="restablecerContra()">Cambiar contraseña</button>
+    <div class="error">
+
+        <div *ngIf="incorrecto">
+        Alguno de los campos es incorrecto. Porfavor revíselos bien.
+        </div>
+    </div>
+</div>

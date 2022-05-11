@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UsersService } from '../users.service';
 
 @Component({
@@ -12,23 +13,31 @@ export class ForgotPasswordComponent implements OnInit {
   serviceError: boolean = false;
   serviceErrorMessage: any;
 
-  constructor(public userService: UsersService) { }
+  constructor(public userService: UsersService, public router:Router) { }
 
   ngOnInit(): void {
   }
 
   //Metodo ejecutado al presionar el boton "iniciar sesion"
-  login() {
+  mandarCodigo() {
+
+    
+    console.log("Entro en mandar codigo " + this.email);
     const user = {email: this.email};
-    this.userService.forgotPassword(user).subscribe(
-      res => {
-        this.serviceSent = true;
+    this.userService.forgotPassword(user).subscribe({
+      next: (v) => {
+        console.log("Ha ido bien");
+        this.router.navigateByUrl('/restablecerContra');
+
       },
-      err => {
-        this.serviceError = true
-        this.serviceErrorMessage = err.message
+      error: (err) =>{
+        console.log("Ha ido mal");
+        this.serviceError = true;
+        this.serviceErrorMessage = err.message;
+        console.log("El mensaje es " + this.serviceErrorMessage);
       }
-    );
+    })
+   
   }
 
   //Devuelve false si se puede hacer click en el boton login. True en caso contrario 
