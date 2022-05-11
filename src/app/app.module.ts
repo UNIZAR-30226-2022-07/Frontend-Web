@@ -21,6 +21,7 @@ import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { PartidaPrivadaComponent } from './partida-privada/partida-privada.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { ConfirmarBorrar, EditProfileComponent } from './edit-profile/edit-profile.component';
+import { RestablecerContraComponent } from './restablecer-contra/restablecer-contra.component';
 
 
 
@@ -47,6 +48,7 @@ import { ConfirmarBorrar, EditProfileComponent } from './edit-profile/edit-profi
     ChatComponent,
     EditProfileComponent,
     ConfirmarBorrar,
+    RestablecerContraComponent,
   ],
   imports: [
     BrowserModule,
