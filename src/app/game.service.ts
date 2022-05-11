@@ -129,7 +129,7 @@ export class GameService {
   onBegin(message:any): void {
     console.log("begin: "+message.body);
     let msg = JSON.parse(message.body);
-    this.pilaCartas.push(util.BTF_carta(msg.col,msg.num))
+    this.pilaCartas.push(util.BTF_carta(msg.color,msg.numero))
     this.router.navigateByUrl("/game");
   };
 

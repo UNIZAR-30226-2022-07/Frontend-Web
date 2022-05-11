@@ -66,8 +66,8 @@ export function BTF_carta(color: Backend_Color, valor: Backend_Valor) : Carta {
 
 export function FTB_carta(c:Carta) {
   return {
-    num: Object.values(Backend_Valor)[Object.keys(Backend_Valor).indexOf(Valor[c.value] as Backend_Valor)],
-    col: Object.values(Backend_Color)[Object.keys(Backend_Color).indexOf(Color[c.color] as Backend_Color)]
+    numero: Object.values(Backend_Valor)[Object.keys(Backend_Valor).indexOf(Valor[c.value] as Backend_Valor)],
+    color: Object.values(Backend_Color)[Object.keys(Backend_Color).indexOf(Color[c.color] as Backend_Color)]
   }
 }
 
