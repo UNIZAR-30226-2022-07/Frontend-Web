@@ -20,11 +20,11 @@ describe('util', () => {
     let c2 = util.FTB_carta(new Carta(util.Valor.DRAW4,util.Color.INDEFINIDO));
     let c3 = util.FTB_carta(new Carta(util.Valor.WILD,util.Color.INDEFINIDO));
 
-    expect((c1.col == util.Backend_Color.AMARILLO) && (c1.num == util.Backend_Valor.CINCO)).toBeTruthy();
+    expect((c1.color == util.Backend_Color.AMARILLO) && (c1.numero == util.Backend_Valor.CINCO)).toBeTruthy();
     console.log(c1);
-    expect((c2.col == util.Backend_Color.INDEFINIDO) && (c2.num == util.Backend_Valor.DRAW4)).toBeTruthy();
+    expect((c2.color == util.Backend_Color.INDEFINIDO) && (c2.numero == util.Backend_Valor.DRAW4)).toBeTruthy();
     console.log(c2);
-    expect((c3.col == util.Backend_Color.INDEFINIDO) && (c3.num == util.Backend_Valor.WILD)).toBeTruthy();
+    expect((c3.color == util.Backend_Color.INDEFINIDO) && (c3.numero == util.Backend_Valor.WILD)).toBeTruthy();
     console.log(c3);
   });
 });
