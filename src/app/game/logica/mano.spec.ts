@@ -6,7 +6,7 @@ describe('Mano', () => {
   let service: Mano;
 
   beforeEach(() => {
-    service = new Mano();
+    service = new Mano([]);
   });
 
   it('should create a correct instance', () => {

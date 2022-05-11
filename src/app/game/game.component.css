@@ -57,6 +57,21 @@ img.cartaCentro {
   left: 47%;
 }
 
+/* ---------------------------- CHAT ---------------------------- */
+button.openChat {
+  position: absolute;
+  top: 57%;
+  right: 90%;
+  background-color: gray;
+  width: 7vw;
+  height: 7vw;
+}
+
+.mat-icon {
+  display:inline;
+  font-size: 6vh;
+}
+
 /* ---------------------------- MANO ---------------------------- */
 
 div.mano {
@@ -103,4 +118,9 @@ button.uno {
   left: 90%;
   width: 7vw;
   height: 7vw;
+}
+
+/* ---------------------------- OTHER ---------------------------- */
+body {
+  background: #5bab63;
 }

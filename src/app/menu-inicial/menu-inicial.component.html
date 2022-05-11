@@ -1,25 +1,31 @@
-<mat-toolbar>
-  <button mat-icon-button class ="clasif_menu">
+
+
+<mat-toolbar class="toolbar">
+  <button mat-icon-button class ="clasif_menu" (click)="this.router.navigateByUrl('/leaderboard')">
     <mat-icon>stars</mat-icon>
   </button>
 
-  <span class="spacer"></span>
+  <span class="example-spacer"></span>
 
   <button mat-icon-button mat-button (click)="openNotis()" class= "notis_menu">
-    <mat-icon>chat</mat-icon>
+    <mat-icon>notifications</mat-icon>
   </button>
-  <span class="spacer"></span> 
+  <span class="example-spacer"></span> 
   <button mat-icon-button mat-button (click)="openDialog()" class = "amigos_menu">
     <mat-icon>supervisor_account</mat-icon>
   </button>
+  
+  <button mat-icon-button mat-button  class = edit_profile (click)="this.router.navigateByUrl('/edit-profile')">
+    <mat-icon>edit</mat-icon>
+  </button>
 </mat-toolbar>
 
-
+<span class="head-body-spacer"></span>
 <div class="mid-container">
-  <div class="botones">
+  <div class="boton1">
     <a routerLink="/game">Partida rápida</a>
-    <a href="#about">Unirse P.Privada</a>
-    <a href="#about">Crear P.Privada</a>
+    <button mat-button (click)="pedirCodigo()">Unirse P.Privada</button>
+    <button mat-button (click)="crearPPrivada()">Crear P.Privada</button>
     <a href="/torneo"> Buscar Torneo</a>
   </div>
 </div>

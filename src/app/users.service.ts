@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { CookieService } from "ngx-cookie-service";
 
@@ -24,9 +24,45 @@ export class UsersService {
     return this.http.post("https://onep1.herokuapp.com/api/auth/signup", user);
   }
 
-  forgotPassword(user: any): Observable<any> {
-    return this.http.post("<DIRECCION WEB API>", user);
+  
+
+  changeName(nuevo_usuario:string): Observable<any> {
+    let body = { username:this.username, newUsername: nuevo_usuario };
+    return this.http.post("https://onep1.herokuapp.com/user/changeUsername",body)
   }
+
+  changeCountry(nuevo_pais:string): Observable<any> {
+    let body = { username:this.username, pais:nuevo_pais};
+    return this.http.post("https://onep1.herokuapp.com/user/changePais",body);
+  }
+
+  removeAccount(): Observable<any>{
+
+
+    console.log("El nombre de usuario es "+ this.username);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': "Bearer "+this.getToken()
+      }),
+      withCredentials: true
+    };
+    let body = { username:this.username};
+    return this.http.post("https://onep1.herokuapp.com/user/deleteUser",body,httpOptions);
+  }
+
+  forgotPassword(user:any): Observable<any> {
+ 
+    return this.http.post("https://onep1.herokuapp.com/api/auth/forgot_password",user);
+  }
+
+  setNewPassword(token:string,password:string, email:string){
+    let body = {email:email, token:token,password:password};
+    return this.http.post("https://onep1.herokuapp.com/api/auth/reset_password",body);
+  }
+
+  
+
+  
 
   //----------------------------- Cookies -----------------------------//
   setToken(token: string) {

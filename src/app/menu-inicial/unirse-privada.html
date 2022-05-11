@@ -1,0 +1,19 @@
+<div class="example-container">
+  <h2>Introducir código</h2>
+  <form class="custom-form" method="post">
+    <input
+      type="text"
+      [(ngModel)]="id"
+      name="id"
+      id="id-input"
+      placeholder="Codigo del juego..."
+      required="required"
+    >
+  </form>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button (click)="this.joinGame()" [disabled]="this.id == ''">Enviar</button>
+  </mat-dialog-actions>
+</div>
+  

@@ -1,43 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-
-</head>
-    <body>
-
-        <div class="game">
-            <hr>
-            <div class="otrosJugadores">
-                <div class="player" *ngFor="let item of jugadores;let indice=index">
-                    <h2>{{item.nombre}}</h2>
-                    <div class="group">
-                        <img class="otrosJugadores" src="assets/img/cartas/back.png">
-                        <p class="otrosJugadores">x {{item.mano.length()}}</p>
-                    </div>
-                    <br>
-                    <button mat-fab color="primary" *ngIf="(item.mano.length()==1) && (indice != this.indexYo)" class="uno-other" (click)="sayUno(indice)">UNO</button>
-                </div>
+<div class="game">
+    <hr>
+    <div class="otrosJugadores">
+        <div class="player" *ngFor="let item of this.gameService.jugadores;let indice=index">
+            <h2>{{item.nombre}}</h2>
+            <div class="group">
+                <img class="otrosJugadores" src="assets/img/cartas/back.png">
+                <p class="otrosJugadores">x {{item.cartas.length()}}</p>
             </div>
-            <hr>
-
-
-            <div class="cartaCentro" *ngFor="let item of pilaCartas;let indice=index">
-                <img class="cartaCentro"
-                    [ngStyle]="{ 'transform': 'rotate('+this.randomRotation[indice]+'deg)' }"
-                    src="assets/img/cartas/{{item.color}}-{{item.value}}.png"
-                    [style.z-index]="indice"
-                >
-            </div>
-
-            <div class="mano">
-                <div class="carta" *ngFor="let item of jugadores[this.indexYo].mano.getArray();let indice=index">
-                    <img class="carta" 
-                        src="assets/img/cartas/{{item.color}}-{{item.value}}.png"
-                        (click)="playCard(item)"
-                    >
-                </div>
-            </div>
-            <button mat-fab color="primary" class="uno">UNO</button>
+            <br>
+            <button mat-fab color="primary" *ngIf="(item.cartas.length()==1) && (indice != this.gameService.indexYo)" class="uno-other" (click)="sayUno(indice)">UNO</button>
         </div>
-    </body>
-</html>
+    </div>
+    <hr>
+
+    <button mat-icon-button mat-button (click)="openChat()" class="openChat">
+        <mat-icon>chat</mat-icon>
+    </button>
+
+    <div class="cartaCentro" *ngFor="let item of gameService.pilaCartas;let indice=index">
+        <img class="cartaCentro"
+            [ngStyle]="{ 'transform': 'rotate('+this.randomRotation[indice]+'deg)' }"
+            src="assets/img/cartas/{{item.color}}-{{item.value}}.png"
+            [style.z-index]="indice"
+        >
+    </div>
+    <!-- Falla aqui: -->
+    <div class="mano">
+        <div class="carta" *ngFor="let item of this.gameService.jugadores[this.gameService.indexYo].cartas.getArray();let indice=index">
+            <img class="carta" 
+                src="assets/img/cartas/{{item.color}}-{{item.value}}.png"
+                (click)="playCard(item)"
+            >
+        </div>
+    </div>
+    <button mat-fab color="primary" class="uno">UNO</button>
+</div>

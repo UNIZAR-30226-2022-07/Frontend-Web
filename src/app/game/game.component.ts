@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, Inject, OnInit, ViewContainerRef } from '@angular/core';
 import { Carta } from './logica/carta';
-import { Jugador } from './logica/jugador';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as util from "./logica/util";
+import { Message } from './message';
+import { UsersService } from '../users.service';
+import { GameService } from '../game.service';
 
 @Component({
   selector: 'app-game',
@@ -10,57 +12,33 @@ import * as util from "./logica/util";
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit {
-  //Lista de jugadores
-  jugadores: Jugador[] = [];
-  //Index del array jugadores que eres tu. NOTE: Cambiar cada vez que se cambia el turno
-  indexYo = 0; 
-  //Pila de cartas central
-  pilaCartas: Carta[] = []; 
+  //Chat
+  history: Message[] = [];
   //Direccion del juego
   direccion:util.Direccion =  util.Direccion.NORMAL;
   //Vector de numeros aleatorios para la rotacion de las cartas de la pila central
   randomRotation: number[] = Array.from({length: 108}, () => Math.floor(Math.random() * 360)); 
-  //Variables temporales
-  tempJugador: Jugador|undefined;
-  //Pruebas
-  victor: Jugador = new Jugador("victor"); 
-  marcos: Jugador = new Jugador("marcos"); 
-  cesar: Jugador = new Jugador("cesar"); 
 
-  constructor(public dialog:MatDialog) { }
+  constructor(public dialog:MatDialog,public dialog2:MatDialog, public gameService: GameService) { }
 
   ngOnInit(): void {
-    //TODO: Request a backend de todos los datos. Por ahora son datos falsos
-    //Pruebas
-    this.victor.mano.add(new Carta(util.Valor.UNO,util.Color.ROJO));
-    this.victor.mano.add(new Carta(util.Valor.DOS,util.Color.ROJO));
-    this.victor.mano.add(new Carta(util.Valor.TRES,util.Color.ROJO));
-    this.victor.mano.add(new Carta(util.Valor.CUATRO,util.Color.ROJO));
-    this.victor.mano.add(new Carta(util.Valor.WILD,util.Color.INDEFINIDO));
-    this.victor.mano.add(new Carta(util.Valor.DRAW4,util.Color.INDEFINIDO));
-    this.jugadores.push(this.victor);
-
-    this.cesar.mano.add(new Carta(util.Valor.UNO,util.Color.ROJO));
-    this.jugadores.push(this.cesar);
-
-    this.marcos.mano.add(new Carta(util.Valor.UNO,util.Color.ROJO));
-    this.marcos.mano.add(new Carta(util.Valor.DOS,util.Color.ROJO));
-    this.jugadores.push(this.marcos);
-
-    this.pilaCartas.push(new Carta(util.Valor.UNO,util.Color.AZUL));
-    this.pilaCartas.push(new Carta(util.Valor.DOS,util.Color.AZUL));
-    this.pilaCartas.push(new Carta(util.Valor.TRES,util.Color.AZUL));
-    this.pilaCartas.push(new Carta(util.Valor.CUATRO,util.Color.AZUL));
+    this.gameService.chat.subscribe({
+      next: (m: Message) => {
+        this.history.push(m);
+      }
+    });
+    console.log(this.gameService.jugadores[this.gameService.indexYo]);
   }
 
   //Ejecutado cuando se hace click en una carta
   async playCard(c: Carta) {
-    if(util.sePuedeJugar(this.pilaCartas[this.pilaCartas.length-1],c)) {
+    //TODO: Parar cuando no sea tu turno
+    if(util.sePuedeJugar(this.gameService.pilaCartas[this.gameService.pilaCartas.length-1],c)) {
       //Borrar carta de la mano
-      this.jugadores[this.indexYo].mano.remove(c);
+      this.gameService.jugadores[this.gameService.indexYo].cartas.remove(c);
       //Efectos especiales
       if(util.isWild(c.value)) {
-        await this.popupColor(c);
+        await this.popupColor(c).then();
       }
       if(c.value == util.Valor.REVERSE) {
         if (this.direccion == util.Direccion.NORMAL) {
@@ -71,8 +49,25 @@ export class GameComponent implements OnInit {
         }
         
       }
+      if(c.value == util.Valor.CERO && false){ //TODO: chequear si esta la regla "0 switch"
+        //TODO: Cambiar todas las manos en sentido del juego
+
+      }
+      if(c.value == util.Valor.SIETE && true){ //TODO: chequear si esta la regla "Crazy 7"
+        //TODO: Popup y cambiar la mano con la seleccion
+        let user = ""
+        await this.popupJugador(user).then(); //TODO: recoger valor de la promise como jugador seleccionado
+        console.log("CAMBIAR MANO CON "+user);
+      }
+      //TODO: Comprobar resto de reglas
+      //Enviar jugada a backend
+      await this.gameService.send(
+        util.FTB_carta(c),
+        "/card/play/"
+      )
+      //TODO: Borrar esto y enviar a backend
       //Añadirla al centro
-      this.pilaCartas.push(c)
+      this.gameService.pilaCartas.push(c)
     }
   }
 
@@ -86,32 +81,57 @@ export class GameComponent implements OnInit {
   //Ejecutado cuando se quiere pasar al siguiente turno.
   siguienteTurno() {
     if (this.direccion == util.Direccion.NORMAL) {
-      this.tempJugador = this.jugadores.shift();
-      if (this.tempJugador !== undefined) {
-        this.jugadores.push(this.tempJugador);
-        this.indexYo = (this.indexYo-1) % this.jugadores.length;
+      let tempJugador = this.gameService.jugadores.shift();
+      if (tempJugador !== undefined) {
+        this.gameService.jugadores.push(tempJugador);
+        this.gameService.indexYo = (this.gameService.indexYo-1) % this.gameService.jugadores.length;
       }
     }
     else {
-      this.tempJugador = this.jugadores.pop();
-      if (this.tempJugador !== undefined) {
-        this.jugadores.unshift(this.tempJugador);
-        this.indexYo = (this.indexYo+1) % this.jugadores.length;
+      let tempJugador = this.gameService.jugadores.pop();
+      if (tempJugador !== undefined) {
+        this.gameService.jugadores.unshift(tempJugador);
+        this.gameService.indexYo = (this.gameService.indexYo+1) % this.gameService.jugadores.length;
       }
     }
   }
 
-  async popupColor(c:Carta) {
-    const dialogRef = this.dialog.open(ChoseColorComponent);
-    dialogRef.disableClose = true;
-    dialogRef.afterClosed().subscribe(result => {
-      c.color = result;
-    })
+  async popupColor(c:Carta): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      const dialogRef = this.dialog.open(ChoseColorComponent);
+      dialogRef.disableClose = true;
+      dialogRef.afterClosed().subscribe(result => {
+        c.color = result;
+        resolve(true)
+      })
+    });
   }
 
+  async popupJugador(j:string): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      const dialogRef = this.dialog.open(ChosePlayerComponent);
+      dialogRef.disableClose = true;
+      dialogRef.afterClosed().subscribe(result => {
+        j = result;
+        resolve(result);
+      })
+    });
+  }
 
-  
+  openChat(){
+    const dialogRef2 = this.dialog2.open(ChatComponent,
+      {
+        data: this.history,
+        position: {
+          top: '0px',
+          left: '0px'
+        },
+        height: '100vh',
+        width: '25%'
+      });
+  }
 }
+
 @Component({
   selector: 'chosecolor',
   templateUrl: 'chosecolor.html',
@@ -121,5 +141,43 @@ export class ChoseColorComponent {
   constructor(public dialogRef: MatDialogRef<ChoseColorComponent>) {}
   close(n: number) {
     this.dialogRef.close(n);
+  }
+}
+
+@Component({
+  selector: 'choseplayer',
+  templateUrl: 'choseplayer.html',
+  styleUrls: ['choseplayer.css']
+})
+export class ChosePlayerComponent {
+  constructor(public dialogRef: MatDialogRef<ChosePlayerComponent>, public gameService: GameService) {}
+  close(n: string) {
+    this.dialogRef.close(n);
+  }
+}
+
+@Component({
+  selector: 'chat',
+  templateUrl: 'chat.html',
+  styleUrls: ['chat.css']
+})
+export class ChatComponent{
+  constructor(public dialogRef: MatDialogRef<ChatComponent>,@Inject(MAT_DIALOG_DATA) public data: Message[], public userService: UsersService, public gameService: GameService) {
+    this.historyPopup = data
+    this.gameService.chat.subscribe({
+      next: (m: Message) => {
+        this.historyPopup.push(m);
+      }
+    });
+  }
+  historyPopup!: Message[]
+  msg !: string;
+
+  sendMsg() {
+    this.gameService.send(
+      { message: this.msg },
+      "/message/"
+    )
+    this.msg = "";
   }
 }

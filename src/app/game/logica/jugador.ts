@@ -2,14 +2,15 @@ import { Mano } from "./mano";
 import { Carta } from "./carta";
 
 export class Jugador {
-    mano: Mano = new Mano();
-    nombre!: String;
+    cartas: Mano = new Mano([]);
+    nombre!: string;
 
-    constructor(name:string) {
-        this.nombre = name;
+    constructor(nombre:string, cartas:Mano) {
+        this.nombre = nombre;
+        this.cartas = cartas
     }
     //Elimina una carta de la mano del jugador 
     eliminarCarta(carta:Carta){
-        this.mano.remove(carta);
+        this.cartas.remove(carta);
     }
 }

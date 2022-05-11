@@ -1,0 +1,37 @@
+<div class="forgot-password">
+   
+<mat-toolbar class="toolbar">
+    <h1 class="title">Editar perfil</h1>
+</mat-toolbar>
+    <form class="custom-form" method="post">
+        <input
+        type="text"
+        [(ngModel)]="this.name"
+        name="name"
+        id="name-input"
+        placeholder="Nuevo nombre de usuario"
+        />
+        <button type="submit" id="change-name-btn" (click)="change_name()">Cambiar nombre usuario</button>
+    </form>
+    <div class="provincia">
+    <select
+            [(ngModel)]="this.pais"
+            name="provincia">
+      <option *ngFor="let item of paises" value="{{item}}">
+        {{item}}
+      </option>
+    </select>
+    </div>
+    <button type="submit" id="change-country-btn"  (click)="change_country()">Cambiar país</button>
+   <!-- <div *ngIf="serviceSent">
+        Se ha enviado un correo para recuperar tu contraseña :)
+    </div>
+    <div class="error">
+
+        <div *ngIf="serviceError">
+        Ha ocurrido un error inesperado: {{this.serviceErrorMessage}}
+        </div>
+    </div>-->
+
+    <button class="delete" (click) = "openMensajeBorrar()">Eliminar cuenta</button>
+</div>
