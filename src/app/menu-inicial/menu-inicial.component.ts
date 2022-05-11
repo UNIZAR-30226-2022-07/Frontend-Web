@@ -244,7 +244,8 @@ export class UnirsePrivada {
   constructor(public dialogRef: MatDialogRef<UnirsePrivada>, public GameService: GameService, public router: Router) {}
 
   async joinGame() {
-    await this.GameService.infoMatch(this.id).then()
+    await this.GameService.infoMatch(this.id).then();
+    //TODO: Checkear si te puedes unir (ya estas dentro, no hay hueco, etc...)
     await this.GameService.joinMatch(this.id).then();
     this.router.navigateByUrl('/partidaPrivada/'+this.id);
     this.dialogRef.close();
