@@ -63,7 +63,7 @@ export class GameComponent implements OnInit {
       //Enviar jugada a backend
       await this.gameService.send(
         util.FTB_carta(c),
-        "/card/play/"
+        "/game/card/play/"
       )
       //TODO: Borrar esto y enviar a backend
       //Añadirla al centro
