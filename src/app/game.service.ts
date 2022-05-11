@@ -74,17 +74,23 @@ export class GameService {
    * @param dir Lugar a donde enviar el mensaje. Debe terminar en '/'. Ej: "/game/connect/"
    * @returns void
   */
-  async send(message:any, dir:string): Promise<any> {
+  async send(message:any, dir:string, headers:any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       if (!this.stompClient) {
         throw new Error('Socket not connected');
       }
-      this.stompClient.send(dir+this.id,{"Authorization": "Bearer " + this.userService.getToken(),"username":this.userService.username},JSON.stringify(message));
-      resolve(true);
+      if(headers == undefined) {
+        this.stompClient.send(dir+this.id,{"Authorization": "Bearer " + this.userService.getToken(),"username":this.userService.username},JSON.stringify(message));
+        resolve(true);
+      }
+      else {
+        this.stompClient.send(dir+this.id,headers,JSON.stringify(message));
+        resolve(true);
+      }
     });
   }
 
-
+  
   /**
    * Gestiona un mensaje recibido, emitiendolo por this.messageReceived
    * @param message Mensaje recibido
@@ -186,12 +192,51 @@ export class GameService {
       await this.connect().then(async x => {
         await this.send(
           { },
-          "/game/connect/"
+          "/game/connect/",
+          undefined
         ).then();
       }).then()
       resolve(true);
     });
   }
 
+  /**
+   * Actualiza la info de la partida
+   * @param id Id de la partida
+   * @returns promise
+  */
+  public async infoMatch(id: string): Promise<any>{ //TODO: Pasar las reglas a esta funcion
+    return new Promise<any>(async (resolve, reject) => {
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Authorization': "Bearer "+this.userService.getToken()
+        }),
+        withCredentials: true
+      };
+      let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/getInfoPartida",
+      {
+        idPartida: id
+      },
+      httpOptions)
+      test.subscribe({
+        next: async (v: any) => {
+          console.log("Info partida:",v);
+          this.partida = {
+            tturno: v.tiempoTurno,
+            njugadores: v.numeroJugadores
+          }
+          this.jugadores = [];
+          v.jugadores.forEach((element: string) => {
+            this.jugadores.push(new Jugador(element, new Mano([])));
+          });
+          resolve(true)
+        },
+        error: (e:any) => {
+          console.error(e);
+          reject(false)
+        }
+      });
+    });
+  }
 
 }

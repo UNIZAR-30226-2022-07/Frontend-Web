@@ -38,12 +38,14 @@ export class PartidaPrivadaComponent implements OnInit {
 
     this.nJugadores = this.GameService.partida.njugadores;
     this.tiempoTurno = this.GameService.partida.tturno;
+    console.log("Mas movidas:", this.nJugadores, " ", this.tiempoTurno);
   }
 
   async beginGame() {
     await this.GameService.send(
       { },
-      "/game/begin/"
+      "/game/begin/",
+      undefined
     ).then();
   }
 }
