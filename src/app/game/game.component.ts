@@ -19,7 +19,7 @@ export class GameComponent implements OnInit {
   //Vector de numeros aleatorios para la rotacion de las cartas de la pila central
   randomRotation: number[] = Array.from({length: 108}, () => Math.floor(Math.random() * 360)); 
 
-  constructor(public dialog:MatDialog,public dialog2:MatDialog, public gameService: GameService) { }
+  constructor(public dialog:MatDialog,public dialog2:MatDialog, public gameService: GameService, public userService: UsersService) { }
 
   ngOnInit(): void {
     this.gameService.chat.subscribe({
@@ -61,9 +61,11 @@ export class GameComponent implements OnInit {
       }
       //TODO: Comprobar resto de reglas
       //Enviar jugada a backend
+      let carta = util.FTB_carta(c);
       await this.gameService.send(
-        util.FTB_carta(c),
-        "/game/card/play/"
+        {},
+        "/game/card/play/",
+        {"Authorization": "Bearer " + this.userService.getToken(),"username":this.userService.username, "numero": carta.numero, "color": carta.color}
       ).then()
       //TODO: Borrar esto
       //Añadirla al centro
@@ -176,7 +178,8 @@ export class ChatComponent{
   sendMsg() {
     this.gameService.send(
       { message: this.msg },
-      "/message/"
+      "/message/",
+      undefined
     )
     this.msg = "";
   }
