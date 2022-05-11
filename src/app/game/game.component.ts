@@ -61,11 +61,10 @@ export class GameComponent implements OnInit {
       }
       //TODO: Comprobar resto de reglas
       //Enviar jugada a backend
-      let carta = util.FTB_carta(c);
       await this.gameService.send(
-        {},
+        util.FTB_carta(c),
         "/game/card/play/",
-        {"Authorization": "Bearer " + this.userService.getToken(),"username":this.userService.username, "numero": carta.numero, "color": carta.color}
+        undefined
       ).then()
       //TODO: Borrar esto
       //Añadirla al centro
