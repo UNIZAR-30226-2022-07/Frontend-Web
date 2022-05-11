@@ -6,6 +6,18 @@ div.caja_abajo{
   margin-top: 10%;
 }
 
+div.begin button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  width: auto;
+  height: auto;
+  border-radius: 10%;
+  color: white;
+  padding: 10px;
+}
+
 div.div.status {
   width: 25%;
   position: absolute;
