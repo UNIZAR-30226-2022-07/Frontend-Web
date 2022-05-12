@@ -66,9 +66,6 @@ export class GameComponent implements OnInit {
         "/game/card/play/",
         undefined
       ).then()
-      //TODO: Borrar esto
-      //Añadirla al centro
-      this.gameService.pilaCartas.push(c)
     }
   }
 
@@ -176,8 +173,8 @@ export class ChatComponent{
 
   sendMsg() {
     this.gameService.send(
-      { message: this.msg },
-      "/message/",
+      this.msg,
+      "/game/message/",
       undefined
     )
     this.msg = "";
