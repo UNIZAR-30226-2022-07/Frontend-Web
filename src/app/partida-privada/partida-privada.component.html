@@ -54,7 +54,7 @@
         </div>
         <div class="codigo">
             <h2>Código: {{this.matchID}}</h2>
-            <mat-icon class="posicion-clipboard">content_copy</mat-icon>
+            <mat-icon (click)="copyText()" class="posicion-clipboard">content_copy</mat-icon>
         </div>    
     </div>
     

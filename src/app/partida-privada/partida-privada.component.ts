@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ClipboardService } from 'ngx-clipboard';
 import { GameService } from '../game.service';
 import { UsersService } from '../users.service';
 
@@ -17,7 +18,7 @@ export class PartidaPrivadaComponent implements OnInit {
   tiempoTurno: number = 10;
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
 
-  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog,public GameService: GameService, public userService: UsersService) { }
+  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog,public GameService: GameService, public userService: UsersService,private clipboardApi: ClipboardService) { }
 
   ngOnInit(): void {
     console.log("Valor en gamservice: ",this.GameService.partida);
@@ -47,6 +48,10 @@ export class PartidaPrivadaComponent implements OnInit {
       "/game/begin/",
       undefined
     ).then();
+  }
+
+  copyText() {
+    this.clipboardApi.copyFromContent(this.GameService.id);
   }
 }
 
