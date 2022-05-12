@@ -54,6 +54,14 @@ export enum Backend_Color {
   ROJO = "ROJO", AMARILLO = "AMARILLO", AZUL = "AZUL", VERDE = "VERDE", INDEFINIDO = "UNDEFINED"
 }
 
+export enum Reglas {
+  CERO_SWITCH = "CERO_SWITCH",
+  CRAZY_7 = "CRAZY_7",
+  PROGRESSIVE_DRAW = "PROGRESSIVE_DRAW",
+  CHAOS_DRAW = "CHAOS_DRAW",
+  BLOCK_DRAW = "BLOCK_DRAW",
+  REPEAT_DRAW = "REPEAT_DRAW" 
+}
   /**
    * Convertidor de backend a frontend. Convierte los valores que vienen de backend en una carta
    * @param color Color que llega de backend

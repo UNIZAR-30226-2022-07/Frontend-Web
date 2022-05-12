@@ -284,7 +284,7 @@ export class ReglasPartidaComponent {
   }
 
   async crearPartida() {
-    await this.GameService.newMatch(this.nJugadores,this.tiempoTurno).then();
+    await this.GameService.newMatch(this.nJugadores,this.tiempoTurno, this.reglas).then();
     this.router.navigateByUrl('/partidaPrivada/'+this.GameService.id);
     this.dialogRef.close();
   }

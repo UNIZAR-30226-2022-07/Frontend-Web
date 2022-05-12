@@ -19,6 +19,7 @@ export class GameService {
   
   id:string = "";
   partida:any;
+  reglas: Array<util.Reglas> = [];
 
   //Lista de jugadores
   jugadores: Jugador[] = [];
@@ -150,20 +151,28 @@ export class GameService {
    * @param tturn Tiempo de turno de cada jugador
    * @returns void
   */
-  public async newMatch(nplayers:number, tturn:number): Promise<any>{ //TODO: Pasar las reglas a esta funcion
+  public async newMatch(nplayers:number, tturn:number, reglas:Array<boolean>): Promise<any>{ //TODO: Pasar las reglas a esta funcion
     return new Promise<any>(async (resolve, reject) => {
-
+      console.log("REGLAS:",reglas);
       const httpOptions = {
         headers: new HttpHeaders({
           'Authorization': "Bearer "+this.userService.getToken()
         }),
         withCredentials: true
       };
+      let r=[];
+      if(reglas[0]) { r.push(util.Reglas.CERO_SWITCH) }
+      if(reglas[1]) { r.push(util.Reglas.CRAZY_7) }
+      if(reglas[2]) { r.push(util.Reglas.PROGRESSIVE_DRAW) }
+      if(reglas[3]) { r.push(util.Reglas.CHAOS_DRAW) }
+      if(reglas[4]) { r.push(util.Reglas.BLOCK_DRAW) }
+      if(reglas[5]) { r.push(util.Reglas.REPEAT_DRAW) }
       let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/create",
       {
         playername: this.userService.username,
         nplayers: nplayers,
-        tturn: tturn
+        tturn: tturn,
+        rules: r,
       },
       httpOptions)
       test.subscribe({
@@ -227,7 +236,8 @@ export class GameService {
           console.log("Info partida:",v);
           this.partida = {
             tturno: v.tiempoTurno,
-            njugadores: v.numeroJugadores
+            njugadores: v.numeroJugadores,
+            reglas: v.reglas
           }
           this.jugadores = [];
           v.jugadores.forEach((element: string) => {

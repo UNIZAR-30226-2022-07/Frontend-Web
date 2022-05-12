@@ -31,7 +31,8 @@ div.reglas {
   width: 35%;
   position: absolute;
   
-  top: 40vh;
+  top: 30vh;
+  right: 1vw;
 }
 
 div.center {
