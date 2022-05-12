@@ -161,12 +161,7 @@ export class ChosePlayerComponent {
 })
 export class ChatComponent{
   constructor(public dialogRef: MatDialogRef<ChatComponent>,@Inject(MAT_DIALOG_DATA) public data: Message[], public userService: UsersService, public gameService: GameService) {
-    this.historyPopup = data
-    this.gameService.chat.subscribe({
-      next: (m: Message) => {
-        this.historyPopup.push(m);
-      }
-    });
+    this.historyPopup = data;
   }
   historyPopup!: Message[]
   msg !: string;
