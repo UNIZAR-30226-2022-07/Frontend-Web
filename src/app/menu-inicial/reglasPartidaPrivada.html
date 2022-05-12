@@ -25,7 +25,7 @@
           <input
             type="checkbox"
             [checked]="reglas[1]"
-            (change)="reglas[1] = reglas[1]"
+            (change)="reglas[1] = !reglas[1]"
           />
           <label (click)="reglas[1] = !reglas[1]"> Crazy 7</label>
           <br>

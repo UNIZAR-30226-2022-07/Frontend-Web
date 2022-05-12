@@ -255,7 +255,6 @@ export class UnirsePrivada {
         this._snackBar.open("Estas ya unido a esta partida...",'');
       }
     });
-    //TODO: Checkear si te puedes unir (ya estas dentro, no hay hueco, etc...)
     await this.GameService.joinMatch(this.id).then();
     this.router.navigateByUrl('/partidaPrivada/'+this.id);
     this.dialogRef.close();
@@ -285,7 +284,7 @@ export class ReglasPartidaComponent {
   }
 
   async crearPartida() {
-    await this.GameService.newMatch(this.nJugadores,this.tiempoTurno).then();
+    await this.GameService.newMatch(this.nJugadores,this.tiempoTurno, this.reglas).then();
     this.router.navigateByUrl('/partidaPrivada/'+this.GameService.id);
     this.dialogRef.close();
   }

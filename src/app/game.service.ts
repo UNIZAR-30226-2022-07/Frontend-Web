@@ -16,9 +16,11 @@ declare var Stomp: any;
 export class GameService {
   public messageReceived = new EventEmitter<any>();
   public chat = new EventEmitter<any>();
+  public winner = new EventEmitter<string>();
   
   id:string = "";
   partida:any;
+  reglas: Array<util.Reglas> = [];
 
   //Lista de jugadores
   jugadores: Jugador[] = [];
@@ -31,6 +33,19 @@ export class GameService {
   public stompClient: any;
   
   constructor(private http: HttpClient, public userService: UsersService, private router: Router) {}
+  
+  /**
+   * Borra toda la info de una partida
+   * @returns void
+  */
+  public restart() {
+    this.id = "";
+    this.jugadores = [];
+    this.pilaCartas = [];
+    this.reglas = [];
+    this.indexYo = 0;
+  }
+  
   /**
    * Crea un socket y se conecta, suscribiendose a "/topic/connect/<id>"
    * @returns Promesa de cumplimiento
@@ -44,11 +59,11 @@ export class GameService {
       this.stompClient.connect({"Authorization": "Bearer " + this.userService.getToken()}, function(frame: any) {
 
         that.stompClient.subscribe('/user/'+that.userService.username+'/msg', (message: any) => that.onPrivateMessage(message, that), {"Authorization": "Bearer " + that.userService.getToken()});
-        that.stompClient.subscribe('/topic/jugada/'+that.id, (message: any) => that.onMessage(message, that.messageReceived), {"Authorization": "Bearer " + that.userService.getToken()});
+        that.stompClient.subscribe('/topic/jugada/'+that.id, (message: any) => that.onMessage(message, that.messageReceived,that.winner), {"Authorization": "Bearer " + that.userService.getToken()});
         that.stompClient.subscribe('/topic/connect/'+that.id, (message: any) => that.onConnect(message), {"Authorization": "Bearer " + that.userService.getToken()});
         that.stompClient.subscribe('/topic/disconnect/'+that.id, (message: any) => that.onDisconnect(message), {"Authorization": "Bearer " + that.userService.getToken()});
         that.stompClient.subscribe('/topic/begin/'+that.id, (message: any) => that.onBegin(message), {"Authorization": "Bearer " + that.userService.getToken()});
-        that.stompClient.subscribe('/topic/chat/'+that.id, (message: any) => that.onMessage(message, that.chat), {"Authorization": "Bearer " + that.userService.getToken()});
+        that.stompClient.subscribe('/topic/chat/'+that.id, (message: any) => that.onChat(message, that.chat), {"Authorization": "Bearer " + that.userService.getToken()});
         resolve(true);
       });
     });
@@ -96,12 +111,27 @@ export class GameService {
    * @param emitter Emisor de mensajes
    * @returns void
   */
-  onMessage(message:any, emitter:any): void {
+  onMessage(message:any, emitter:any, winemitter:any): void {
+    if (String(message).indexOf("HA GANADO") != -1) { //Es mensaje de victoria
+      winemitter.emit(String(message).substring(String(message).lastIndexOf(' '), String(message).length-1));
+      return;
+    }
     let msg = JSON.parse(message.body);
     console.info("Mensaje recibido: ", message);
     emitter.emit(msg);
   };
 
+  /**
+   * Gestiona un mensaje recibido, emitiendolo por this.messageReceived
+   * @param message Mensaje recibido
+   * @param emitter Emisor de mensajes
+   * @returns void
+  */
+   onChat(message:any, emitter:any): void {
+    let msg = JSON.parse(message.body);
+    console.info("Mensaje recibido: ", message);
+    emitter.emit(msg);
+  };
 
   onPrivateMessage(message:any, ref:GameService): void {
     let arrayasstring = String(message).substring(String(message).indexOf("["),String(message).indexOf("]")+1)
@@ -119,7 +149,14 @@ export class GameService {
     let i = 0;
     msg.forEach((e: { nombre: string; cartas: Carta[]; }) => {
       if(e.cartas == undefined) {
-        this.jugadores.push(new Jugador(e.nombre, new Mano([])));
+        if(e.nombre == this.userService.username) {
+          this.jugadores.push(new Jugador(e.nombre, new Mano([])));
+        }
+        else {
+          let m = new Mano([]);
+          m.set(7);
+          this.jugadores.push(new Jugador(e.nombre, m));
+        }
       }
       else {
         this.jugadores.push(new Jugador(e.nombre, new Mano(e.cartas)));
@@ -150,20 +187,28 @@ export class GameService {
    * @param tturn Tiempo de turno de cada jugador
    * @returns void
   */
-  public async newMatch(nplayers:number, tturn:number): Promise<any>{ //TODO: Pasar las reglas a esta funcion
+  public async newMatch(nplayers:number, tturn:number, reglas:Array<boolean>): Promise<any>{ //TODO: Pasar las reglas a esta funcion
     return new Promise<any>(async (resolve, reject) => {
-
+      console.log("REGLAS:",reglas);
       const httpOptions = {
         headers: new HttpHeaders({
           'Authorization': "Bearer "+this.userService.getToken()
         }),
         withCredentials: true
       };
+      let r=[];
+      if(reglas[0]) { r.push(util.Reglas.CERO_SWITCH) }
+      if(reglas[1]) { r.push(util.Reglas.CRAZY_7) }
+      if(reglas[2]) { r.push(util.Reglas.PROGRESSIVE_DRAW) }
+      if(reglas[3]) { r.push(util.Reglas.CHAOS_DRAW) }
+      if(reglas[4]) { r.push(util.Reglas.BLOCK_DRAW) }
+      if(reglas[5]) { r.push(util.Reglas.REPEAT_DRAW) }
       let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/create",
       {
         playername: this.userService.username,
         nplayers: nplayers,
-        tturn: tturn
+        tturn: tturn,
+        rules: r,
       },
       httpOptions)
       test.subscribe({
@@ -227,7 +272,8 @@ export class GameService {
           console.log("Info partida:",v);
           this.partida = {
             tturno: v.tiempoTurno,
-            njugadores: v.numeroJugadores
+            njugadores: v.numeroJugadores,
+            reglas: v.reglas
           }
           this.jugadores = [];
           v.jugadores.forEach((element: string) => {

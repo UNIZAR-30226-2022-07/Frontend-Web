@@ -54,6 +54,14 @@ export enum Backend_Color {
   ROJO = "ROJO", AMARILLO = "AMARILLO", AZUL = "AZUL", VERDE = "VERDE", INDEFINIDO = "UNDEFINED"
 }
 
+export enum Reglas {
+  CERO_SWITCH = "CERO_SWITCH",
+  CRAZY_7 = "CRAZY_7",
+  PROGRESSIVE_DRAW = "PROGRESSIVE_DRAW",
+  CHAOS_DRAW = "CHAOS_DRAW",
+  BLOCK_DRAW = "BLOCK_DRAW",
+  REPEAT_DRAW = "REPEAT_DRAW" 
+}
   /**
    * Convertidor de backend a frontend. Convierte los valores que vienen de backend en una carta
    * @param color Color que llega de backend
@@ -83,15 +91,8 @@ export function sePuedeJugar(Ultimacarta:Carta, cartaAJugar:Carta) {
   if(isWild(cartaAJugar.value)) {    // ES +4 o CAMBIO DE COLOR. Estas siempre se pueden jugar
     return true;
   }
-  else {    //ES ESPECIAL Y TIENE EL MISMO COLOR -> SE PUEDE JUGAR
-    if(isSpecial(cartaAJugar.value) && Ultimacarta.color == cartaAJugar.color) {
-      return true;
-    }
-    else if(isSpecial(cartaAJugar.value) && Ultimacarta.color != cartaAJugar.color) {
-      return false;
-    }
-    else {    //NO ES ESPECIAL
-      return Ultimacarta.color == cartaAJugar.color || Ultimacarta.value == cartaAJugar.value;
-    }
+  else {
+    //TODO: Checkear reglas custom
+    return Ultimacarta.color == cartaAJugar.color || Ultimacarta.value == cartaAJugar.value;
   }
 }
