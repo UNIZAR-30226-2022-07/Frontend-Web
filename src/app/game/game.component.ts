@@ -5,6 +5,7 @@ import * as util from "./logica/util";
 import { Message } from './message';
 import { UsersService } from '../users.service';
 import { GameService } from '../game.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -18,8 +19,11 @@ export class GameComponent implements OnInit {
   direccion:util.Direccion =  util.Direccion.NORMAL;
   //Vector de numeros aleatorios para la rotacion de las cartas de la pila central
   randomRotation: number[] = Array.from({length: 108}, () => Math.floor(Math.random() * 360)); 
-
-  constructor(public dialog:MatDialog,public dialog2:MatDialog, public gameService: GameService, public userService: UsersService) { }
+  //Ganador de la partida
+  winner:string = "";
+  //Si la partida ha terminado
+  end:boolean = false;
+  constructor(public dialog:MatDialog,public dialog2:MatDialog, public gameService: GameService, public userService: UsersService, public router: Router) { }
 
   ngOnInit(): void {
     this.gameService.chat.subscribe({
@@ -28,6 +32,12 @@ export class GameComponent implements OnInit {
       }
     });
     console.log(this.gameService.jugadores[this.gameService.indexYo]);
+    this.gameService.winner.subscribe({
+      next: (m: string) => {
+        this.winner = m;
+        this.end = true;
+      }
+    });
   }
 
   //Ejecutado cuando se hace click en una carta
@@ -49,11 +59,10 @@ export class GameComponent implements OnInit {
         }
         
       }
-      if(c.value == util.Valor.CERO && false){ //TODO: chequear si esta la regla "0 switch"
+      if(this.gameService.partida.reglas.includes('CERO_SWITCH') && c.value == util.Valor.CERO){ //TODO: chequear si esta la regla "0 switch"
         //TODO: Cambiar todas las manos en sentido del juego
-
       }
-      if(c.value == util.Valor.SIETE && false){ //TODO: chequear si esta la regla "Crazy 7"
+      if(this.gameService.partida.reglas.includes('CRAZY_7') && c.value == util.Valor.SIETE){ //TODO: chequear si esta la regla "Crazy 7"
         //TODO: Popup y cambiar la mano con la seleccion
         let user = ""
         await this.popupJugador(user).then(); //TODO: recoger valor de la promise como jugador seleccionado
@@ -92,6 +101,11 @@ export class GameComponent implements OnInit {
         this.gameService.indexYo = (this.gameService.indexYo+1) % this.gameService.jugadores.length;
       }
     }
+  }
+
+  salir() {
+    this.gameService.restart();
+    this.router.navigateByUrl("");
   }
 
   async popupColor(c:Carta): Promise<any> {

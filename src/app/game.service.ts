@@ -16,6 +16,7 @@ declare var Stomp: any;
 export class GameService {
   public messageReceived = new EventEmitter<any>();
   public chat = new EventEmitter<any>();
+  public winner = new EventEmitter<string>();
   
   id:string = "";
   partida:any;
@@ -32,6 +33,19 @@ export class GameService {
   public stompClient: any;
   
   constructor(private http: HttpClient, public userService: UsersService, private router: Router) {}
+  
+  /**
+   * Borra toda la info de una partida
+   * @returns void
+  */
+  public restart() {
+    this.id = "";
+    this.jugadores = [];
+    this.pilaCartas = [];
+    this.reglas = [];
+    this.indexYo = 0;
+  }
+  
   /**
    * Crea un socket y se conecta, suscribiendose a "/topic/connect/<id>"
    * @returns Promesa de cumplimiento
@@ -105,6 +119,9 @@ export class GameService {
 
 
   onPrivateMessage(message:any, ref:GameService): void {
+    if (String(message).indexOf("[") == -1) { //Es mensaje de victoria
+      ref.winner.emit(String(message).substring(String(message).lastIndexOf(' '), String(message).length));
+    }
     let arrayasstring = String(message).substring(String(message).indexOf("["),String(message).indexOf("]")+1)
     console.log("Intento parsear "+arrayasstring);
 
@@ -120,7 +137,14 @@ export class GameService {
     let i = 0;
     msg.forEach((e: { nombre: string; cartas: Carta[]; }) => {
       if(e.cartas == undefined) {
-        this.jugadores.push(new Jugador(e.nombre, new Mano([])));
+        if(e.nombre == this.userService.username) {
+          this.jugadores.push(new Jugador(e.nombre, new Mano([])));
+        }
+        else {
+          let m = new Mano([]);
+          m.set(7);
+          this.jugadores.push(new Jugador(e.nombre, m));
+        }
       }
       else {
         this.jugadores.push(new Jugador(e.nombre, new Mano(e.cartas)));
