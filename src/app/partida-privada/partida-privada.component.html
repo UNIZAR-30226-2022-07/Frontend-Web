@@ -43,6 +43,7 @@
             <li *ngIf="this.GameService.partida.reglas.includes('CHAOS_DRAW')"><b>Chaos draw</b>: Si en algun momento el jugador debe robar cartas, el jugador robara una cantidad aleatoria entre 0 y 6 cartas.</li>
             <li *ngIf="this.GameService.partida.reglas.includes('BLOCK_DRAW')"><b>Block draw</b>: Si el jugador anterior ha jugado una carta +2 o +4, el jugador que tenga el turno puede evitar robar jugando la carta Bloqueo, saltando su propio turno y dejando las cartas pendientes de robar al siguiente jugador. El siguiente jugador puede encadenar otra carta de Bloqueo y evitar robar tambien.</li>
             <li *ngIf="this.GameService.partida.reglas.includes('REPEAT_DRAW')"><b>Repeat draw</b>: Si es el turno de un jugador y no puede jugar ninguna de las cartas de su mano, el jugador debera robar cartas de 1 en 1 hasta que pueda jugar una.</li>
+            <li *ngIf="this.GameService.partida.reglas.length == 0"><b>No hay reglas especiales activas</b></li>
         </ul>
     </div>
 
