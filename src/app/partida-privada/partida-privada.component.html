@@ -22,6 +22,9 @@
             </div>
             <div class="datos" *ngIf="GameService.jugadores[i] !== undefined">
                 <b>{{GameService.jugadores[i].nombre}}</b>
+                <div *ngIf="(GameService.jugadores[0].nombre == this.userService.username)&&(this.userService.username != GameService.jugadores[i].nombre)">
+                    <button (click)="expulsar(GameService.jugadores[i].nombre)">Expulsar</button>
+                </div>
             </div>
         </div>
     </div>

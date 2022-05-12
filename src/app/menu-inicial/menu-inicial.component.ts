@@ -247,12 +247,12 @@ export class UnirsePrivada {
   async joinGame() {
     await this.GameService.infoMatch(this.id).then();
     if(this.GameService.jugadores.length >= this.GameService.partida.njugadores) {
-      this._snackBar.open("¡Partida llena!",'');
+      this._snackBar.open("¡Partida llena!",'',{duration: 4000});
       return;
     }
     this.GameService.jugadores.forEach(j => {
       if(j.nombre == this.userService.username) {
-        this._snackBar.open("Estas ya unido a esta partida...",'');
+        this._snackBar.open("Estas ya unido a esta partida...",'',{duration: 4000});
       }
     });
     await this.GameService.joinMatch(this.id).then();
