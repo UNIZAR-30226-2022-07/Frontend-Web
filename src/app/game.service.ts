@@ -305,6 +305,7 @@ export class GameService {
           resolve(true)
         },
         error: (e:any) => {
+          this._snackBar.open("Esa partida no existe",'',{duration: 3000});
           console.error(e);
           reject(false)
         }
