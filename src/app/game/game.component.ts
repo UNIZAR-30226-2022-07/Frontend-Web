@@ -53,7 +53,7 @@ export class GameComponent implements OnInit {
         //TODO: Cambiar todas las manos en sentido del juego
 
       }
-      if(c.value == util.Valor.SIETE && true){ //TODO: chequear si esta la regla "Crazy 7"
+      if(c.value == util.Valor.SIETE && false){ //TODO: chequear si esta la regla "Crazy 7"
         //TODO: Popup y cambiar la mano con la seleccion
         let user = ""
         await this.popupJugador(user).then(); //TODO: recoger valor de la promise como jugador seleccionado
