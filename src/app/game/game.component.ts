@@ -103,8 +103,8 @@ export class GameComponent implements OnInit {
     }
   }
 
-  salir() {
-    this.gameService.restart();
+  async salir() {
+    await this.gameService.restart().then();
     this.router.navigateByUrl("");
   }
 

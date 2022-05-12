@@ -37,18 +37,20 @@ export class GameService {
   
   /**
    * Borra toda la info de una partida
-   * @returns void
+   * @returns promesa de finalizacion
   */
-  public restart() {
-    this.id = "";
-    this.jugadores = [];
-    this.pilaCartas = [];
-    this.reglas = [];
-    this.indexYo = 0;
-    this.suscripciones.forEach(s => {
-      this.stompClient.unsubscribe(s,{"Authorization": "Bearer " + this.userService.getToken()})
+  public restart(): Promise<any>  {
+    return new Promise<any>((resolve, reject) => {
+      this.id = "";
+      this.jugadores = [];
+      this.pilaCartas = [];
+      this.reglas = [];
+      this.indexYo = 0;
+      this.suscripciones.forEach(s => {
+        this.stompClient.unsubscribe(s,{"Authorization": "Bearer " + this.userService.getToken()})
+      });
+      this.stompClient.disconnect(function(frame: any) { resolve(true); },{"Authorization": "Bearer " + this.userService.getToken()})
     });
-    //TODO: desconectar stompClient
   }
   
   /**
@@ -178,11 +180,11 @@ export class GameService {
     let msg = message.body;
     let player = msg.substring(1, msg.indexOf(' '));
     let i = 0;
-    this.jugadores.forEach(j => {
+    this.jugadores.forEach(async j => {
       if(j.nombre == player) {
         this.jugadores.splice(i, 1);
         if(player == this.userService.username) {
-          this.restart();
+          await this.restart().then;
           this.router.navigateByUrl("");
         }
         return;
