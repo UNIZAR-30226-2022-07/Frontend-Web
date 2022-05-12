@@ -29,6 +29,10 @@ export class Mano {
     this.cartas.push(card);
   }
 
+  set(n: number) {
+    this.cartas = Array(n);
+  }
+
   getArray() {
     return this.cartas;
   }

@@ -1,6 +1,6 @@
 <div class>
     <div class="boton back">
-        <button mat-icon-button routerLink="">
+        <button mat-icon-button (click)="goBack()">
             <mat-icon>arrow_back</mat-icon>
           </button>
     </div>
@@ -54,7 +54,7 @@
         </div>
         <div class="codigo">
             <h2>Código: {{this.matchID}}</h2>
-            <mat-icon class="posicion-clipboard">content_copy</mat-icon>
+            <mat-icon (click)="copyText()" class="posicion-clipboard">content_copy</mat-icon>
         </div>    
     </div>
     

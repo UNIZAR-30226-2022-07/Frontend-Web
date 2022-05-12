@@ -44,12 +44,11 @@ export class GameService {
       this.stompClient.connect({"Authorization": "Bearer " + this.userService.getToken()}, function(frame: any) {
 
         that.stompClient.subscribe('/user/'+that.userService.username+'/msg', (message: any) => that.onPrivateMessage(message, that), {"Authorization": "Bearer " + that.userService.getToken()});
-        that.stompClient.subscribe('/topic/game/'+that.id, (message: any) => that.onMessage(message, that.messageReceived), {"Authorization": "Bearer " + that.userService.getToken()});
         that.stompClient.subscribe('/topic/jugada/'+that.id, (message: any) => that.onMessage(message, that.messageReceived), {"Authorization": "Bearer " + that.userService.getToken()});
         that.stompClient.subscribe('/topic/connect/'+that.id, (message: any) => that.onConnect(message), {"Authorization": "Bearer " + that.userService.getToken()});
         that.stompClient.subscribe('/topic/disconnect/'+that.id, (message: any) => that.onDisconnect(message), {"Authorization": "Bearer " + that.userService.getToken()});
         that.stompClient.subscribe('/topic/begin/'+that.id, (message: any) => that.onBegin(message), {"Authorization": "Bearer " + that.userService.getToken()});
-        that.stompClient.subscribe('/topic/game/chat/'+that.id, (message: any) => that.onMessage(message, that.chat), {"Authorization": "Bearer " + that.userService.getToken()});
+        that.stompClient.subscribe('/topic/chat/'+that.id, (message: any) => that.onMessage(message, that.chat), {"Authorization": "Bearer " + that.userService.getToken()});
         resolve(true);
       });
     });
@@ -117,6 +116,7 @@ export class GameService {
     console.info("connect: "+message.body);
     let msg = JSON.parse(message.body);
     this.jugadores = [];
+    let i = 0;
     msg.forEach((e: { nombre: string; cartas: Carta[]; }) => {
       if(e.cartas == undefined) {
         this.jugadores.push(new Jugador(e.nombre, new Mano([])));
@@ -124,12 +124,16 @@ export class GameService {
       else {
         this.jugadores.push(new Jugador(e.nombre, new Mano(e.cartas)));
       }
+      if (this.userService.username == e.nombre) {
+        this.indexYo = i
+      }
+      i = i+1;
     });
   };
 
-  onDisconnect(message:string): void {
+  onDisconnect(message:any): void {
     console.info("disconnect: "+message);
-    message.substring(0, message.indexOf(' '))
+    console.log(message.substring(0, message.indexOf(' ')));
   };
 
   onBegin(message:any): void {

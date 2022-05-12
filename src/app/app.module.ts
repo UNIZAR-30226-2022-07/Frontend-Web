@@ -22,7 +22,7 @@ import { PartidaPrivadaComponent } from './partida-privada/partida-privada.compo
 import { AuthInterceptor } from './auth.interceptor';
 import { ConfirmarBorrar, EditProfileComponent } from './edit-profile/edit-profile.component';
 import { RestablecerContraComponent } from './restablecer-contra/restablecer-contra.component';
-
+import { ClipboardModule } from 'ngx-clipboard';
 
 
 
@@ -58,7 +58,8 @@ import { RestablecerContraComponent } from './restablecer-contra/restablecer-con
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    ClipboardModule
   ],
   providers: [CookieService,
               {

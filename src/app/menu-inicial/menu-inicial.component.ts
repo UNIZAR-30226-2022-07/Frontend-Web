@@ -1,6 +1,7 @@
 
 import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute,Params, Router } from '@angular/router';
 import { FriendService } from '../friend.service';
 import { GameService } from '../game.service';
@@ -241,10 +242,20 @@ export class NotisContent {
 })
 export class UnirsePrivada {
   id: string = ""
-  constructor(public dialogRef: MatDialogRef<UnirsePrivada>, public GameService: GameService, public router: Router) {}
+  constructor(public dialogRef: MatDialogRef<UnirsePrivada>, public userService:UsersService, public GameService: GameService, public router: Router,private _snackBar: MatSnackBar) {}
 
   async joinGame() {
-    await this.GameService.infoMatch(this.id).then()
+    await this.GameService.infoMatch(this.id).then();
+    if(this.GameService.jugadores.length >= this.GameService.partida.njugadores) {
+      this._snackBar.open("¡Partida llena!",'');
+      return;
+    }
+    this.GameService.jugadores.forEach(j => {
+      if(j.nombre == this.userService.username) {
+        this._snackBar.open("Estas ya unido a esta partida...",'');
+      }
+    });
+    //TODO: Checkear si te puedes unir (ya estas dentro, no hay hueco, etc...)
     await this.GameService.joinMatch(this.id).then();
     this.router.navigateByUrl('/partidaPrivada/'+this.id);
     this.dialogRef.close();

@@ -6,7 +6,7 @@
     </div>
     <div class="group">
         <input type="text" id="msg" name="msg" [(ngModel)]="msg">
-        <button mat-icon-button mat-button class="openChat">
+        <button mat-icon-button mat-button class="openChat" (click)="sendMsg()">
             <mat-icon>send</mat-icon>
         </button>
     </div>
