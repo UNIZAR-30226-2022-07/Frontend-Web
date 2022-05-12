@@ -59,11 +59,11 @@ export class GameService {
       this.stompClient.connect({"Authorization": "Bearer " + this.userService.getToken()}, function(frame: any) {
 
         that.stompClient.subscribe('/user/'+that.userService.username+'/msg', (message: any) => that.onPrivateMessage(message, that), {"Authorization": "Bearer " + that.userService.getToken()});
-        that.stompClient.subscribe('/topic/jugada/'+that.id, (message: any) => that.onMessage(message, that.messageReceived), {"Authorization": "Bearer " + that.userService.getToken()});
+        that.stompClient.subscribe('/topic/jugada/'+that.id, (message: any) => that.onMessage(message, that.messageReceived,that.winner), {"Authorization": "Bearer " + that.userService.getToken()});
         that.stompClient.subscribe('/topic/connect/'+that.id, (message: any) => that.onConnect(message), {"Authorization": "Bearer " + that.userService.getToken()});
         that.stompClient.subscribe('/topic/disconnect/'+that.id, (message: any) => that.onDisconnect(message), {"Authorization": "Bearer " + that.userService.getToken()});
         that.stompClient.subscribe('/topic/begin/'+that.id, (message: any) => that.onBegin(message), {"Authorization": "Bearer " + that.userService.getToken()});
-        that.stompClient.subscribe('/topic/chat/'+that.id, (message: any) => that.onMessage(message, that.chat), {"Authorization": "Bearer " + that.userService.getToken()});
+        that.stompClient.subscribe('/topic/chat/'+that.id, (message: any) => that.onChat(message, that.chat), {"Authorization": "Bearer " + that.userService.getToken()});
         resolve(true);
       });
     });
@@ -111,17 +111,28 @@ export class GameService {
    * @param emitter Emisor de mensajes
    * @returns void
   */
-  onMessage(message:any, emitter:any): void {
+  onMessage(message:any, emitter:any, winemitter:any): void {
+    if (String(message).indexOf("HA GANADO") != -1) { //Es mensaje de victoria
+      winemitter.emit(String(message).substring(String(message).lastIndexOf(' '), String(message).length));
+    }
     let msg = JSON.parse(message.body);
     console.info("Mensaje recibido: ", message);
     emitter.emit(msg);
   };
 
+  /**
+   * Gestiona un mensaje recibido, emitiendolo por this.messageReceived
+   * @param message Mensaje recibido
+   * @param emitter Emisor de mensajes
+   * @returns void
+  */
+   onChat(message:any, emitter:any): void {
+    let msg = JSON.parse(message.body);
+    console.info("Mensaje recibido: ", message);
+    emitter.emit(msg);
+  };
 
   onPrivateMessage(message:any, ref:GameService): void {
-    if (String(message).indexOf("[") == -1) { //Es mensaje de victoria
-      ref.winner.emit(String(message).substring(String(message).lastIndexOf(' '), String(message).length));
-    }
     let arrayasstring = String(message).substring(String(message).indexOf("["),String(message).indexOf("]")+1)
     console.log("Intento parsear "+arrayasstring);
 
