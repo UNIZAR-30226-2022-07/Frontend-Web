@@ -125,7 +125,7 @@ body {
   background: #5bab63;
 }
 
-.loading {
+.final {
   left: 0 !important;
   top: 0 !important;
   z-index: 10000 !important;
@@ -139,4 +139,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+button.volverFinal {
+  position: absolute;
+  top: 60vh;
+  width: 25ch;
+  border-radius: 10px;
 }
