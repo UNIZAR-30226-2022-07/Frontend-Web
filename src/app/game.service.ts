@@ -7,6 +7,7 @@ import { Jugador } from "./game/logica/jugador";
 import { Mano } from "./game/logica/mano";
 import { UsersService } from "./users.service";
 import * as util from "./game/logica/util";
+import { MatSnackBar } from "@angular/material/snack-bar";
 // Declare SockJS and Stomp
 declare var SockJS: any;
 declare var Stomp: any;
@@ -33,7 +34,7 @@ export class GameService {
 
   public stompClient: any;
   
-  constructor(private http: HttpClient, public userService: UsersService, private router: Router) {}
+  constructor(private http: HttpClient, public userService: UsersService, private router: Router,private _snackBar: MatSnackBar) {}
   
   /**
    * Borra toda la info de una partida
@@ -55,7 +56,7 @@ export class GameService {
   
   /**
    * Crea un socket y se conecta, suscribiendose a "/topic/connect/<id>"
-   * @returns Promesa de cumplimiento
+   * @returns Promesa de finalizacion
   */
   private async connect(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
@@ -93,7 +94,7 @@ export class GameService {
    * Envia un mensaje al backend a traves del socket
    * @param message JSON que se envia en body
    * @param dir Lugar a donde enviar el mensaje. Debe terminar en '/'. Ej: "/game/connect/"
-   * @returns void
+   * @returns Promesa de finalizacion
   */
   async send(message:any, dir:string, headers:any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
@@ -129,7 +130,7 @@ export class GameService {
   };
 
   /**
-   * Gestiona un mensaje recibido, emitiendolo por this.messageReceived
+   * Gestiona un mensaje recibido por chat
    * @param message Mensaje recibido
    * @param emitter Emisor de mensajes
    * @returns void
@@ -184,7 +185,8 @@ export class GameService {
       if(j.nombre == player) {
         this.jugadores.splice(i, 1);
         if(player == this.userService.username) {
-          await this.restart().then;
+          await this.restart().then();
+          this._snackBar.open("Has salido de la partida",'',{duration: 4000});
           this.router.navigateByUrl("");
         }
         return;

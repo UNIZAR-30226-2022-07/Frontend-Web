@@ -63,6 +63,14 @@ export class PartidaPrivadaComponent implements OnInit {
       undefined
     ).then();
   }
+
+  async expulsar(user:string) {
+    await this.GameService.send(
+      { },
+      "/game/disconnect/",
+      {"Authorization": "Bearer " + this.userService.getToken(),"username":user}
+    ).then();
+  }
 }
 
 
