@@ -17,6 +17,7 @@ export class GameService {
   public messageReceived = new EventEmitter<any>();
   public chat = new EventEmitter<any>();
   public winner = new EventEmitter<string>();
+  public suscripciones: Array<any> = [];
   
   id:string = "";
   partida:any;
@@ -44,6 +45,10 @@ export class GameService {
     this.pilaCartas = [];
     this.reglas = [];
     this.indexYo = 0;
+    this.suscripciones.forEach(s => {
+      this.stompClient.unsubscribe(s,{"Authorization": "Bearer " + this.userService.getToken()})
+    });
+    //TODO: desconectar stompClient
   }
   
   /**
@@ -57,13 +62,13 @@ export class GameService {
 
       const that = this;
       this.stompClient.connect({"Authorization": "Bearer " + this.userService.getToken()}, function(frame: any) {
-
-        that.stompClient.subscribe('/user/'+that.userService.username+'/msg', (message: any) => that.onPrivateMessage(message, that), {"Authorization": "Bearer " + that.userService.getToken()});
-        that.stompClient.subscribe('/topic/jugada/'+that.id, (message: any) => that.onMessage(message, that.messageReceived,that.winner), {"Authorization": "Bearer " + that.userService.getToken()});
-        that.stompClient.subscribe('/topic/connect/'+that.id, (message: any) => that.onConnect(message), {"Authorization": "Bearer " + that.userService.getToken()});
-        that.stompClient.subscribe('/topic/disconnect/'+that.id, (message: any) => that.onDisconnect(message), {"Authorization": "Bearer " + that.userService.getToken()});
-        that.stompClient.subscribe('/topic/begin/'+that.id, (message: any) => that.onBegin(message), {"Authorization": "Bearer " + that.userService.getToken()});
-        that.stompClient.subscribe('/topic/chat/'+that.id, (message: any) => that.onChat(message, that.chat), {"Authorization": "Bearer " + that.userService.getToken()});
+        
+        that.suscripciones.push(that.stompClient.subscribe('/user/'+that.userService.username+'/msg', (message: any) => that.onPrivateMessage(message, that), {"Authorization": "Bearer " + that.userService.getToken()}));
+        that.suscripciones.push(that.stompClient.subscribe('/topic/jugada/'+that.id, (message: any) => that.onMessage(message, that.messageReceived,that.winner), {"Authorization": "Bearer " + that.userService.getToken()}));
+        that.suscripciones.push(that.stompClient.subscribe('/topic/connect/'+that.id, (message: any) => that.onConnect(message), {"Authorization": "Bearer " + that.userService.getToken()}));
+        that.suscripciones.push(that.stompClient.subscribe('/topic/disconnect/'+that.id, (message: any) => that.onDisconnect(message), {"Authorization": "Bearer " + that.userService.getToken()}));
+        that.suscripciones.push(that.stompClient.subscribe('/topic/begin/'+that.id, (message: any) => that.onBegin(message), {"Authorization": "Bearer " + that.userService.getToken()}));
+        that.suscripciones.push(that.stompClient.subscribe('/topic/chat/'+that.id, (message: any) => that.onChat(message, that.chat), {"Authorization": "Bearer " + that.userService.getToken()}));
         resolve(true);
       });
     });
@@ -170,7 +175,21 @@ export class GameService {
 
   onDisconnect(message:any): void {
     console.info("disconnect: "+message);
-    console.log(message.substring(0, message.indexOf(' ')));
+    let msg = message.body;
+    let player = msg.substring(1, msg.indexOf(' '));
+    let i = 0;
+    this.jugadores.forEach(j => {
+      if(j.nombre == player) {
+        this.jugadores.splice(i, 1);
+        if(player == this.userService.username) {
+          this.restart();
+          this.router.navigateByUrl("");
+        }
+        return;
+      }
+      i = i+1;
+    });
+    console.log();
   };
 
   onBegin(message:any): void {
