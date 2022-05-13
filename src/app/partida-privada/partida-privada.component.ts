@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ClipboardService } from 'ngx-clipboard';
 import { GameService } from '../game.service';
 import { UsersService } from '../users.service';
+import { Carta } from '../game/logica/carta';
 
 @Component({
   selector: 'app-partida-privada',
@@ -27,7 +28,9 @@ export class PartidaPrivadaComponent implements OnInit {
     
     this.GameService.messageReceived.subscribe({
       next: (msg: any) => {
-        this.GameService.pilaCartas.push(util.BTF_carta(msg.carta.color, msg.carta.numero));
+        let lastCard = util.BTF_carta(msg.carta.color, msg.carta.numero)
+        //TODO:calcular nº de cartas
+        this.GameService.pilaCartas.push(lastCard);
         msg.jugadores.forEach((j: { username: string; numeroCartas: any; }) => {
           
           this.GameService.jugadores.forEach(a => {
@@ -38,7 +41,54 @@ export class PartidaPrivadaComponent implements OnInit {
         });
         this.GameService.letoca = msg.turno;
         if(this.GameService.letoca == this.userService.username) {
-          //TODO: chupate X
+          if(lastCard.value==util.Valor.DRAW2 || lastCard.value==util.Valor.DRAW4) {
+            let mimano=this.GameService.jugadores[this.GameService.indexYo].cartas;
+            if((this.GameService.reglas.indexOf(util.Reglas.BLOCK_DRAW)) && (mimano.has(new Carta(util.Valor.SKIP,util.Color.AMARILLO))||mimano.has(new Carta(util.Valor.SKIP,util.Color.AZUL))||mimano.has(new Carta(util.Valor.SKIP,util.Color.ROJO))||mimano.has(new Carta(util.Valor.SKIP,util.Color.VERDE)))) {
+              return;
+            }
+            if(this.GameService.reglas.indexOf(util.Reglas.PROGRESSIVE_DRAW)){
+              //TODO: robar cartas calculadas antes (ojo chaos draw)
+              //TODO: skip turn
+            }
+            
+            //TODO:robar X cartas (ojo chaos draw)
+            //TODO: skip turn
+            
+          }
+
+
+          let can = false;
+          this.GameService.jugadores[this.GameService.indexYo].cartas.getArray().forEach(c => {
+            if(util.sePuedeJugar(lastCard,c)) {
+              can = true;
+            }
+          });
+          if(!can) {
+            //TODO:robar una carta (ojo chaos draw)
+            if(this.GameService.reglas.indexOf(util.Reglas.REPEAT_DRAW)) {
+              this.GameService.jugadores[this.GameService.indexYo].cartas.getArray().forEach(c => {
+                if(util.sePuedeJugar(lastCard,c)) {
+                  can = true;
+                }
+              });
+              while(!can) {
+                //TODO:robar una carta (ojo chaos draw)
+                this.GameService.jugadores[this.GameService.indexYo].cartas.getArray().forEach(c => {
+                  if(util.sePuedeJugar(lastCard,c)) {
+                    can = true;
+                  }
+                });
+                //TODO: skip turn
+                return;
+              }
+            }
+            //TODO: skip turn
+            return;
+          }
+          //BLOCK_DRAW bloquear el robar
+          //PROGRESIVE_DRAW stack +2 +4
+
+          
         }
       }
     });
