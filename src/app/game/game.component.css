@@ -5,6 +5,10 @@ div.otrosJugadores {
   justify-content: center;
 }
 
+.fade {
+  opacity: 60%;
+}
+
 div.player {
   display: inline;
   width: 10%;

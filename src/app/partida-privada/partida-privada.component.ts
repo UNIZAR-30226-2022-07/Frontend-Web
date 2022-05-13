@@ -36,6 +36,10 @@ export class PartidaPrivadaComponent implements OnInit {
             }
           });
         });
+        this.GameService.letoca = msg.turno;
+        if(this.GameService.letoca == this.userService.username) {
+          //TODO: chupate X
+        }
       }
     });
 

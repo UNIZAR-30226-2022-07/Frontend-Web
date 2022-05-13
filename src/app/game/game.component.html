@@ -29,7 +29,7 @@
         >
     </div>
     <!-- Falla aqui: -->
-    <div class="mano">
+    <div class="mano" [ngClass]="{'fade': this.gameService.letoca != this.userService.username}">
         <div class="carta" *ngFor="let item of this.gameService.jugadores[this.gameService.indexYo].cartas.getArray();let indice=index">
             <img class="carta" 
                 src="assets/img/cartas/{{item.color}}-{{item.value}}.png"
