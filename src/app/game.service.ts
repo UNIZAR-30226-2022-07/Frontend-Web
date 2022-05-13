@@ -30,6 +30,8 @@ export class GameService {
   pilaCartas: Carta[] = []; 
   //Index del array jugadores que eres tu. NOTE: Cambiar cada vez que se cambia el turno
   indexYo = 0;
+  //A quien le toca
+  letoca = "";
   
 
   public stompClient: any;
@@ -47,6 +49,7 @@ export class GameService {
       this.pilaCartas = [];
       this.reglas = [];
       this.indexYo = 0;
+      this.letoca = "";
       this.suscripciones.forEach(s => {
         this.stompClient.unsubscribe(s,{"Authorization": "Bearer " + this.userService.getToken()})
       });
@@ -200,6 +203,7 @@ export class GameService {
     console.log("begin: "+message.body);
     let msg = JSON.parse(message.body);
     this.pilaCartas.push(util.BTF_carta(msg.color,msg.numero))
+    this.letoca = this.jugadores[0].nombre;
     this.router.navigateByUrl("/game");
   };
 

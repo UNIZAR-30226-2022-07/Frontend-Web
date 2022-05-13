@@ -23,6 +23,7 @@ export class GameComponent implements OnInit {
   winner:string = "";
   //Si la partida ha terminado
   end:boolean = false;
+
   constructor(public dialog:MatDialog,public dialog2:MatDialog, public gameService: GameService, public userService: UsersService, public router: Router) { }
 
   ngOnInit(): void {
@@ -42,7 +43,7 @@ export class GameComponent implements OnInit {
 
   //Ejecutado cuando se hace click en una carta
   async playCard(c: Carta) {
-    //TODO: Parar cuando no sea tu turno
+    if(this.gameService.letoca != this.userService.username) { return; }
     if(util.sePuedeJugar(this.gameService.pilaCartas[this.gameService.pilaCartas.length-1],c)) {
       //Borrar carta de la mano
       this.gameService.jugadores[this.gameService.indexYo].cartas.remove(c);
