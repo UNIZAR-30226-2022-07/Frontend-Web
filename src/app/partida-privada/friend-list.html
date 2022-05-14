@@ -1,0 +1,24 @@
+<div class="friend_list">
+    <div class="title">
+      <h2>Lista de amigos</h2>
+    </div>
+    
+    <div *ngIf = "amigos_vacio == false" class="friend">
+        <div *ngFor="let friend of listaAmigos;">
+          <tr class="lista-amigos1">
+            <td class="lista-amigos"><mat-icon>account_box</mat-icon></td>
+            <span class="example-spacer"></span>
+            <td>{{friend}}</td>
+            <span class="example-spacer"></span>
+            <td>
+              <button  mat-button (click)="inviteFriends(friend)">
+                <mat-icon>add</mat-icon>
+              </button></td>
+          </tr>
+          <mat-divider></mat-divider>
+        
+        </div>
+    </div>
+   
+</div>
+
