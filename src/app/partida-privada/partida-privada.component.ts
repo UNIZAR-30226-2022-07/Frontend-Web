@@ -19,6 +19,7 @@ export class PartidaPrivadaComponent implements OnInit {
   tiempoTurno: number = 10;
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
   stackCard: number = 0;
+  hanrobado:boolean = false;
 
   constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog,public GameService: GameService, public userService: UsersService,private clipboardApi: ClipboardService) { }
 
@@ -29,7 +30,10 @@ export class PartidaPrivadaComponent implements OnInit {
     
     this.GameService.messageReceived.subscribe({
       next: async (msg: any) => {
-        if(this.GameService.letoca == msg.turno) { return; }
+        if(this.GameService.letoca == msg.turno) {
+          this.hanrobado = true;
+          return;
+        }
         let lastCard = util.BTF_carta(msg.carta.color, msg.carta.numero)
         if(lastCard.value == util.Valor.DRAW2) {
           this.stackCard += 2;
@@ -42,23 +46,27 @@ export class PartidaPrivadaComponent implements OnInit {
         }
         console.log("stackCard:", this.stackCard);
 
-        let someoneDrawThisTurn = false
+        let someoneDrawThisTurn = this.hanrobado;
+        
         msg.jugadores.forEach((j: { username: string; numeroCartas: any; }) => {
           this.GameService.jugadores.forEach(a => {
             if((a.nombre == j.username) && (j.username != this.userService.username)) {
-              if(a.cartas.length <= j.numeroCartas) { //Ha robado o ha skipeado por un bloqueo
+              if((a.cartas.length < j.numeroCartas)) { //Ha robado
                 someoneDrawThisTurn = true
               }
+              //TODO: detectar bloqueo
               a.cartas.set(j.numeroCartas);
             }
           });
         });
         if(someoneDrawThisTurn) { this.stackCard = 0; console.log("Alguien ha robado o skipeado"); }
-        else { this.GameService.pilaCartas.push(lastCard); }
+        else if(!this.hanrobado) { this.GameService.pilaCartas.push(lastCard); }
         this.GameService.letoca = msg.turno;
+        let anteriorValor = this.hanrobado
+        this.hanrobado = false;
         if(this.GameService.letoca == this.userService.username) {
           console.log("metoca");
-          if(lastCard.value==util.Valor.DRAW2 || lastCard.value==util.Valor.DRAW4) {
+          if((lastCard.value==util.Valor.DRAW2 || lastCard.value==util.Valor.DRAW4) && !anteriorValor) {
             console.log("+2 o +4")
             let mimano=this.GameService.jugadores[this.GameService.indexYo].cartas;
             if((this.GameService.reglas.indexOf(util.Reglas.BLOCK_DRAW) != -1) && (mimano.has(new Carta(util.Valor.SKIP,util.Color.AMARILLO))||mimano.has(new Carta(util.Valor.SKIP,util.Color.AZUL))||mimano.has(new Carta(util.Valor.SKIP,util.Color.ROJO))||mimano.has(new Carta(util.Valor.SKIP,util.Color.VERDE)))) {
@@ -94,28 +102,32 @@ export class PartidaPrivadaComponent implements OnInit {
               });
               
               console.log("Voy a robar ",this.stackCard)
+              this.GameService.acaboderobar = true;
               this.GameService.robar(this.stackCard);
               this.changeMano().then();
-              await this.delay(1000);
+              await this.delay(3000);
               this.stackCard = 0;
               await this.GameService.send(
                 { },
                 "/game/pasarTurno/",
                 undefined
               ).then()
+              this.GameService.acaboderobar = false;
             }
             if(!someoneDrawThisTurn) {
               if(lastCard.value == util.Valor.DRAW2) {
                 console.log("Voy a robar 2")
+                this.GameService.acaboderobar = true;
                 this.GameService.robar(2);
                 this.changeMano().then();
-                await this.delay(1000);
+                await this.delay(3000);
               }
               else { // es +4
                 console.log("Voy a robar 4")
+                this.GameService.acaboderobar = true;
                 this.GameService.robar(4);
                 this.changeMano().then();
-                await this.delay(1000);
+                await this.delay(3000);
 
               }
               await this.GameService.send(
@@ -123,6 +135,7 @@ export class PartidaPrivadaComponent implements OnInit {
                 "/game/pasarTurno/",
                 undefined
               ).then()
+              this.GameService.acaboderobar = false;
               return;
             }
           }
@@ -136,9 +149,10 @@ export class PartidaPrivadaComponent implements OnInit {
           });
           if(!can) {
             console.log("No puedo jugar, tengo que robar")
+            this.GameService.acaboderobar = true;
             this.GameService.robar(1);
             this.changeMano().then();
-            await this.delay(1000);
+            await this.delay(3000);
             if(this.GameService.reglas.indexOf(util.Reglas.REPEAT_DRAW) != -1) {
               this.GameService.jugadores[this.GameService.indexYo].cartas.getArray().forEach(c => {
                 if(util.sePuedeJugar(lastCard,c)) {
@@ -149,7 +163,7 @@ export class PartidaPrivadaComponent implements OnInit {
                 console.log("No puedo jugar, tengo que seguir robando")
                 this.GameService.robar(1);
                 this.changeMano().then();
-                await this.delay(1000);
+                await this.delay(3000);
                 this.GameService.jugadores[this.GameService.indexYo].cartas.getArray().forEach(c => {
                   if(util.sePuedeJugar(lastCard,c)) {
                     can = true;
@@ -160,6 +174,7 @@ export class PartidaPrivadaComponent implements OnInit {
                   "/game/pasarTurno/",
                   undefined
                 ).then()
+                this.GameService.acaboderobar = false;
                 return;
               }
             }
@@ -176,7 +191,6 @@ export class PartidaPrivadaComponent implements OnInit {
 
     this.nJugadores = this.GameService.partida.njugadores;
     this.tiempoTurno = this.GameService.partida.tturno;
-    console.log("Mas movidas:", this.nJugadores, " ", this.tiempoTurno);
   }
 
   async beginGame() {
