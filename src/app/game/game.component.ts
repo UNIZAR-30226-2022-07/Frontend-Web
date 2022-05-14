@@ -44,6 +44,7 @@ export class GameComponent implements OnInit {
   //Ejecutado cuando se hace click en una carta
   async playCard(c: Carta) {
     if(this.gameService.letoca != this.userService.username) { return; }
+    if(this.gameService.acaboderobar) { return; }
     if(util.sePuedeJugar(this.gameService.pilaCartas[this.gameService.pilaCartas.length-1],c)) {
       //Borrar carta de la mano
       this.gameService.jugadores[this.gameService.indexYo].cartas.remove(c);

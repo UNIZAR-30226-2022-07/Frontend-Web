@@ -20,6 +20,7 @@ export class GameService {
   public chat = new EventEmitter<any>();
   public winner = new EventEmitter<string>();
   public suscripciones: Array<any> = [];
+  public acaboderobar: boolean = false;
   
   id:string = "";
   partida:any;
