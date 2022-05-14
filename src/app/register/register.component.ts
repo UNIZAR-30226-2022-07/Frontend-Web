@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { UsersService } from '../users.service';
 
@@ -23,7 +24,7 @@ export class RegisterComponent implements OnInit {
   userError: boolean = false;
   userErrorMessage: string = "";
 
-  constructor(public userService: UsersService, public router: Router) { }
+  constructor(public userService: UsersService, public router: Router, public dialog:MatDialog) { }
 
   ngOnInit(): void {
   }
@@ -36,8 +37,11 @@ export class RegisterComponent implements OnInit {
     }
     this.passwordError = false;
     const user = { username: this.username, email: this.email, pais: this.country, password: this.password };
-    this.userService.register(user).subscribe({
-      next: (v) => {this.router.navigateByUrl('/login'); },
+     this.userService.register(user).subscribe({
+      next: (v) => {
+        console.log("Ha ido bien");
+        this.dialog.open(esperarTokenCorreo);
+      },
       error: (e) => {
         if (e.error.message != undefined) {
           console.error(e);
@@ -57,6 +61,8 @@ export class RegisterComponent implements OnInit {
   validate() {
     return this.country == "" || this.username == "" || this.email == "" || this.password == "" || this.confirmPassword == "" || !this.tos 
   }
+
+  
 
   public paises = [
     "Afganistán",
@@ -308,5 +314,35 @@ export class RegisterComponent implements OnInit {
     "Zambia",
     "Zimbabue",
   ]
+
+}
+
+
+@Component({
+  selector: 'esperarTokenCorreo',
+  templateUrl: './esperarTokenCorreo.html',
+  styleUrls: ['./register.component.css']
+})
+export class esperarTokenCorreo {
+
+  token:string = "";
+  constructor(public userService: UsersService,public route:Router){}
+
+  mandarCodigo(){
+    this.userService.mandarEmail(this.token).subscribe({
+      next: (data) => {
+        console.log("Ha ido bien");
+        this.route.navigateByUrl('/login');
+      },error: (e) =>{
+        console.log("Token incorrecto");
+        console.log(e.message);
+      }
+      
+
+    })
+
+
+    }
+  
 
 }

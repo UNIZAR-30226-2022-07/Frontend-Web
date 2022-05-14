@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { RegisterComponent, esperarTokenCorreo } from './register/register.component';
 import { DialogContent, MenuInicialComponent, NotisContent , ReglasPartidaComponent, UnirsePrivada} from './menu-inicial/menu-inicial.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { TosComponent } from './tos/tos.component';
@@ -51,6 +51,7 @@ import { ClipboardModule } from 'ngx-clipboard';
     ChosePlayerComponent,
     RestablecerContraComponent,
     FriendList,
+    esperarTokenCorreo,
   ],
   imports: [
     BrowserModule,

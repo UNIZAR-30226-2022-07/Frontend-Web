@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Esperando token de activación...</h1>
+<div mat-dialog-content>Se le ha enviado un token a su correo. Porfavor introduzcalo para acabar la creación de la cuenta.</div>
+<form class="custom-form" method="post">
+    <input
+    type="text"
+    [(ngModel)]="token"
+    name="token"
+    id="token-input"
+    placeholder="Código..."
+    required="required"
+    />
+    <button type="submit" id="login-btn" (click)="mandarCodigo()">Enviar código</button>
+</form>

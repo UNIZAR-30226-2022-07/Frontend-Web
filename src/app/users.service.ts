@@ -90,4 +90,10 @@ export class UsersService {
     this.country = country;
     this.points = points;
   }
+  mandarEmail(token:string){
+    console.log("El usuario es:" + this.username);
+    let body = {username:this.username, token:token};
+    return this.http.post("https://onep1.herokuapp.com/api/auth/activarCuenta",body);
+  }
 }
+
