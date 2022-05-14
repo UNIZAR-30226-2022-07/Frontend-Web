@@ -60,13 +60,14 @@ export class GameComponent implements OnInit {
         }
         
       }
-      if(this.gameService.partida.reglas.includes('CERO_SWITCH') && c.value == util.Valor.CERO){ //TODO: chequear si esta la regla "0 switch"
+      if(this.gameService.partida.reglas.includes('CERO_SWITCH') && c.value == util.Valor.CERO){
         //TODO: Cambiar todas las manos en sentido del juego
       }
-      if(this.gameService.partida.reglas.includes('CRAZY_7') && c.value == util.Valor.SIETE){ //TODO: chequear si esta la regla "Crazy 7"
-        //TODO: Popup y cambiar la mano con la seleccion
+      if(this.gameService.partida.reglas.includes('CRAZY_7') && c.value == util.Valor.SIETE){
+
         let user = ""
         await this.popupJugador(user).then(); //TODO: recoger valor de la promise como jugador seleccionado
+        //TODO:_cambiar mano
         console.log("CAMBIAR MANO CON "+user);
       }
       //TODO: Comprobar resto de reglas

@@ -5,7 +5,7 @@
 <div class="game">
     <hr>
     <div class="otrosJugadores">
-        <div class="player" *ngFor="let item of this.gameService.jugadores;let indice=index">
+        <div class="player" *ngFor="let item of this.gameService.jugadores;let indice=index" [ngClass]="{'fade': this.gameService.letoca != item.nombre}">
             <h2>{{item.nombre}}</h2>
             <div class="group">
                 <img class="otrosJugadores" src="assets/img/cartas/back.png">
@@ -38,4 +38,5 @@
         </div>
     </div>
     <button mat-fab color="primary" class="uno">UNO</button>
+    <button (click)="this.gameService.robar(1)">ROBAR</button>
 </div>
