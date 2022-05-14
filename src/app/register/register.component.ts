@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { UsersService } from '../users.service';
 
@@ -40,7 +40,10 @@ export class RegisterComponent implements OnInit {
      this.userService.register(user).subscribe({
       next: (v) => {
         console.log("Ha ido bien");
-        this.dialog.open(esperarTokenCorreo);
+        this.dialog.open(esperarTokenCorreo,
+          {
+            data: this.username,
+          });
       },
       error: (e) => {
         if (e.error.message != undefined) {
