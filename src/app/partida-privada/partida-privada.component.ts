@@ -183,6 +183,7 @@ export class PartidaPrivadaComponent implements OnInit {
               "/game/pasarTurno/",
               undefined
             ).then()
+            this.GameService.acaboderobar = false;
             return;
           }          
         }
