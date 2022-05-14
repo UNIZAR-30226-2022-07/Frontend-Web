@@ -1,8 +1,10 @@
 
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute,Params, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { FriendService } from '../friend.service';
 import { GameService } from '../game.service';
 import { UsersService } from '../users.service';
@@ -17,10 +19,30 @@ import { UsersService } from '../users.service';
 })
 export class MenuInicialComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog, public userService: UsersService) {
+  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog, public userService: UsersService, public http: HttpClient) {
   }
   
   ngOnInit(): void {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': "Bearer "+this.userService.getToken()
+      }),
+      withCredentials: true
+    };
+    let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/getPartidasActivas",
+    {
+      playerName: this.userService.username
+    },
+    httpOptions)
+
+    test.subscribe({
+      next: (v: any) => {
+        console.log("ME LLEGO ",v)
+      },
+      error: (e:any) => {
+        
+      }
+    });
   }
 
   openDialog(){
