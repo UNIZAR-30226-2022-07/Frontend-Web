@@ -7,6 +7,24 @@ div.register {
 }
 
 /*------------------------------ FORM ------------------------------ */
+
+.btn-token{
+  
+  width: 15%;
+  height: 5%;
+  float: right;
+  
+  margin: auto;
+
+  display: flex;
+  text-align: center;
+  align-items: center;
+  padding: auto;
+
+}
+
+
+
 input {
   display: block;
   width: 600px;
