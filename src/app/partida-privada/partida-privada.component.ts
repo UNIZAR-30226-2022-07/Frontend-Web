@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import * as util from "../game/logica/util";
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClipboardService } from 'ngx-clipboard';
 import { GameService } from '../game.service';
 import { UsersService } from '../users.service';
 import { Carta } from '../game/logica/carta';
+import { FriendService } from '../friend.service';
 
 @Component({
   selector: 'app-partida-privada',
@@ -59,6 +60,7 @@ export class PartidaPrivadaComponent implements OnInit {
             }
           });
         });
+        console.log("Blockcounter es "+this.GameService.blockCounter)
         if(someoneDrawThisTurn) { this.stackCard = 0; console.log("Alguien ha robado o skipeado"); }
         else if(!this.hanrobado) { this.GameService.pilaCartas.push(lastCard); }
         this.GameService.letoca = msg.turno;
@@ -66,6 +68,34 @@ export class PartidaPrivadaComponent implements OnInit {
         this.hanrobado = false;
         if(this.GameService.letoca == this.userService.username) {
           console.log("metoca");
+          if(lastCard.value == util.Valor.SKIP) {
+            if(this.GameService.reglas.indexOf(util.Reglas.BLOCK_DRAW) != -1) {
+              //TODO: Que pasa cuando echan un bloqueo y es para saltarse el robar?
+            }
+            else {
+              if(this.GameService.blockCounter == 0) { //Me saltan a mi
+                console.log("me saltan")
+                this.GameService.acaboderobar = true;
+                await this.delay(3000);
+                await this.GameService.send(
+                  { },
+                  "/game/pasarTurno/",
+                  undefined
+                ).then()
+                this.GameService.acaboderobar = false;
+                this.GameService.blockCounter++;
+                this.GameService.pilaCartas.pop();
+                return;
+              }
+              console.log("Han saltado antes")
+              this.GameService.blockCounter++;
+            }
+          }
+          else {
+            this.GameService.blockCounter = 0;
+            console.log("no es skip")
+          }
+
           if((lastCard.value==util.Valor.DRAW2 || lastCard.value==util.Valor.DRAW4) && !anteriorValor) {
             console.log("+2 o +4")
             let mimano=this.GameService.jugadores[this.GameService.indexYo].cartas;
@@ -236,6 +266,113 @@ export class PartidaPrivadaComponent implements OnInit {
       {"Authorization": "Bearer " + this.userService.getToken(),"username":user}
     ).then();
   }
+
+  openFriends(): void {
+    const dialogRef2 = this.dialog.open(FriendList,
+      {
+        data: this.userService.username,
+        position: {
+          top: '0px',
+          right: '0px'
+         
+        },
+        height: '100vh',
+        width: '25%'
+      });
+  }
+  
 }
 
 
+
+
+@Component({
+  selector: 'friend-list',
+  templateUrl: 'friend-list.html',
+  styleUrls: ['./partida-privada.component.css']
+})
+export class FriendList {
+
+  
+  searchText!: string;
+
+  name : string | null = null;
+
+  
+  listaAmigos: Array<string> = [];
+  
+  cuerpo_mensaje: any;
+  mensaje_final:any;
+  
+  
+  amigos_vacio:boolean;
+
+
+  
+
+  
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data:any,public friendService: FriendService, public gameService: GameService) {
+    this.name = data.name;
+    this.amigos_vacio = true;
+
+  }
+  
+  ngOnInit(): void {
+    // this.listaAmigos = [{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"}]
+    console.log("hola");
+   
+    this.friendService.getFriends().subscribe({
+      next: (data) => {
+        
+        const msg = data.message;
+        this.cuerpo_mensaje = msg.split("\"");
+
+        if (data == null){
+          console.log("no tengo amigos");
+          this.amigos_vacio = true;
+        }else{
+          this.amigos_vacio = false;
+          console.info("Mensaje recibido: ", data.message);
+          for (let n = 0; (2*n + 1) < this.cuerpo_mensaje.length; n++) {
+            this.listaAmigos.push(this.cuerpo_mensaje[2*n + 1]);
+          }
+            
+        }
+      
+
+      },
+      error: (e) =>{
+        if (e.status == 401) {
+          console.log("ha ido mal");
+        }
+        else {
+          console.error(e);
+          
+        }
+      }
+    })
+  }
+
+
+  inviteFriends(friend:string): void{
+    console.log("El nombre del amigo es: " + friend);
+ 
+    this.gameService.inviteFriend(friend).subscribe({
+      next: (v) => {
+        console.log("Ha ido bien");
+
+      },
+      error: (e) =>{
+        console.log("Ha ido mal");
+        console.log(e.message);
+      }
+    }) 
+
+  }
+
+  
+
+
+
+}

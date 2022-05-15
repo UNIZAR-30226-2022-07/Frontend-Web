@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { RegisterComponent, esperarTokenCorreo } from './register/register.component';
 import { DialogContent, MenuInicialComponent, NotisContent , ReglasPartidaComponent, UnirsePrivada} from './menu-inicial/menu-inicial.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { TosComponent } from './tos/tos.component';
@@ -18,7 +18,7 @@ import { MaterialModule } from './material/material.module';
 import { TorneoComponent } from './torneo/torneo.component';
 import { TorneoEsperaComponent } from './torneo-espera/torneo-espera.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
-import { PartidaPrivadaComponent } from './partida-privada/partida-privada.component';
+import { PartidaPrivadaComponent, FriendList } from './partida-privada/partida-privada.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { ConfirmarBorrar, EditProfileComponent } from './edit-profile/edit-profile.component';
 import { RestablecerContraComponent } from './restablecer-contra/restablecer-contra.component';
@@ -50,6 +50,8 @@ import { ClipboardModule } from 'ngx-clipboard';
     ConfirmarBorrar,
     ChosePlayerComponent,
     RestablecerContraComponent,
+    FriendList,
+    esperarTokenCorreo,
   ],
   imports: [
     BrowserModule,

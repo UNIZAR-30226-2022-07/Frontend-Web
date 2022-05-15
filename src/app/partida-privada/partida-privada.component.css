@@ -27,12 +27,12 @@ div.div.status {
   align-items: center;
 }
   
-div.reglas {
-  width: 35%;
-  position: absolute;
+.reglas {
+  width: 10%;
+  height: 5%;
+
+ float: right;
   
-  top: 30vh;
-  right: 1vw;
 }
 
 div.center {
@@ -82,6 +82,11 @@ div.persona {
   border: 1ch;
   border-style: solid;
   border-color: black;
+  transition: 5;
+}
+
+div.persona:hover{
+
 }
 
 div.pack {
@@ -140,4 +145,46 @@ div.settings .mat-icon-button{
   position: absolute;
   top: 1vh;
   left: 93vw;
+}
+
+
+
+/*--------------------------POP UP INVITAR AMIGOS-------------------------*/
+
+
+div.friend_list {
+  height: 100%;
+  width: 100%;
+  display: block;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  
+}
+
+div.title{
+  align-items: center;
+  text-align: center;
+}
+
+
+.lista-amigos1{
+
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+.lista-amigos1:hover{
+  background: #EEE;
+
+}
+
+
+
+.example-spacer {
+  flex: 1 1 auto;
 }

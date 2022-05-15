@@ -8,6 +8,7 @@ import { Mano } from "./game/logica/mano";
 import { UsersService } from "./users.service";
 import * as util from "./game/logica/util";
 import { MatSnackBar } from "@angular/material/snack-bar";
+
 // Declare SockJS and Stomp
 declare var SockJS: any;
 declare var Stomp: any;
@@ -25,6 +26,7 @@ export class GameService {
   id:string = "";
   partida:any;
   reglas: Array<util.Reglas> = [];
+  blockCounter: number = 0;
 
   //Lista de jugadores
   jugadores: Jugador[] = [];
@@ -339,5 +341,11 @@ export class GameService {
       });
     });
   }
+
+  inviteFriend(friendname:string): Observable<any> {
+    let body = { username: this.userService.username, friendname:friendname, gameId: this.id};
+    return this.http.post("https://onep1.herokuapp.com/game/getPartidasActivas",body);
+  }
+
 
 }
