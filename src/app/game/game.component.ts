@@ -46,6 +46,7 @@ export class GameComponent implements OnInit {
     if(this.gameService.letoca != this.userService.username) { console.log("no te toca tontito"); return; }
     if(this.gameService.acaboderobar) { console.log("estas robando tontito"); return; }
     if(util.sePuedeJugar(this.gameService.pilaCartas[this.gameService.pilaCartas.length-1],c)) {
+      if(c.value == util.Valor.SKIP) { this.gameService.blockCounter = 1; }
       //Borrar carta de la mano
       this.gameService.jugadores[this.gameService.indexYo].cartas.remove(c);
       //Efectos especiales

@@ -26,6 +26,7 @@ export class GameService {
   id:string = "";
   partida:any;
   reglas: Array<util.Reglas> = [];
+  blockCounter: number = 0;
 
   //Lista de jugadores
   jugadores: Jugador[] = [];
