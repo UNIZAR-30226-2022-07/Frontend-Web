@@ -334,6 +334,9 @@ export class esperarTokenCorreo {
 
   token:string = "";
   nombre : string = "";
+  usuarioVacio:boolean = false;
+  tokenVacio:boolean = false;
+  tokenIncorrecto:boolean = false;
   constructor(public userService: UsersService,public route:Router){}
 
   mandarCodigo(){
@@ -343,6 +346,14 @@ export class esperarTokenCorreo {
         this.route.navigateByUrl('/login');
       },error: (e) =>{
         console.log("Token incorrecto");
+        if( this.nombre == ""){
+          this.usuarioVacio = true;
+        }else if(this.token == ""){
+          this.tokenVacio = true;
+        }
+        else{
+          this.tokenIncorrecto = true;
+        }
         console.log(e.message);
       }
       
