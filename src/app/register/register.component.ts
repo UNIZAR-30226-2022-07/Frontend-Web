@@ -65,6 +65,10 @@ export class RegisterComponent implements OnInit {
     return this.country == "" || this.username == "" || this.email == "" || this.password == "" || this.confirmPassword == "" || !this.tos 
   }
 
+  abrirEsperarToken(){
+    this.dialog.open(esperarTokenCorreo); 
+  }
+
   
 
   public paises = [
@@ -329,10 +333,11 @@ export class RegisterComponent implements OnInit {
 export class esperarTokenCorreo {
 
   token:string = "";
+  nombre : string = "";
   constructor(public userService: UsersService,public route:Router){}
 
   mandarCodigo(){
-    this.userService.mandarEmail(this.token).subscribe({
+    this.userService.mandarEmail(this.nombre,this.token).subscribe({
       next: (data) => {
         console.log("Ha ido bien");
         this.route.navigateByUrl('/login');
