@@ -67,36 +67,37 @@ export class PartidaPrivadaComponent implements OnInit {
         this.GameService.letoca = msg.turno;
         let anteriorValor = this.hanrobado
         this.hanrobado = false;
-        if(this.GameService.letoca == this.userService.username) {
-          console.log("metoca");
-          if(lastCard.value == util.Valor.SKIP) {
-            if(this.GameService.reglas.indexOf(util.Reglas.BLOCK_DRAW) != -1) {
-              //TODO: Que pasa cuando echan un bloqueo y es para saltarse el robar?
-            }
-            else {
-              if(this.GameService.blockCounter == 0) { //Me saltan a mi
-                console.log("me saltan")
-                this.GameService.acaboderobar = true;
-                await this.delay(3000);
-                await this.GameService.send(
-                  { },
-                  "/game/pasarTurno/",
-                  undefined
-                ).then()
-                this.GameService.acaboderobar = false;
-                this.GameService.blockCounter++;
-                this.GameService.pilaCartas.pop();
-                return;
-              }
-              console.log("Han saltado antes")
-              this.GameService.blockCounter++;
-            }
+
+        if(lastCard.value == util.Valor.SKIP) {
+          if(this.GameService.reglas.indexOf(util.Reglas.BLOCK_DRAW) != -1) {
+            //TODO: Que pasa cuando echan un bloqueo y es para saltarse el robar?
           }
           else {
-            this.GameService.blockCounter = 0;
-            console.log("no es skip")
+            if(this.GameService.blockCounter == 0 && this.GameService.letoca == this.userService.username) { //Me saltan a mi
+              console.log("me saltan")
+              this.GameService.acaboderobar = true;
+              await this.delay(3000);
+              await this.GameService.send(
+                { },
+                "/game/pasarTurno/",
+                undefined
+              ).then()
+              this.GameService.acaboderobar = false;
+              this.GameService.blockCounter++;
+              this.GameService.pilaCartas.pop();
+              return;
+            }
+            console.log("Han saltado antes o estan saltando a otro")
+            this.GameService.blockCounter++;
           }
+        }
+        else {
+          this.GameService.blockCounter = 0;
+          console.log("no es skip")
+        }
 
+        if(this.GameService.letoca == this.userService.username) {
+          console.log("metoca");
           if((lastCard.value==util.Valor.DRAW2 || lastCard.value==util.Valor.DRAW4) && !anteriorValor) {
             console.log("+2 o +4")
             let mimano=this.GameService.jugadores[this.GameService.indexYo].cartas;
