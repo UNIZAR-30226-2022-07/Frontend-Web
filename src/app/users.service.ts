@@ -91,9 +91,14 @@ export class UsersService {
     this.points = points;
   }
   mandarEmail(username: string, token:string){
-   
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': "Bearer "+this.getToken()
+      }),
+      withCredentials: true
+    };
     let body = {username:username, token:token};
-    return this.http.post("https://onep1.herokuapp.com/api/auth/activarCuenta",body);
+    return this.http.post("https://onep1.herokuapp.com/api/auth/activarCuenta",body,httpOptions);
   }
 }
 

@@ -7,6 +7,7 @@ import { GameService } from '../game.service';
 import { UsersService } from '../users.service';
 import { Carta } from '../game/logica/carta';
 import { FriendService } from '../friend.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-partida-privada',
@@ -312,7 +313,7 @@ export class FriendList {
 
   
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data:any,public friendService: FriendService, public gameService: GameService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data:any,public friendService: FriendService, public gameService: GameService, public _snackbar:MatSnackBar) {
     this.name = data.name;
     this.amigos_vacio = true;
 
@@ -361,6 +362,7 @@ export class FriendList {
     this.gameService.inviteFriend(friend).subscribe({
       next: (v) => {
         console.log("Ha ido bien");
+        this._snackbar.open("Invitación enviada con éxito",'',{duration: 4000});
 
       },
       error: (e) =>{

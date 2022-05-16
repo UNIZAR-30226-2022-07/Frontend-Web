@@ -17,5 +17,17 @@
     placeholder="Código..."
     required="required"
     />
-    <button type="submit" id="login-btn" (click)="mandarCodigo()">Enviar código</button>
+    <div mat-dialog-actions>
+        <button type="submit" id="login-btn" (click)="mandarCodigo()">Enviar código</button>
+        
+    </div>
+    <div *ngIf="usuarioVacio" class="error">
+        El usuario esta vacío. Porfavor introduzca un usuario correcto.
+    </div>
+    <div *ngIf="tokenVacio" class="error">
+        El token esta vacío. Porfavor introduzca un token válido.
+    </div>
+    <div *ngIf="tokenIncorrecto" class="error">
+        Token incorrecto. Porfavor introduzca un token correcto.
+    </div>
 </form>

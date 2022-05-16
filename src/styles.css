@@ -28,3 +28,45 @@ h4, h5, h6 {
 p, label, input, th, td {
   font-family: "Fredoka One";
 }
+
+.loading {
+  left: 0 !important;
+  top: 0 !important;
+  z-index: 10000 !important;
+  width: 100% !important;
+  height: 100% !important;
+  position: fixed !important;
+  background-color: rgba(255,255,255,0.8) !important;
+  cursor: pointer !important;
+  visibility: visible !important;
+  transition: visibility 0.1s, opacity 0.4s linear !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: wait !important;
+}
+
+.ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid darkred;
+  border-color: darkred transparent darkred transparent;
+  animation: ring 1.2s linear infinite;
+}
+@keyframes ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

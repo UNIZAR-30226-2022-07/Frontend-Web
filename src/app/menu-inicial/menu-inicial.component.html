@@ -1,4 +1,6 @@
-
+<div class="loading" *ngIf="loading">
+  <div class="ring"></div>
+</div>
 
 <mat-toolbar class="toolbar">
   <button mat-icon-button class ="clasif_menu" (click)="this.router.navigateByUrl('/leaderboard')">
@@ -23,7 +25,7 @@
 <span class="head-body-spacer"></span>
 <div class="mid-container">
   <div class="boton1">
-    <a routerLink="/game">Partida rápida</a>
+    <button mat-button (click)="buscarPublica()">Partida rápida</button>
     <button mat-button (click)="pedirCodigo()">Unirse P.Privada</button>
     <button mat-button (click)="crearPPrivada()">Crear P.Privada</button>
     <a href="/torneo"> Buscar Torneo</a>

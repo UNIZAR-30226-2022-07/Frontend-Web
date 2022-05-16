@@ -43,8 +43,8 @@ export class GameComponent implements OnInit {
 
   //Ejecutado cuando se hace click en una carta
   async playCard(c: Carta) {
-    if(this.gameService.letoca != this.userService.username) { console.log("no te toca tontito"); return; }
-    if(this.gameService.acaboderobar) { console.log("estas robando tontito"); return; }
+    if(this.gameService.letoca != this.userService.username) { console.log("no te toca"); return; }
+    if(this.gameService.acaboderobar) { console.log("estas robando"); return; }
     if(util.sePuedeJugar(this.gameService.pilaCartas[this.gameService.pilaCartas.length-1],c)) {
       if(c.value == util.Valor.SKIP) { this.gameService.blockCounter = 1; }
       //Borrar carta de la mano
