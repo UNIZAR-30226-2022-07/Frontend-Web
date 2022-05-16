@@ -49,18 +49,24 @@ export class PartidaPrivadaComponent implements OnInit {
         console.log("stackCard:", this.stackCard);
 
         let someoneDrawThisTurn = this.hanrobado;
+        let hanJugado = false;
         
         msg.jugadores.forEach((j: { username: string; numeroCartas: any; }) => {
           this.GameService.jugadores.forEach(a => {
+            console.log("comparando "+a.nombre+" "+a.cartas.length()+" con "+j.username+" "+j.numeroCartas);
             if((a.nombre == j.username) && (j.username != this.userService.username)) {
-              if((a.cartas.length < j.numeroCartas)) { //Ha robado
+              if((a.cartas.length() < j.numeroCartas)) { //Ha robado
                 someoneDrawThisTurn = true
               }
-              //TODO: detectar bloqueo
+              if(a.cartas.length() > j.numeroCartas) {
+                hanJugado = true;
+              }
               a.cartas.set(j.numeroCartas);
             }
           });
         });
+        if(hanJugado) { console.log("HAN JUGADO") }
+        if(someoneDrawThisTurn) { console.log("HAN ROBADO") }
         console.log("Blockcounter es "+this.GameService.blockCounter)
         if(someoneDrawThisTurn) { this.stackCard = 0; console.log("Alguien ha robado o skipeado"); }
         else if(!this.hanrobado) { this.GameService.pilaCartas.push(lastCard); }
@@ -73,7 +79,7 @@ export class PartidaPrivadaComponent implements OnInit {
             //TODO: Que pasa cuando echan un bloqueo y es para saltarse el robar?
           }
           else {
-            if(this.GameService.blockCounter == 0 && this.GameService.letoca == this.userService.username) { //Me saltan a mi
+            if((this.GameService.blockCounter == 0 && this.GameService.letoca == this.userService.username) || (hanJugado && this.GameService.blockCounter>0 && this.GameService.letoca == this.userService.username)) { //Me saltan a mi
               console.log("me saltan")
               this.GameService.acaboderobar = true;
               await this.delay(3000);
@@ -84,7 +90,7 @@ export class PartidaPrivadaComponent implements OnInit {
               ).then()
               this.GameService.acaboderobar = false;
               this.GameService.blockCounter++;
-              this.GameService.pilaCartas.pop();
+              // this.GameService.pilaCartas.pop();
               return;
             }
             console.log("Han saltado antes o estan saltando a otro")
