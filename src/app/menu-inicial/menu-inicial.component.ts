@@ -177,6 +177,13 @@ export class DialogContent {
 
 }
 
+ interface Mensaje{
+  name:string;
+  codigo:string;
+  mensaje:string;
+}
+
+
 @Component({
   selector: 'notis-content',
   templateUrl: 'notis-content.html' ,
@@ -185,6 +192,7 @@ export class DialogContent {
 export class NotisContent {
   
   listaNotis: Array<string> = [];
+  listaInvitaciones: Array<Mensaje> = [];
   cuerpo_mensaje: any;
   mensaje_final:any;
   
@@ -193,6 +201,7 @@ export class NotisContent {
   constructor(public dialog:MatDialog, public friendService: FriendService){
      
   }
+  
 
   ngOnInit(): void{
     console.log("Vamos a pedir mensajes")
@@ -223,6 +232,34 @@ export class NotisContent {
           console.error(e);
           
         }
+      }
+    })
+    this.friendService.getInvitations().subscribe({
+      next: (data) =>{
+        const msg = JSON.stringify(data);
+        this.cuerpo_mensaje = msg.split(",");
+        for (let n = 0; n < this.cuerpo_mensaje.length; n=n+2) {
+          
+          const msg = this.cuerpo_mensaje[n].split(":");
+          const msg2 = msg[1].substring(1,msg[1].length -1);
+
+          const cod = this.cuerpo_mensaje[n+1].split(":");
+          const cod2 = cod[1].substring(1,cod[1].length -1);
+        
+          let Mensaje = {
+            name : msg2,
+            codigo : cod2,
+            mensaje: "Te ha invitado a su partida",
+          }
+          this.listaInvitaciones.push(Mensaje);
+          
+        }
+       
+        console.log("longitud" + this.cuerpo_mensaje.length);
+        console.log("Ultimo mensaje " + this.cuerpo_mensaje[1]);
+
+      },error: (e) =>{
+
       }
     })
     //this.listaNotis = [{nombre:"cesar",mensaje:"te ha invitado a su partida"},{nombre:"victor",mensaje:"quiere ser tu amigo"},{nombre:"paula",mensaje:"quiere ser tu amigo"}]

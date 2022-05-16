@@ -343,8 +343,14 @@ export class GameService {
   }
 
   inviteFriend(friendname:string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': "Bearer "+this.userService.getToken()
+      }),
+      withCredentials: true
+    }
     let body = { username: this.userService.username, friendname:friendname, gameId: this.id};
-    return this.http.post("https://onep1.herokuapp.com/game/getPartidasActivas",body);
+    return this.http.post("https://onep1.herokuapp.com/game/invite",body,httpOptions);
   }
 
 

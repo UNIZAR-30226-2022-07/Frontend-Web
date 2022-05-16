@@ -81,4 +81,9 @@ export class FriendService {
     return this.http.post("https://onep1.herokuapp.com/friends/deleteFriend", body);
   }
 
+  getInvitations(): Observable<any> {
+    let body = {username:this.userService.username}
+    return this.http.post("https://onep1.herokuapp.com/game/getInvitacionesPartida",body);
+  }
+
 }

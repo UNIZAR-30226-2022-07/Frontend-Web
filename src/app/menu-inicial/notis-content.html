@@ -1,5 +1,5 @@
 
-<div ng-init="cargarMensajes()" class="pop-container2">
+<div  class="pop-container2">
   <mat-dialog-content class="mat-typography">
     <h3>
       <mat-list>
@@ -21,10 +21,35 @@
               </button>
             </td>
           </tr>
+          
           <mat-divider></mat-divider>
         
         
         </div>
+        <div *ngFor="let mensaje of listaInvitaciones;">
+          <tr class="lista-amigos">
+            <td>
+              {{mensaje.name}}
+            </td>
+            <span class="example-spacer"></span>
+            <td>{{mensaje.mensaje}}</td>
+            <span class="example-spacer"></span>
+            <td>
+              <button mat-button>
+                <mat-icon>done</mat-icon>
+                
+              </button>
+              <button  mat-button>
+                <mat-icon>remove</mat-icon>
+              </button>
+            </td>
+          </tr>
+          
+          <mat-divider></mat-divider>
+        
+        
+        </div>
+     
      
         </mat-list>
   
