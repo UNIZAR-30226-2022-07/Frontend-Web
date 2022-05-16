@@ -18,7 +18,8 @@ export class GameComponent implements OnInit {
   //Direccion del juego
   direccion:util.Direccion =  util.Direccion.NORMAL;
   //Vector de numeros aleatorios para la rotacion de las cartas de la pila central
-  randomRotation: number[] = Array.from({length: 108}, () => Math.floor(Math.random() * 360)); 
+  // randomRotation: number[] = Array.from({length: 108}, () => Math.floor(Math.random() * 360)); 
+  randomRotation: number[] = []
   //Ganador de la partida
   winner:string = "";
   //Si la partida ha terminado
