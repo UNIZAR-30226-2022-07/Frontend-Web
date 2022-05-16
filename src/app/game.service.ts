@@ -227,9 +227,20 @@ export class GameService {
   onBegin(message:any): void {
     console.log("begin: "+message.body);
     let msg = JSON.parse(message.body);
-    this.pilaCartas.push(util.BTF_carta(msg.color,msg.numero))
-    this.letoca = this.jugadores[0].nombre;
+    // this.pilaCartas.push(util.BTF_carta(msg.color,msg.numero))
+    // this.letoca = this.jugadores[0].nombre;
     this.router.navigateByUrl("/game");
+    //Simular que llega el mensaje
+    let body = {carta: {numero: msg.numero, color: msg.color},
+                jugadores: [{username:this.userService.username, numeroCartas:7}],
+                turno: this.jugadores[0].nombre};
+    this.jugadores.forEach(j => {
+      if(j.nombre != this.userService.username) {
+        let a = {username: j.nombre, numeroCartas:7};
+        body["jugadores"].push(a);
+      }
+    });
+    this.messageReceived.emit(body); //Emitirlo
   };
 
 

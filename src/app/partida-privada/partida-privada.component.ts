@@ -32,6 +32,7 @@ export class PartidaPrivadaComponent implements OnInit {
     
     this.GameService.messageReceived.subscribe({
       next: async (msg: any) => {
+        console.log("he recibido",msg)
         if(this.GameService.letoca == msg.turno) {
           this.hanrobado = true;
           return;
