@@ -69,11 +69,12 @@ export class PartidaPrivadaComponent implements OnInit {
         if(hanJugado) { console.log("HAN JUGADO") }
         if(someoneDrawThisTurn) { console.log("HAN ROBADO") }
         console.log("Blockcounter es "+this.GameService.blockCounter)
-        if(someoneDrawThisTurn) { this.stackCard = 0; console.log("Alguien ha robado o skipeado"); }
-        else if(!this.hanrobado) { this.GameService.pilaCartas.push(lastCard); }
+        if(someoneDrawThisTurn && this.GameService.pilaCartas[this.GameService.pilaCartas.length-1] == lastCard) { this.stackCard = 0; console.log("Alguien ha robado o skipeado"); }
+        else if(!this.hanrobado || this.GameService.pilaCartas[this.GameService.pilaCartas.length-1] != lastCard) { this.GameService.pilaCartas.push(lastCard); }
         this.GameService.letoca = msg.turno;
         let anteriorValor = this.hanrobado
         this.hanrobado = false;
+        this.GameService.saidUno = false;
 
         if(lastCard.value == util.Valor.SKIP) {
           if(this.GameService.reglas.indexOf(util.Reglas.BLOCK_DRAW) != -1) {
@@ -103,6 +104,7 @@ export class PartidaPrivadaComponent implements OnInit {
           console.log("no es skip")
         }
 
+        
         if(this.GameService.letoca == this.userService.username) {
           console.log("metoca");
           if((lastCard.value==util.Valor.DRAW2 || lastCard.value==util.Valor.DRAW4) && !anteriorValor) {

@@ -22,6 +22,7 @@ export class GameService {
   public winner = new EventEmitter<string>();
   public suscripciones: Array<any> = [];
   public acaboderobar: boolean = false;
+  public saidUno: boolean = false;
   
   id:string = "";
   partida:any;
@@ -40,7 +41,7 @@ export class GameService {
 
   public stompClient: any;
   
-  constructor(private http: HttpClient, public userService: UsersService, private router: Router,private _snackBar: MatSnackBar) {}
+  constructor(private http: HttpClient, public userService: UsersService, private router: Router, private _snackBar: MatSnackBar) {}
   
   /**
    * Borra toda la info de una partida
@@ -79,6 +80,8 @@ export class GameService {
         that.suscripciones.push(that.stompClient.subscribe('/topic/disconnect/'+that.id, (message: any) => that.onDisconnect(message), {"Authorization": "Bearer " + that.userService.getToken()}));
         that.suscripciones.push(that.stompClient.subscribe('/topic/begin/'+that.id, (message: any) => that.onBegin(message), {"Authorization": "Bearer " + that.userService.getToken()}));
         that.suscripciones.push(that.stompClient.subscribe('/topic/chat/'+that.id, (message: any) => that.onChat(message, that.chat), {"Authorization": "Bearer " + that.userService.getToken()}));
+        that.suscripciones.push(that.stompClient.subscribe('/topic/buttonOne/'+that.id, (message: any) => that.onButtonOne(message), {"Authorization": "Bearer " + that.userService.getToken()}));
+        
         resolve(true);
       });
     });
@@ -162,7 +165,7 @@ export class GameService {
    * @param emitter Emisor de mensajes
    * @returns void
   */
-   onChat(message:any, emitter:any): void {
+  onChat(message:any, emitter:any): void {
     let msg = JSON.parse(message.body);
     console.info("Mensaje recibido: ", message);
     emitter.emit(msg);
@@ -242,6 +245,10 @@ export class GameService {
     });
     this.messageReceived.emit(body); //Emitirlo
   };
+
+  onButtonOne(message:any): void {
+    console.log("UNO: ",message);
+  }
 
 
   /**
