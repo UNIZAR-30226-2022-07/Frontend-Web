@@ -1,10 +1,14 @@
-<div class>
+
+<body>
     <div class="boton back">
         <button mat-icon-button (click)="goBack()">
             <mat-icon>arrow_back</mat-icon>
-          </button>
+        </button>
     </div>
-   <!-- <div class="boton settings">
+    <button  class= "reglas" (click) = "abrirReglas()" mat-button>
+        Reglas
+    </button>
+    <!-- <div class="boton settings">
         <button mat-icon-button (click)="popupAdmin()">
             <mat-icon>settings</mat-icon>
           </button>
@@ -22,9 +26,6 @@
         </ul>
     </div>
 -->
-    <button mat-raised-button class="reglas">
-        Reglas
-    </button>
 
     <h1>Partida privada de {{GameService.jugadores[0].nombre}}</h1>
     <h3>Jugadores:  {{GameService.jugadores.length}} / {{nJugadores}}</h3>
@@ -67,4 +68,4 @@
         </div>    
     </div>
     
-</div>
+</body>
