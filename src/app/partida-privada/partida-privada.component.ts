@@ -108,11 +108,12 @@ export class PartidaPrivadaComponent implements OnInit {
         if(this.GameService.letoca == this.userService.username) {
           console.log("metoca");
           if((lastCard.value==util.Valor.DRAW2 || lastCard.value==util.Valor.DRAW4) && !anteriorValor) {
-            console.log("+2 o +4")
+            console.log("+2 o +4 con reglas ",this.GameService.reglas)
+            let salvado = false;
             let mimano=this.GameService.jugadores[this.GameService.indexYo].cartas;
             if((this.GameService.reglas.indexOf(util.Reglas.BLOCK_DRAW) != -1) && (mimano.has(new Carta(util.Valor.SKIP,util.Color.AMARILLO))||mimano.has(new Carta(util.Valor.SKIP,util.Color.AZUL))||mimano.has(new Carta(util.Valor.SKIP,util.Color.ROJO))||mimano.has(new Carta(util.Valor.SKIP,util.Color.VERDE)))) {
               console.log("me salvo por tener un bloqueo")
-              return;
+              salvado = true;
             }
             if(this.GameService.reglas.indexOf(util.Reglas.PROGRESSIVE_DRAW) != -1){
               //Calcular cuales te salvan
@@ -129,55 +130,59 @@ export class PartidaPrivadaComponent implements OnInit {
               ];
               let i=0;
               posiblesSalvaciones.forEach(c => {
-                if(!util.isWild(c.value) || !(c.value==lastCard.value || c.color==lastCard.color)) {
+                if(!util.isWild(c.value) && !(c.value==lastCard.value || c.color==lastCard.color)) {
                   posiblesSalvaciones.splice(i,1);
                 }
                 i++;
               });
-
+              console.log("Me salvan:",posiblesSalvaciones);
               posiblesSalvaciones.forEach(c => {
                 if(mimano.has(c)) {
                   console.log("me salvo por tener un +2 o +4 jugable");
-                  return;
+                  salvado = true;
                 }
               });
               
-              console.log("Voy a robar ",this.stackCard)
-              this.GameService.acaboderobar = true;
-              this.GameService.robar(this.stackCard);
-              this.changeMano().then();
-              await this.delay(3000);
-              this.stackCard = 0;
-              await this.GameService.send(
-                { },
-                "/game/pasarTurno/",
-                undefined
-              ).then()
-              this.GameService.acaboderobar = false;
+              if(!salvado) {
+                console.log("Voy a robar ",this.stackCard)
+                this.GameService.acaboderobar = true;
+                this.GameService.robar(this.stackCard);
+                this.changeMano().then();
+                await this.delay(3000);
+                this.stackCard = 0;
+                await this.GameService.send(
+                  { },
+                  "/game/pasarTurno/",
+                  undefined
+                ).then()
+                this.GameService.acaboderobar = false;
+              }
             }
-            if(!someoneDrawThisTurn) {
-              if(lastCard.value == util.Valor.DRAW2) {
-                console.log("Voy a robar 2")
-                this.GameService.acaboderobar = true;
-                this.GameService.robar(2);
-                this.changeMano().then();
-                await this.delay(3000);
+            else {
+              if(!someoneDrawThisTurn) {
+                if(lastCard.value == util.Valor.DRAW2) {
+                  console.log("Voy a robar en else 2")
+                  this.GameService.acaboderobar = true;
+                  this.GameService.robar(2);
+                  this.changeMano().then();
+                  await this.delay(3000);
+                }
+                else { // es +4
+                  console.log("Voy a robar en else 4")
+                  this.GameService.acaboderobar = true;
+                  this.GameService.robar(4);
+                  this.changeMano().then();
+                  await this.delay(3000);
+  
+                }
+                await this.GameService.send(
+                  { },
+                  "/game/pasarTurno/",
+                  undefined
+                ).then()
+                this.GameService.acaboderobar = false;
+                return;
               }
-              else { // es +4
-                console.log("Voy a robar 4")
-                this.GameService.acaboderobar = true;
-                this.GameService.robar(4);
-                this.changeMano().then();
-                await this.delay(3000);
-
-              }
-              await this.GameService.send(
-                { },
-                "/game/pasarTurno/",
-                undefined
-              ).then()
-              this.GameService.acaboderobar = false;
-              return;
             }
           }
 
