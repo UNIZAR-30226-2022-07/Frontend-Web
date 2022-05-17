@@ -88,6 +88,8 @@ export class LeaderboardComponent implements OnInit {
 
         const msg = data.message;
         this.parsearJSON(msg,this.dataAmigos);
+       
+      
 
 
       },
@@ -129,18 +131,18 @@ export class LeaderboardComponent implements OnInit {
          
           
           let config : infoClasificacion;
-    
+          let punt:string ;
           const msg_nombre = typeof this.cuerpo_mensaje?.[n] === 'string' ? this.cuerpo_mensaje[n].substring(1, this.cuerpo_mensaje[n].length) : '';
-          if ( n+1 == this.cuerpo_mensaje.length - 1){
-              let puntos: any = this.cuerpo_mensaje[n+1].substring(1,length -2);
-          }else{
-            let puntos:any = this.cuerpo_mensaje[n+1].split("\"");
+         
+          let punt_v= this.cuerpo_mensaje[n+1].split("\"");
+          punt = punt_v[0];
 
-          }
+          console.log("Nombre es" + msg_nombre );
+          console.log("Puntos:  "+ puntos);
           config = {
             
             nombre : msg_nombre,
-            puntos : puntos[0],
+            puntos : punt,
             pais : "",
     
           }
