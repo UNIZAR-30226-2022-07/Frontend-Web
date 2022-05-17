@@ -35,7 +35,7 @@
             <td>{{mensaje.mensaje}}</td>
             <span class="example-spacer"></span>
             <td>
-              <button mat-button>
+              <button (click)= "joinGame(mensaje.codigo)" mat-button>
                 <mat-icon>done</mat-icon>
                 
               </button>

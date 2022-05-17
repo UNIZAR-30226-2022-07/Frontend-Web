@@ -1,32 +1,5 @@
 <div class="leaderboard">
 
-    <!--
-        <table mat-table [dataSource]="dataAmigos">
-      
-           Position Column 
-          <ng-container matColumnDef="position">
-            <th mat-header-cell *matHeaderCellDef> No. </th>
-            <td mat-cell *matCellDef="let element; let indice=index">
-                 <div class="pos">{{indice==0 ? '🥇' : (indice==1 ? '🥈' : (indice==2 ? '🥉' : (indice+1).toString()))}}</div> </td>
-          </ng-container>
-      
-          Name Column
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Nombre </th>
-            <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
-          </ng-container>
-      
-           Weight Column 
-          <ng-container matColumnDef="puntos">
-            <th mat-header-cell *matHeaderCellDef> Puntos </th>
-            <td mat-cell *matCellDef="let element"> {{element.puntos}} </td>
-          </ng-container>
-      
-      
-          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-    -->
     <mat-tab-group mat-align-tabs="center">
         <mat-tab label="Amigos">
             <table class="scroll">

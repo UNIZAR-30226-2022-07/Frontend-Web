@@ -233,7 +233,7 @@ export class NotisContent {
   
  
 
-  constructor(public dialog:MatDialog, public friendService: FriendService){
+  constructor(public dialog:MatDialog, public friendService: FriendService ,public dialogRef: MatDialogRef<UnirsePrivada>, public userService:UsersService, public GameService: GameService, public router: Router,private _snackBar: MatSnackBar){
      
   }
   
@@ -272,6 +272,7 @@ export class NotisContent {
     this.friendService.getInvitations().subscribe({
       next: (data) =>{
         const msg = JSON.stringify(data);
+    
         this.cuerpo_mensaje = msg.split(",");
         for (let n = 0; n < this.cuerpo_mensaje.length; n=n+2) {
           
@@ -279,7 +280,14 @@ export class NotisContent {
           const msg2 = msg[1].substring(1,msg[1].length -1);
 
           const cod = this.cuerpo_mensaje[n+1].split(":");
-          const cod2 = cod[1].substring(1,cod[1].length -1);
+          let cod2:string = "";
+          // Es el ultimo mensaje
+          if(n == this.cuerpo_mensaje.length -2){
+            cod2 = cod[1].substring(1,cod[1].length -3);  
+          }else{
+             cod2 = cod[1].substring(1,cod[1].length -2);
+          }
+  
         
           let Mensaje = {
             name : msg2,
@@ -290,8 +298,7 @@ export class NotisContent {
           
         }
        
-        console.log("longitud" + this.cuerpo_mensaje.length);
-        console.log("Ultimo mensaje " + this.cuerpo_mensaje[1]);
+      
 
       },error: (e) =>{
 
@@ -323,6 +330,25 @@ export class NotisContent {
       }
     })
   }
+
+  async joinGame(id:string) {
+    console.info("El codigo es " + id);
+    await this.GameService.infoMatch(id).then();
+    if(this.GameService.jugadores.length >= this.GameService.partida.njugadores) {
+      this._snackBar.open("¡Partida llena!",'',{duration: 4000});
+      return;
+    }
+    this.GameService.jugadores.forEach(j => {
+      if(j.nombre == this.userService.username) {
+        this._snackBar.open("Estas ya unido a esta partida...",'',{duration: 4000});
+        return;
+      }
+    });
+    await this.GameService.joinMatch(id).then();
+    this.router.navigateByUrl('/partidaPrivada/'+id);
+    this.dialogRef.close();
+  }
+
 
 }
   
