@@ -21,13 +21,12 @@ export class GameService {
   public chat = new EventEmitter<any>();
   public winner = new EventEmitter<string>();
   public suscripciones: Array<any> = [];
-  public acaboderobar: boolean = false;
   public saidUno: boolean = false;
+  public robando: boolean = false;
   
   id:string = "";
   partida:any;
   reglas: Array<util.Reglas> = [];
-  blockCounter: number = 0;
 
   //Lista de jugadores
   jugadores: Jugador[] = [];
@@ -37,6 +36,8 @@ export class GameService {
   indexYo = 0;
   //A quien le toca
   letoca = "";
+  //Si hay que ignorar la proxima jugada (usado cuando no dices 1 y tienes que robar+jugar)
+  skipNextJugada: boolean = false;
   
 
   public stompClient: any;
@@ -173,7 +174,7 @@ export class GameService {
 
   onPrivateMessage(message:any, ref:GameService,e:any): void {
     let arrayasstring = String(message).substring(String(message).indexOf("["),String(message).indexOf("]")+1)
-    console.log("Intento parsear "+arrayasstring+"\nEl mensaje que me llego es "+message);
+    console.log("Añadiendo cartas "+arrayasstring);
 
     <Object[]>JSON.parse(arrayasstring).forEach(function (v:any) {
       ref.jugadores[ref.indexYo].cartas.add(util.BTF_carta(v.color,v.numero))
@@ -205,6 +206,12 @@ export class GameService {
       }
       i = i+1;
     });
+    if (this.userService.username == this.jugadores[this.jugadores.length-1].nombre) {
+      this.jugadores[this.jugadores.length-1].cartas.setFalso(8);
+    }
+    else {
+      this.jugadores[this.jugadores.length-1].cartas.set(8);
+    }
   };
 
   onDisconnect(message:any): void {
@@ -230,8 +237,9 @@ export class GameService {
   onBegin(message:any): void {
     console.log("begin: "+message.body);
     let msg = JSON.parse(message.body);
-    // this.pilaCartas.push(util.BTF_carta(msg.color,msg.numero))
-    // this.letoca = this.jugadores[0].nombre;
+    if(this.jugadores[0].nombre != this.userService.username) {
+      this.letoca = this.jugadores[0].nombre
+    }
     this.router.navigateByUrl("/game");
     //Simular que llega el mensaje
     let body = {carta: {numero: msg.numero, color: msg.color},
@@ -248,6 +256,10 @@ export class GameService {
 
   onButtonOne(message:any): void {
     console.log("UNO: ",message);
+  }
+
+  hasRegla(r: util.Reglas) {
+    return this.reglas.indexOf(r) != -1
   }
 
 
@@ -325,7 +337,7 @@ export class GameService {
    * @param id Id de la partida
    * @returns promise
   */
-  public async infoMatch(id: string): Promise<any>{ //TODO: Pasar las reglas a esta funcion
+  public async infoMatch(id: string): Promise<any>{
     return new Promise<any>(async (resolve, reject) => {
       const httpOptions = {
         headers: new HttpHeaders({
