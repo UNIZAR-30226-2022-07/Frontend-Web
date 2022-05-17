@@ -21,15 +21,9 @@ body{
 
 .mat-icon{
   display:inline;
-  font-size: 6vh;
+  font-size: 7vh;
 }
 
-.clasif_menu{
-  position: relative;
-  
-  margin-top: 1%;
-
-}
 
 
 
@@ -37,7 +31,7 @@ body{
 .amigos_menu{
   
  
-  margin-top: 1%;
+
   position: relative;
   right: 2.5%;
   
@@ -55,15 +49,8 @@ body{
 
 
 
-.notis_menu{
 
-margin-top: 1%;
 
-}
-
-.edit_profile{
-  margin-top: 1%;
-}
 
 
 /*----------------------------------------------------CUERPO MENU--------------------------------------*/
@@ -351,6 +338,8 @@ div.friend {
 div.popup {
   text-align: center;
 }
+
+
 
 
 
