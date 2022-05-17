@@ -273,6 +273,7 @@ export class GameService {
       if(reglas[3]) { r.push(util.Reglas.CHAOS_DRAW) }
       if(reglas[4]) { r.push(util.Reglas.BLOCK_DRAW) }
       if(reglas[5]) { r.push(util.Reglas.REPEAT_DRAW) }
+      this.reglas = r;
       let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/create",
       {
         playername: this.userService.username,
@@ -345,6 +346,7 @@ export class GameService {
             njugadores: v.numeroJugadores,
             reglas: v.reglas
           }
+          this.reglas = v.reglas;
           this.jugadores = [];
           v.jugadores.forEach((element: string) => {
             this.jugadores.push(new Jugador(element, new Mano([])));
