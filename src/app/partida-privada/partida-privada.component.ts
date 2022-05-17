@@ -291,6 +291,20 @@ export class PartidaPrivadaComponent implements OnInit {
         width: '25%'
       });
   }
+
+  abrirReglas(): void {
+    const dialogRef2 = this.dialog.open(Reglas,
+      {
+        data: this.userService.username,
+        position: {
+          top: '0px',
+          right: '0px'
+         
+        },
+        height: '100vh',
+        width: '25%'
+      });
+  }
   
 }
 
@@ -383,8 +397,26 @@ export class FriendList {
 
   }
 
+ 
+
   
 
+
+
+}
+
+@Component({
+  selector: 'reglas',
+  templateUrl: 'reglas.html',
+  styleUrls: ['./partida-privada.component.css']
+})
+export class Reglas {
+
+  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog,public GameService: GameService, public userService: UsersService,private clipboardApi: ClipboardService){
+
+  }
+
+  
 
 
 }
