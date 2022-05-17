@@ -6,6 +6,7 @@ import { Message } from './message';
 import { UsersService } from '../users.service';
 import { GameService } from '../game.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-game',
@@ -25,7 +26,7 @@ export class GameComponent implements OnInit {
   //Si la partida ha terminado
   end:boolean = false;
 
-  constructor(public dialog:MatDialog,public dialog2:MatDialog, public gameService: GameService, public userService: UsersService, public router: Router) { }
+  constructor(public dialog:MatDialog,public dialog2:MatDialog, public gameService: GameService, public userService: UsersService, public router: Router, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.gameService.chat.subscribe({
@@ -73,21 +74,46 @@ export class GameComponent implements OnInit {
         //TODO:_cambiar mano
         console.log("CAMBIAR MANO CON "+user);
       }
-      //TODO: Comprobar resto de reglas
+      if(!this.gameService.saidUno && this.gameService.jugadores[this.gameService.indexYo].cartas.length() == 1) {
+        console.log("Voy a robar 2")
+        this.gameService.acaboderobar = true;
+        this.gameService.robar(2);
+        this.changeMano().then();
+        this._snackBar.open('¡No dijiste uno!', '', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          duration: 3000
+        });
+        await this.delay(3000);
+      }
       //Enviar jugada a backend
       await this.gameService.send(
         util.FTB_carta(c),
         "/game/card/play/",
         undefined
       ).then()
+      this.gameService.acaboderobar = false;
     }
   }
 
-  //Ejecutado cuando el jugador presiona el boton UNO de otro jugador para recordarle que no lo ha presionado
-  //index es el indice del jugador en el array "jugadores"
-  sayUno(index:number) {
-    //TODO
-    return;
+  delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+  }
+
+  async changeMano():Promise<any> {
+    const that = this;
+    return new Promise(function (resolve, reject) {
+      that.gameService.privatemsg.subscribe({
+        next: async (msg: any) => {
+          resolve(msg);
+        }
+      });
+    });
+  }
+
+  //Yo digo uno
+  sendUno() {
+    this.gameService.saidUno = true;
   }
 
   //Ejecutado cuando se quiere pasar al siguiente turno.

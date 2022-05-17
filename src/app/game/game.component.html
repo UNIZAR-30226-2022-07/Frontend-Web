@@ -12,7 +12,6 @@
                 <p class="otrosJugadores">x {{item.cartas.length()}}</p>
             </div>
             <br>
-            <button mat-fab color="primary" *ngIf="(item.cartas.length()==1) && (indice != this.gameService.indexYo)" class="uno-other" (click)="sayUno(indice)">UNO</button>
         </div>
     </div>
     <hr>
@@ -37,5 +36,5 @@
             >
         </div>
     </div>
-    <button mat-fab color="primary" class="uno">UNO</button>
+    <button mat-fab color="primary" class="uno" (click)="sendUno()" [disabled]="this.gameService.saidUno">UNO</button>
 </div>
