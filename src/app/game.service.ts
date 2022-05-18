@@ -448,4 +448,24 @@ export class GameService {
     });
   }
 
+
+  
+  /**
+   * Se une a una partida
+   * @param id ID de la partida
+   * @returns void
+  */
+   public async joinMatchTorneo(id:string): Promise<any>{
+    return new Promise<any>(async (resolve, reject) => {
+      this.id = id;
+      await this.connect().then(async x => {
+        await this.send(
+          { },
+          "/game/connect/torneo/",
+          undefined
+        ).then();
+      }).then()
+      resolve(true);
+    });
+  }
 }
