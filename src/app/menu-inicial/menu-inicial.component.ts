@@ -371,6 +371,17 @@ export class NotisContent {
     })
   }
 
+  borrar_invi(id:string):void{
+    this.friendService.cancelInvitation(id).subscribe({
+      next:(data) => {
+        this._snackBar.open("Invitación eliminada",'',{duration: 4000});
+      },
+      error: (e) => {
+        console.log("Ha ido mal");
+      }
+    })
+  }
+
   async joinGame(id:string) {
     console.info("El codigo es " + id);
     await this.GameService.infoMatch(id).then();
