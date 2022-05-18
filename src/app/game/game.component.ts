@@ -72,7 +72,7 @@ export class GameComponent implements OnInit {
           verticalPosition: 'top',
           duration: 3000
         });
-        await this.delay(3000);
+        await this.delay(500);
       }
       //Enviar jugada a backend
       await this.gameService.send(
@@ -80,6 +80,7 @@ export class GameComponent implements OnInit {
         "/game/card/play/",
         undefined
       ).then()
+      this.gameService.saidUno = false;
     }
   }
 

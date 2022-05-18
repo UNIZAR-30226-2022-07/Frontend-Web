@@ -107,13 +107,13 @@ export class PartidaPrivadaComponent implements OnInit {
           if(this.GameService.hasRegla(util.Reglas.PROGRESSIVE_DRAW)) {
             let i = this.GameService.pilaCartas.length-1 
             while(i>0) {
-              if(this.GameService.pilaCartas[i].value == util.Valor.DRAW2) {
+              if(this.GameService.pilaCartas[i].value == util.Valor.DRAW2 && this.GameService.pilaCartas[i].accionTomadaPor=="") {
                 cardsToDraw += 2;
               }
-              else if(this.GameService.pilaCartas[i].value == util.Valor.DRAW4) {
+              else if(this.GameService.pilaCartas[i].value == util.Valor.DRAW4 && this.GameService.pilaCartas[i].accionTomadaPor=="") {
                 cardsToDraw += 4;
               }
-              else if(this.GameService.hasRegla(util.Reglas.BLOCK_DRAW) && this.GameService.pilaCartas[i].value == util.Valor.SKIP) {
+              else if(this.GameService.hasRegla(util.Reglas.BLOCK_DRAW) && this.GameService.pilaCartas[i].value == util.Valor.SKIP && this.GameService.pilaCartas[i].accionTomadaPor=="") {
                 cardsToDraw += 0;
               }
               else {
@@ -136,13 +136,16 @@ export class PartidaPrivadaComponent implements OnInit {
           if(cardsToDraw>0 && hanJugado && ultimaCarta.value != util.Valor.SKIP) {
             tengoQueRobar = true;
           }
+          if(this.GameService.hasRegla(util.Reglas.BLOCK_DRAW) && cardsToDraw>0 && ultimaCarta.accionTomadaPor!="" && ultimaCarta.value == util.Valor.SKIP) { 
+            tengoQueRobar = true;
+          }
           if(!hanJugado) {
             cardsToDraw = 0;
           }
           //O no puedo jugar ninguna carta...
           let _canPlay = false;
           this.GameService.jugadores[this.GameService.indexYo].cartas.getArray().forEach(c => {
-            if(this.GameService.hasRegla(util.Reglas.BLOCK_DRAW)){
+            if(this.GameService.hasRegla(util.Reglas.BLOCK_DRAW) && cardsToDraw>1){
               if(c.value == util.Valor.SKIP && c.color == ultimaCarta.color) {
                 console.log("Me salvo por tener un bloqueo")
                 tengoQueRobar = false
@@ -153,7 +156,7 @@ export class PartidaPrivadaComponent implements OnInit {
               _canPlay = true;
             }
           });
-          if(this.GameService.hasRegla(util.Reglas.PROGRESSIVE_DRAW)){
+          if(this.GameService.hasRegla(util.Reglas.PROGRESSIVE_DRAW) && cardsToDraw>1){
             //Calcular cuales te salvan
             let posiblesSalvaciones = [
               new Carta(util.Valor.DRAW2,util.Color.AZUL),
@@ -182,7 +185,7 @@ export class PartidaPrivadaComponent implements OnInit {
               }
             });
           }
-          if(!_canPlay) {
+          if(!_canPlay && !(hanJugado && ultimaCarta.value == util.Valor.SKIP)) {
             tengoQueRobar = true;
             if(cardsToDraw==0) {
               cardsToDraw = 1;
@@ -192,13 +195,44 @@ export class PartidaPrivadaComponent implements OnInit {
           if(hanRobado && (quienHaRobado[0] == this.userService.username)) {
             console.log("acaboDeRobar")
             acaboDeRobar = true;
+            tengoQueRobar = false;
           }
           else {
             console.log("noAcaboDeRobar")
           }
+          
   
           let letoca = msg.turno
-  
+          let mesaltan = false
+          if(hanJugado && ultimaCarta.accionTomadaPor=="" && ultimaCarta.value==util.Valor.SKIP && cardsToDraw<2) {
+            if(letoca == this.userService.username) {
+              console.log("Me estan saltando")
+              tengoQueRobar = false;
+              mesaltan = true
+            }
+            ultimaCarta.accionTomadaPor = letoca;
+          }
+          console.log("Ultima carta: ",this.GameService.pilaCartas[this.GameService.pilaCartas.length-1])
+          
+          if(hanRobado) { //Actualizar las cartas
+            let i = this.GameService.pilaCartas.length-1 
+            while(i>0) {
+              if(this.GameService.pilaCartas[i].value == util.Valor.DRAW2 && this.GameService.pilaCartas[i].accionTomadaPor=="") {
+                this.GameService.pilaCartas[i].accionTomadaPor = quienHaRobado[0];
+              }
+              else if(this.GameService.pilaCartas[i].value == util.Valor.DRAW4 && this.GameService.pilaCartas[i].accionTomadaPor=="") {
+                this.GameService.pilaCartas[i].accionTomadaPor = quienHaRobado[0];
+              }
+              else if(this.GameService.hasRegla(util.Reglas.BLOCK_DRAW) && this.GameService.pilaCartas[i].value == util.Valor.SKIP && this.GameService.pilaCartas[i].accionTomadaPor=="") {
+                this.GameService.pilaCartas[i].accionTomadaPor = quienHaRobado[0];
+              }
+              else {
+                i=-1; //Salir del bucle
+              }
+              i = i-1
+            }
+          }
+
           //--------------QUE HAY QUE HACER EN ESTE TURNO--------------
   
           
@@ -211,7 +245,7 @@ export class PartidaPrivadaComponent implements OnInit {
             if(acaboDeRobar) {
               //Pasar turno
               console.log("Paso turno")
-              await this.delay(3000);
+              await this.delay(500);
               await this.GameService.send(
                 { },
                 "/game/pasarTurno/",
@@ -250,11 +284,11 @@ export class PartidaPrivadaComponent implements OnInit {
             }
             else {
               if(hanJugado) {
-                if(ultimaCarta.value == util.Valor.SKIP) {
+                if(mesaltan) {
                   //Pasar turno
                   console.log("Me saltan")
                   this.GameService.robando = true;
-                  await this.delay(3000);
+                  await this.delay(500);
                   await this.GameService.send(
                     { },
                     "/game/pasarTurno/",

@@ -3,6 +3,7 @@ import * as util from "./util";
 export class Carta {
   private _value!: util.Valor; 
   private _color!: util.Color;
+  public accionTomadaPor: string="";
 
   constructor(value: util.Valor, color: util.Color) {
     if (!util.isWild(value) && color === util.Color.INDEFINIDO) {
@@ -11,6 +12,7 @@ export class Carta {
 
     this.value = value;
     this.color = color;
+    this.accionTomadaPor = "";
   }
 
   get value() {
