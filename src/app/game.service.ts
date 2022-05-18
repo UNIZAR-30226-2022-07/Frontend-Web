@@ -124,7 +124,7 @@ export class GameService {
   }
 
 
-   robar(n:number): void {
+  robar(n:number): void {
     let todraw = 0;
     if(this.reglas.indexOf(util.Reglas.CHAOS_DRAW) != -1) {
       for(let i=0;i<n;i++) {
@@ -143,6 +143,33 @@ export class GameService {
     return
   }
 
+  async cambiarMano(p1:string, p2:string): Promise<void> {
+    return new Promise<any>(async (resolve, reject) => {
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Authorization': "Bearer "+this.userService.getToken()
+        }),
+        withCredentials: true
+      };
+      let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/cambiarManos",
+      {
+        gameId: this.id,
+        player1: p1,
+        player2: p2
+      },
+      httpOptions)
+      test.subscribe({
+        next: async (v: any) => {
+          console.log("He recibido de cambiarMano: ",v)
+          resolve(true)
+        },
+        error: (e:any) => {
+          console.error(e);
+          reject(false)
+        }
+      });
+    });
+  }
   
   /**
    * Gestiona un mensaje recibido, emitiendolo por this.messageReceived
@@ -173,13 +200,27 @@ export class GameService {
   };
 
   onPrivateMessage(message:any, ref:GameService,e:any): void {
-    let arrayasstring = String(message).substring(String(message).indexOf("["),String(message).indexOf("]")+1)
-    console.log("Añadiendo cartas "+arrayasstring);
-
-    <Object[]>JSON.parse(arrayasstring).forEach(function (v:any) {
-      ref.jugadores[ref.indexYo].cartas.add(util.BTF_carta(v.color,v.numero))
-    });
-    e.emit(ref.jugadores[ref.indexYo].cartas);
+    if(String(message).indexOf("mano") == -1) {
+      let arrayasstring = String(message).substring(String(message).indexOf("["),String(message).indexOf("]")+1)
+      console.log("Añadiendo cartas "+arrayasstring);
+  
+      <Object[]>JSON.parse(arrayasstring).forEach(function (v:any) {
+        ref.jugadores[ref.indexYo].cartas.add(util.BTF_carta(v.color,v.numero))
+      });
+      e.emit(ref.jugadores[ref.indexYo].cartas);
+    }
+    else {
+      let arrayasstring = String(message).substring(String(message).indexOf("["),String(message).indexOf("]")+1)
+      let cartas: Carta[] = []
+      let splited = arrayasstring.split(" ");
+      for (let i = 0; i<splited.length; i=i+2) {
+        let valor = splited[i].replace("[","").replace("]","").replace(",","");
+        let color = splited[i+1].replace("[","").replace("]","").replace(",","");
+        cartas.push(util.BTF_carta(color as util.Backend_Color,valor as util.Backend_Valor));
+      }
+      console.log("Voy a cambiar mi mano por: ",cartas);
+      this.jugadores[this.indexYo].cartas = new Mano(cartas);
+    }
   };
 
   onConnect(message:any): void {
