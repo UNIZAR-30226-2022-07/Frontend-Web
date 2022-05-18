@@ -11,6 +11,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTableModule} from '@angular/material/table';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {MatSidenavModule} from '@angular/material/sidenav'
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatFormFieldModule,
     MatTableModule,
     MatSnackBarModule,
+    MatSidenavModule,
   ],
 
   exports: [
@@ -39,6 +41,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatFormFieldModule,
     MatTableModule,
     MatSnackBarModule,
+    MatSidenavModule,
   ]
 })
 

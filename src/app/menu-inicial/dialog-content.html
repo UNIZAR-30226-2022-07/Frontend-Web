@@ -2,9 +2,6 @@
     <div class="title">
       <h2>Lista de amigos</h2>
     </div>
-    <div class= "no-amigos" *ngIf = "amigos_vacio == true">
-      <h2>No tienes amigos :(</h2>
-    </div>
     <div *ngIf = "amigos_vacio == false" class="friend">
         <div *ngFor="let friend of listaAmigos;">
           <tr class="lista-amigos1">
@@ -24,7 +21,7 @@
     <div class="group">
         <input class="input-user" type="text" id="nameUser2Search-input" name="nameUser2Search" [(ngModel)]="nameUser2Search" autocomplete="off" placeholder="&#61442;  Puedes buscar usuarios aquí"> 
         <button mat-icon-button mat-button id="user-search-btn" type="submit" (click)="friend_reqButton()" class="openChat">
-            <mat-icon>send</mat-icon>
+            <mat-icon>add</mat-icon>
         </button>
     </div>
 </div>

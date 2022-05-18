@@ -19,8 +19,8 @@ export class GameComponent implements OnInit {
   //Direccion del juego
   direccion:util.Direccion =  util.Direccion.NORMAL;
   //Vector de numeros aleatorios para la rotacion de las cartas de la pila central
-  // randomRotation: number[] = Array.from({length: 108}, () => Math.floor(Math.random() * 360)); 
-  randomRotation: number[] = []
+  randomRotation: number[] = Array.from({length: 50}, () => Math.floor(Math.random() * 360)); 
+  // randomRotation: number[] = []
   //Ganador de la partida
   winner:string = "";
   //Si la partida ha terminado
@@ -34,7 +34,6 @@ export class GameComponent implements OnInit {
         this.history.push(m);
       }
     });
-    console.log(this.gameService.jugadores[this.gameService.indexYo]);
     this.gameService.winner.subscribe({
       next: (m: string) => {
         this.winner = m;
@@ -45,38 +44,27 @@ export class GameComponent implements OnInit {
 
   //Ejecutado cuando se hace click en una carta
   async playCard(c: Carta) {
-    if(this.gameService.letoca != this.userService.username) { console.log("no te toca"); return; }
-    if(this.gameService.acaboderobar) { console.log("estas robando"); return; }
+    if(this.gameService.letoca != this.userService.username) { console.log("No te toca"); return; }
     if(util.sePuedeJugar(this.gameService.pilaCartas[this.gameService.pilaCartas.length-1],c)) {
-      if(c.value == util.Valor.SKIP) { this.gameService.blockCounter = 1; }
       //Borrar carta de la mano
       this.gameService.jugadores[this.gameService.indexYo].cartas.remove(c);
       //Efectos especiales
       if(util.isWild(c.value)) {
         await this.popupColor(c).then();
       }
-      if(c.value == util.Valor.REVERSE) {
-        if (this.direccion == util.Direccion.NORMAL) {
-          this.direccion = util.Direccion.INVERSA;
-        }
-        else {
-          this.direccion = util.Direccion.NORMAL;
-        }
-        
-      }
       if(this.gameService.partida.reglas.includes('CERO_SWITCH') && c.value == util.Valor.CERO){
         //TODO: Cambiar todas las manos en sentido del juego
       }
       if(this.gameService.partida.reglas.includes('CRAZY_7') && c.value == util.Valor.SIETE){
-
         let user = ""
         await this.popupJugador(user).then(); //TODO: recoger valor de la promise como jugador seleccionado
-        //TODO:_cambiar mano
-        console.log("CAMBIAR MANO CON "+user);
+        //TODO: cambiar mano con user
+        console.log("Cambiar mano con "+user);
       }
       if(!this.gameService.saidUno && this.gameService.jugadores[this.gameService.indexYo].cartas.length() == 1) {
-        console.log("Voy a robar 2")
-        this.gameService.acaboderobar = true;
+        console.log("No dije uno!")
+        this.gameService.skipNextJugada = true;
+        this.gameService.pilaCartas.push(c);
         this.gameService.robar(2);
         this.changeMano().then();
         this._snackBar.open('¡No dijiste uno!', '', {
@@ -84,7 +72,7 @@ export class GameComponent implements OnInit {
           verticalPosition: 'top',
           duration: 3000
         });
-        await this.delay(3000);
+        await this.delay(500);
       }
       //Enviar jugada a backend
       await this.gameService.send(
@@ -92,7 +80,7 @@ export class GameComponent implements OnInit {
         "/game/card/play/",
         undefined
       ).then()
-      this.gameService.acaboderobar = false;
+      this.gameService.saidUno = false;
     }
   }
 

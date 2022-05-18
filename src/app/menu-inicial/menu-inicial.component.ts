@@ -19,8 +19,10 @@ import { UsersService } from '../users.service';
 })
 export class MenuInicialComponent implements OnInit {
   loading: boolean = false
+  hayInvitaciones:boolean = false
+  noHayInvitaciones:boolean = true
 
-  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog, public userService: UsersService, public http: HttpClient, public GameService: GameService, private _snackBar: MatSnackBar) {}
+  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog, public userService: UsersService, public http: HttpClient, public GameService: GameService, private _snackBar: MatSnackBar, public friendService: FriendService) {}
   
   ngOnInit(): void {
     const httpOptions = {
@@ -43,7 +45,37 @@ export class MenuInicialComponent implements OnInit {
         
       }
     });
+
+
+    // Se comprueba si hay notificaciones
+/*
+    this.friendService.getRequests().subscribe({
+      next: (data) => {
+        const msg = JSON.stringify(data);
+        if(msg != ""){
+          console.info("Entro aquí");
+          this.hayInvitaciones = true;
+          this.noHayInvitaciones = false;
+        }
+      },error: (e) =>{
+
+      }
+    })
+    this.friendService.getInvitations().subscribe({
+      next: (data) =>{
+        const msg = JSON.stringify(data);
+        if(msg != ""){
+          this.hayInvitaciones = true;
+          this.noHayInvitaciones = false;
+        }
+      },error: (e) =>{
+
+      }
+    })
+    */
   }
+
+
 
   openDialog(){
       const dialogRef2 = this.dialog.open(DialogContent,
@@ -137,16 +169,13 @@ export class DialogContent {
 
   
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data:any,public friendService: FriendService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data:any,public friendService: FriendService, public snackBar:MatSnackBar) {
     this.name = data.name;
     this.amigos_vacio = true;
 
   }
-  
-  ngOnInit(): void {
-    // this.listaAmigos = [{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"}]
-    console.log("hola");
-   
+
+  pedirAmigos(): void{
     this.friendService.getFriends().subscribe({
       next: (data) => {
         
@@ -177,13 +206,21 @@ export class DialogContent {
         }
       }
     })
+  
+  }
+  
+  ngOnInit(): void {
+    // this.listaAmigos = [{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"},{nombre:"cesar"}, {nombre:"victor"},{nombre:"marcos"}]
+    console.log("hola");
+   
+    this.pedirAmigos();
   }
 
   friend_reqButton(): void{
  
     this.friendService.addRequest(this.nameUser2Search).subscribe({
       next: (v) => {
-        console.log("Ha ido bien");
+        this.snackBar.open("Invitación enviada con éxito",'',{duration: 4000});
 
       },
       error: (e) =>{
@@ -199,7 +236,7 @@ export class DialogContent {
   borrar_amigo(friend:string): void{
     this.friendService.removeFriend(friend).subscribe({
       next: (v) => {
-        console.log("Ha ido bien");
+        this.snackBar.open("Amigo borrado con éxito",'',{duration: 4000});
       },error : (e) => {
 
       }
@@ -312,9 +349,11 @@ export class NotisContent {
     this.friendService.acceptRequest(amigo).subscribe({
       next:(data) => {
         console.log("Ha ido bien");
+        this._snackBar.open("Amigo aceptado con éxito",'',{duration: 4000});
       },
       error: (e) => {
         console.log("Ha ido mal");
+       
       }
     })
     
@@ -324,6 +363,7 @@ export class NotisContent {
     this.friendService.cancelRequest(amigo).subscribe({
       next:(data) => {
         console.log("Ha ido bien");
+        this._snackBar.open("Amigo rechazado con éxito",'',{duration: 4000});
       },
       error: (e) => {
         console.log("Ha ido mal");

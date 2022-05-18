@@ -10,7 +10,9 @@
   <span class="example-spacer"></span>
 
   <button mat-icon-button mat-button (click)="openNotis()" class= "notis_menu">
+
     <mat-icon>notifications</mat-icon>
+   <!-- <mat-icon *ngIf="noHayInvitaciones">notifications_active</mat-icon>-->
   </button>
   <span class="example-spacer"></span> 
   <button mat-icon-button mat-button (click)="openDialog()" class = "amigos_menu">

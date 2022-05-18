@@ -1,5 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit } from '@angular/core';
 import * as util from "../game/logica/util";
+import { Jugador } from "../game/logica/jugador"
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClipboardService } from 'ngx-clipboard';
@@ -20,219 +21,292 @@ export class PartidaPrivadaComponent implements OnInit {
   nJugadores: number = 6;
   tiempoTurno: number = 10;
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
-  stackCard: number = 0;
-  hanrobado:boolean = false;
+  parseandomsg: boolean = false;
+  
+  private finished = new EventEmitter();
+
 
   constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog,public GameService: GameService, public userService: UsersService,private clipboardApi: ClipboardService) { }
 
   ngOnInit(): void {
+    
     console.log("Valor en gamservice: ",this.GameService.partida);
     console.log("Valor en gamservice jug: ",this.GameService.jugadores);
     this.matchID = this.route.snapshot.paramMap.get('id');
     
     this.GameService.messageReceived.subscribe({
       next: async (msg: any) => {
-        console.log("he recibido",msg)
-        if(this.GameService.letoca == msg.turno) {
-          this.hanrobado = true;
-          return;
-        }
-        let lastCard = util.BTF_carta(msg.carta.color, msg.carta.numero)
-        if(lastCard.value == util.Valor.DRAW2) {
-          this.stackCard += 2;
-        }
-        if(lastCard.value == util.Valor.DRAW4) {
-          this.stackCard += 4;
-        }
-        if(!util.isSpecial(lastCard.value)) {
-          this.stackCard = 0; //NOTE: innecesario pero por si acaso
-        }
-        console.log("stackCard:", this.stackCard);
-
-        let someoneDrawThisTurn = this.hanrobado;
-        let hanJugado = false;
-        
-        msg.jugadores.forEach((j: { username: string; numeroCartas: any; }) => {
-          this.GameService.jugadores.forEach(a => {
-            console.log("comparando "+a.nombre+" "+a.cartas.length()+" con "+j.username+" "+j.numeroCartas);
-            if((a.nombre == j.username) && (j.username != this.userService.username)) {
-              if((a.cartas.length() < j.numeroCartas)) { //Ha robado
-                someoneDrawThisTurn = true
+        if(!this.GameService.skipNextJugada){
+          const that = this;
+          if(this.parseandomsg) {
+            console.log("Tengo que esperar")
+            new Promise(function (resolve, reject) {
+              that.finished.subscribe({
+                next: (v: any) => {
+                  console.log("Luz verde!")
+                  resolve(true);
+                }
+              });
+            }).then();
+          }
+          //--------------INICIALIZACION DE VARIABLES--------------
+          let ultimaCarta = util.BTF_carta(msg.carta.color, msg.carta.numero)
+          let jugadoresAntes = this.GameService.jugadores
+          let jugadoresDespues = []
+          let hanRobado = false;
+          let hanJugado = false;
+          let quienHaRobado: string[] = []
+          let quienHaJugado: string[] = []
+          msg.jugadores.forEach((j: { username: string; numeroCartas: any; }) => {
+            jugadoresDespues.push(new Jugador(j.username,j.numeroCartas));
+            jugadoresAntes.forEach(a => {
+              if((a.nombre == j.username)) {
+                if(j.username != this.userService.username) { //No soy yo
+                  if((a.cartas.length() < j.numeroCartas)) { //Ha robado
+                    hanRobado = true
+                    quienHaRobado.push(j.username)
+                    console.log(j.username+" ha robado: tenia "+a.cartas.length()+" y ahora tiene "+j.numeroCartas)
+                  }
+                  else if(a.cartas.length() > j.numeroCartas) { //Ha jugado
+                    hanJugado = true;
+                    quienHaJugado.push(j.username)
+                    console.log(j.username+" ha jugado: tenia "+a.cartas.length()+" y ahora tiene "+j.numeroCartas)
+                  }
+                  else {
+                    console.log(j.username+" no hizo nada: tenia "+a.cartas.length()+" y ahora tiene "+j.numeroCartas)
+                  }
+                  //Actualizar nº de cartas
+                  a.cartas.set(j.numeroCartas);
+                }
+                else { //Soy yo
+                  if((a.cartas.getFalso() < j.numeroCartas)) { //Ha robado
+                    hanRobado = true
+                    quienHaRobado.push(j.username)
+                    console.log(j.username+" ha robado: tenia "+a.cartas.getFalso()+" y ahora tiene "+j.numeroCartas)
+                  }
+                  else if(a.cartas.getFalso() > j.numeroCartas) { //Ha jugado
+                    hanJugado = true;
+                    quienHaJugado.push(j.username)
+                    console.log(j.username+" ha jugado: tenia "+a.cartas.getFalso()+" y ahora tiene "+j.numeroCartas)
+                  }
+                  else {
+                    console.log(j.username+" no hizo nada: tenia "+a.cartas.getFalso()+" y ahora tiene "+j.numeroCartas)
+                  }
+                  //Actualizar nº de cartas falso
+                  a.cartas.setFalso(j.numeroCartas);
+                }
+                
               }
-              if(a.cartas.length() > j.numeroCartas) {
-                hanJugado = true;
-              }
-              a.cartas.set(j.numeroCartas);
-            }
+            });
           });
-        });
-        if(hanJugado) { console.log("HAN JUGADO") }
-        if(someoneDrawThisTurn) { console.log("HAN ROBADO") }
-        console.log("Blockcounter es "+this.GameService.blockCounter)
-        if(someoneDrawThisTurn && this.GameService.pilaCartas[this.GameService.pilaCartas.length-1] == lastCard) { this.stackCard = 0; console.log("Alguien ha robado o skipeado"); }
-        else if(!this.hanrobado || this.GameService.pilaCartas[this.GameService.pilaCartas.length-1] != lastCard) { this.GameService.pilaCartas.push(lastCard); }
-        this.GameService.letoca = msg.turno;
-        let anteriorValor = this.hanrobado
-        this.hanrobado = false;
-        this.GameService.saidUno = false;
-
-        if(lastCard.value == util.Valor.SKIP) {
-          if(this.GameService.reglas.indexOf(util.Reglas.BLOCK_DRAW) != -1) {
-            //TODO: Que pasa cuando echan un bloqueo y es para saltarse el robar?
+          if(hanJugado) {
+            console.log(quienHaJugado[0] + " ha jugado la carta ", ultimaCarta);
+            this.GameService.pilaCartas.push(ultimaCarta);
+          }
+          let cardsToDraw = 0;
+          if(this.GameService.hasRegla(util.Reglas.PROGRESSIVE_DRAW)) {
+            let i = this.GameService.pilaCartas.length-1 
+            while(i>0) {
+              if(this.GameService.pilaCartas[i].value == util.Valor.DRAW2 && this.GameService.pilaCartas[i].accionTomadaPor=="") {
+                cardsToDraw += 2;
+              }
+              else if(this.GameService.pilaCartas[i].value == util.Valor.DRAW4 && this.GameService.pilaCartas[i].accionTomadaPor=="") {
+                cardsToDraw += 4;
+              }
+              else if(this.GameService.hasRegla(util.Reglas.BLOCK_DRAW) && this.GameService.pilaCartas[i].value == util.Valor.SKIP && this.GameService.pilaCartas[i].accionTomadaPor=="") {
+                cardsToDraw += 0;
+              }
+              else {
+                i=-1; //Salir del bucle
+              }
+              i = i-1
+            }
           }
           else {
-            if((this.GameService.blockCounter == 0 && this.GameService.letoca == this.userService.username) || (hanJugado && this.GameService.blockCounter>0 && this.GameService.letoca == this.userService.username)) { //Me saltan a mi
-              console.log("me saltan")
-              this.GameService.acaboderobar = true;
-              await this.delay(3000);
+            if(ultimaCarta.value == util.Valor.DRAW2) {
+              cardsToDraw = 2;
+            }
+            else if(ultimaCarta.value == util.Valor.DRAW4) {
+              cardsToDraw = 4;
+            }
+          }
+  
+          let tengoQueRobar = false;
+          //O me toca robar...
+          if(cardsToDraw>0 && hanJugado && ultimaCarta.value != util.Valor.SKIP) {
+            tengoQueRobar = true;
+          }
+          if(this.GameService.hasRegla(util.Reglas.BLOCK_DRAW) && cardsToDraw>0 && ultimaCarta.accionTomadaPor!="" && ultimaCarta.value == util.Valor.SKIP) { 
+            tengoQueRobar = true;
+          }
+          if(!hanJugado) {
+            cardsToDraw = 0;
+          }
+          //O no puedo jugar ninguna carta...
+          let _canPlay = false;
+          this.GameService.jugadores[this.GameService.indexYo].cartas.getArray().forEach(c => {
+            if(this.GameService.hasRegla(util.Reglas.BLOCK_DRAW) && cardsToDraw>1){
+              if(c.value == util.Valor.SKIP && c.color == ultimaCarta.color) {
+                console.log("Me salvo por tener un bloqueo")
+                tengoQueRobar = false
+                _canPlay = true;
+              }
+            }
+            if(util.sePuedeJugar(ultimaCarta,c)) { //Si tengo que robar, tengoQueRobar ya sera true, por lo que esto no tendra efecto
+              _canPlay = true;
+            }
+          });
+          if(this.GameService.hasRegla(util.Reglas.PROGRESSIVE_DRAW) && cardsToDraw>1){
+            //Calcular cuales te salvan
+            let posiblesSalvaciones = [
+              new Carta(util.Valor.DRAW2,util.Color.AZUL),
+              new Carta(util.Valor.DRAW2,util.Color.AMARILLO),
+              new Carta(util.Valor.DRAW2,util.Color.ROJO),
+              new Carta(util.Valor.DRAW2,util.Color.VERDE),
+              new Carta(util.Valor.DRAW4,util.Color.INDEFINIDO),
+              new Carta(util.Valor.DRAW4,util.Color.AMARILLO), //NOTE: teoricamente imposible, pero por si acaso
+              new Carta(util.Valor.DRAW4,util.Color.AZUL), //NOTE: teoricamente imposible, pero por si acaso
+              new Carta(util.Valor.DRAW4,util.Color.ROJO), //NOTE: teoricamente imposible, pero por si acaso
+              new Carta(util.Valor.DRAW4,util.Color.VERDE), //NOTE: teoricamente imposible, pero por si acaso
+            ];
+            let i=0;
+            posiblesSalvaciones.forEach(c => {
+              if(!util.isWild(c.value) && !(c.value==ultimaCarta.value || c.color==ultimaCarta.color)) {
+                posiblesSalvaciones.splice(i,1);
+              }
+              i++;
+            });
+            console.log("Me salvan:",posiblesSalvaciones);
+            posiblesSalvaciones.forEach(c => {
+              if(this.GameService.jugadores[this.GameService.indexYo].cartas.has(c)) {
+                console.log("me salvo por tener un +2 o +4 jugable");
+                tengoQueRobar = false
+                _canPlay = true;
+              }
+            });
+          }
+          if(!_canPlay && !(hanJugado && ultimaCarta.value == util.Valor.SKIP)) {
+            tengoQueRobar = true;
+            if(cardsToDraw==0) {
+              cardsToDraw = 1;
+            }
+          }
+          let acaboDeRobar = false;
+          if(hanRobado && (quienHaRobado[0] == this.userService.username)) {
+            console.log("acaboDeRobar")
+            acaboDeRobar = true;
+            tengoQueRobar = false;
+          }
+          else {
+            console.log("noAcaboDeRobar")
+          }
+          
+  
+          let letoca = msg.turno
+          let mesaltan = false
+          if(hanJugado && ultimaCarta.accionTomadaPor=="" && ultimaCarta.value==util.Valor.SKIP && cardsToDraw<2) {
+            if(letoca == this.userService.username) {
+              console.log("Me estan saltando")
+              tengoQueRobar = false;
+              mesaltan = true
+            }
+            ultimaCarta.accionTomadaPor = letoca;
+          }
+          console.log("Ultima carta: ",this.GameService.pilaCartas[this.GameService.pilaCartas.length-1])
+          
+          if(hanRobado) { //Actualizar las cartas
+            let i = this.GameService.pilaCartas.length-1 
+            while(i>0) {
+              if(this.GameService.pilaCartas[i].value == util.Valor.DRAW2 && this.GameService.pilaCartas[i].accionTomadaPor=="") {
+                this.GameService.pilaCartas[i].accionTomadaPor = quienHaRobado[0];
+              }
+              else if(this.GameService.pilaCartas[i].value == util.Valor.DRAW4 && this.GameService.pilaCartas[i].accionTomadaPor=="") {
+                this.GameService.pilaCartas[i].accionTomadaPor = quienHaRobado[0];
+              }
+              else if(this.GameService.hasRegla(util.Reglas.BLOCK_DRAW) && this.GameService.pilaCartas[i].value == util.Valor.SKIP && this.GameService.pilaCartas[i].accionTomadaPor=="") {
+                this.GameService.pilaCartas[i].accionTomadaPor = quienHaRobado[0];
+              }
+              else {
+                i=-1; //Salir del bucle
+              }
+              i = i-1
+            }
+          }
+
+          //--------------QUE HAY QUE HACER EN ESTE TURNO--------------
+  
+          
+          if(hanRobado) {
+            console.log("Jugadores han robado ",quienHaRobado)
+          }
+  
+          if(letoca == this.userService.username) { //Me toca
+            console.log("Me toca")
+            if(acaboDeRobar) {
+              //Pasar turno
+              console.log("Paso turno")
+              await this.delay(500);
               await this.GameService.send(
                 { },
                 "/game/pasarTurno/",
                 undefined
               ).then()
-              this.GameService.acaboderobar = false;
-              this.GameService.blockCounter++;
-              // this.GameService.pilaCartas.pop();
-              return;
             }
-            console.log("Han saltado antes o estan saltando a otro")
-            this.GameService.blockCounter++;
-          }
-        }
-        else {
-          this.GameService.blockCounter = 0;
-          console.log("no es skip")
-        }
-
-        
-        if(this.GameService.letoca == this.userService.username) {
-          console.log("metoca");
-          if((lastCard.value==util.Valor.DRAW2 || lastCard.value==util.Valor.DRAW4) && !anteriorValor) {
-            console.log("+2 o +4 con reglas ",this.GameService.reglas)
-            let salvado = false;
-            let mimano=this.GameService.jugadores[this.GameService.indexYo].cartas;
-            if((this.GameService.reglas.indexOf(util.Reglas.BLOCK_DRAW) != -1) && (mimano.has(new Carta(util.Valor.SKIP,util.Color.AMARILLO))||mimano.has(new Carta(util.Valor.SKIP,util.Color.AZUL))||mimano.has(new Carta(util.Valor.SKIP,util.Color.ROJO))||mimano.has(new Carta(util.Valor.SKIP,util.Color.VERDE)))) {
-              console.log("me salvo por tener un bloqueo")
-              salvado = true;
-            }
-            if(this.GameService.reglas.indexOf(util.Reglas.PROGRESSIVE_DRAW) != -1){
-              //Calcular cuales te salvan
-              let posiblesSalvaciones = [
-                new Carta(util.Valor.DRAW2,util.Color.AZUL),
-                new Carta(util.Valor.DRAW2,util.Color.AMARILLO),
-                new Carta(util.Valor.DRAW2,util.Color.ROJO),
-                new Carta(util.Valor.DRAW2,util.Color.VERDE),
-                new Carta(util.Valor.DRAW4,util.Color.INDEFINIDO),
-                new Carta(util.Valor.DRAW4,util.Color.AMARILLO), //NOTE: teoricamente imposible, pero por si acaso
-                new Carta(util.Valor.DRAW4,util.Color.AZUL), //NOTE: teoricamente imposible, pero por si acaso
-                new Carta(util.Valor.DRAW4,util.Color.ROJO), //NOTE: teoricamente imposible, pero por si acaso
-                new Carta(util.Valor.DRAW4,util.Color.VERDE), //NOTE: teoricamente imposible, pero por si acaso
-              ];
-              let i=0;
-              posiblesSalvaciones.forEach(c => {
-                if(!util.isWild(c.value) && !(c.value==lastCard.value || c.color==lastCard.color)) {
-                  posiblesSalvaciones.splice(i,1);
-                }
-                i++;
-              });
-              console.log("Me salvan:",posiblesSalvaciones);
-              posiblesSalvaciones.forEach(c => {
-                if(mimano.has(c)) {
-                  console.log("me salvo por tener un +2 o +4 jugable");
-                  salvado = true;
-                }
-              });
-              
-              if(!salvado) {
-                console.log("Voy a robar ",this.stackCard)
-                this.GameService.acaboderobar = true;
-                this.GameService.robar(this.stackCard);
+            if(tengoQueRobar) {
+              this.GameService.letoca = "";
+              //Robar cardsToDraw
+              this.GameService.robando = true;
+              if(!acaboDeRobar) {
+                console.log("Tengo que robar "+cardsToDraw)
+                this.GameService.robar(cardsToDraw);
                 this.changeMano().then();
-                await this.delay(3000);
-                this.stackCard = 0;
-                await this.GameService.send(
-                  { },
-                  "/game/pasarTurno/",
-                  undefined
-                ).then()
-                this.GameService.acaboderobar = false;
+                if(this.GameService.hasRegla(util.Reglas.REPEAT_DRAW) && (cardsToDraw==1)) {
+                  await this.delay(1000);
+                  let _can = false
+                  this.GameService.jugadores[this.GameService.indexYo].cartas.getArray().forEach(c => {
+                    if(util.sePuedeJugar(ultimaCarta,c)) {
+                      _can = true;
+                    }
+                  });
+                  while(!_can) {
+                    console.log("No puedo jugar, tengo que seguir robando")
+                    this.GameService.robar(1);
+                    this.changeMano().then();
+                    await this.delay(1000);
+                    this.GameService.jugadores[this.GameService.indexYo].cartas.getArray().forEach(c => {
+                      if(util.sePuedeJugar(ultimaCarta,c)) {
+                        _can = true;
+                      }
+                    });
+                  }
+                }
               }
             }
             else {
-              if(!someoneDrawThisTurn) {
-                if(lastCard.value == util.Valor.DRAW2) {
-                  console.log("Voy a robar en else 2")
-                  this.GameService.acaboderobar = true;
-                  this.GameService.robar(2);
-                  this.changeMano().then();
-                  await this.delay(3000);
+              if(hanJugado) {
+                if(mesaltan) {
+                  //Pasar turno
+                  console.log("Me saltan")
+                  this.GameService.robando = true;
+                  await this.delay(500);
+                  await this.GameService.send(
+                    { },
+                    "/game/pasarTurno/",
+                    undefined
+                  ).then()
                 }
-                else { // es +4
-                  console.log("Voy a robar en else 4")
-                  this.GameService.acaboderobar = true;
-                  this.GameService.robar(4);
-                  this.changeMano().then();
-                  await this.delay(3000);
-  
-                }
-                await this.GameService.send(
-                  { },
-                  "/game/pasarTurno/",
-                  undefined
-                ).then()
-                this.GameService.acaboderobar = false;
-                return;
               }
+              this.GameService.letoca = letoca;
             }
+            
           }
-
-
-          let can = false;
-          this.GameService.jugadores[this.GameService.indexYo].cartas.getArray().forEach(c => {
-            if(util.sePuedeJugar(lastCard,c)) {
-              can = true;
-            }
-          });
-          if(!can) {
-            console.log("No puedo jugar, tengo que robar")
-            this.GameService.acaboderobar = true;
-            this.GameService.robar(1);
-            this.changeMano().then();
-            await this.delay(3000);
-            if(this.GameService.reglas.indexOf(util.Reglas.REPEAT_DRAW) != -1) {
-              this.GameService.jugadores[this.GameService.indexYo].cartas.getArray().forEach(c => {
-                if(util.sePuedeJugar(lastCard,c)) {
-                  can = true;
-                }
-              });
-              while(!can) {
-                console.log("No puedo jugar, tengo que seguir robando")
-                this.GameService.robar(1);
-                this.changeMano().then();
-                await this.delay(3000);
-                this.GameService.jugadores[this.GameService.indexYo].cartas.getArray().forEach(c => {
-                  if(util.sePuedeJugar(lastCard,c)) {
-                    can = true;
-                  }
-                });
-                await this.GameService.send(
-                  { },
-                  "/game/pasarTurno/",
-                  undefined
-                ).then()
-                this.GameService.acaboderobar = false;
-                return;
-              }
-            }
-            await this.GameService.send(
-              { },
-              "/game/pasarTurno/",
-              undefined
-            ).then()
-            this.GameService.acaboderobar = false;
-            return;
-          }          
+          else {
+            this.GameService.robando = false;
+            this.GameService.letoca = letoca;
+          }
+          this.finished.emit(true);
         }
+        this.GameService.skipNextJugada = false;
       }
     });
 
@@ -285,6 +359,20 @@ export class PartidaPrivadaComponent implements OnInit {
 
   openFriends(): void {
     const dialogRef2 = this.dialog.open(FriendList,
+      {
+        data: this.userService.username,
+        position: {
+          top: '0px',
+          right: '0px'
+         
+        },
+        height: '100vh',
+        width: '25%'
+      });
+  }
+
+  abrirReglas(): void {
+    const dialogRef2 = this.dialog.open(Reglas,
       {
         data: this.userService.username,
         position: {
@@ -388,8 +476,26 @@ export class FriendList {
 
   }
 
+ 
+
   
 
+
+
+}
+
+@Component({
+  selector: 'reglas',
+  templateUrl: 'reglas.html',
+  styleUrls: ['./partida-privada.component.css']
+})
+export class Reglas {
+
+  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog,public GameService: GameService, public userService: UsersService,private clipboardApi: ClipboardService){
+
+  }
+
+  
 
 
 }

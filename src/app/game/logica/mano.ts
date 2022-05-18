@@ -2,6 +2,7 @@ import { Carta } from "./carta";
 
 export class Mano {
   private cartas: Carta[] = [];
+  private sizeFalso = 7;
   constructor(c: Carta[]) {this.cartas = c;}
 
   has(card: Carta) {
@@ -25,12 +26,21 @@ export class Mano {
     return this.cartas.length;
   }
 
+  getFalso() : number {
+    return this.sizeFalso;
+  }
+
+  setFalso(n: number) {
+    this.sizeFalso = n;
+  }
+
   add(card: Carta) {
     this.cartas.push(card);
   }
 
   set(n: number) {
     this.cartas = Array(n);
+    this.sizeFalso = n;
   }
 
   getArray() {

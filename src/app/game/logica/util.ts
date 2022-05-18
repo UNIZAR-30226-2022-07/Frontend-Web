@@ -91,8 +91,5 @@ export function sePuedeJugar(Ultimacarta:Carta, cartaAJugar:Carta) {
   if(isWild(cartaAJugar.value)) {    // ES +4 o CAMBIO DE COLOR. Estas siempre se pueden jugar
     return true;
   }
-  else {
-    //TODO: Checkear reglas custom
-    return Ultimacarta.color == cartaAJugar.color || Ultimacarta.value == cartaAJugar.value;
-  }
+  return Ultimacarta.color == cartaAJugar.color || Ultimacarta.value == cartaAJugar.value;
 }
