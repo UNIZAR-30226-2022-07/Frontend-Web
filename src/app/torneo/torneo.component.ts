@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { GameService } from '../game.service';
 
 @Component({
   selector: 'app-torneo',
@@ -9,12 +10,18 @@ import { Router } from '@angular/router';
 export class TorneoComponent implements OnInit {
   torneoData: any;
   searchText!: string;
-  constructor(public router: Router) { }
+  constructor(public router: Router, public gameService:GameService) { }
 
   ngOnInit(): void {
     //TODO: Request a backend para tener torneos
     //TODO: Paginar los torneos?
+    this.gameService.getTorneos().subscribe({
+      next:(data) =>{
+        console.log("Ha ido bien el mensaje es " + JSON.stringify(data));
+      },error:(e)=>{
 
+      }
+    })
     //Pruebas:
     this.torneoData = [
       {

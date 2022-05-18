@@ -53,15 +53,20 @@ export class GameComponent implements OnInit {
         await this.popupColor(c).then();
       }
       if(this.gameService.partida.reglas.includes('CERO_SWITCH') && c.value == util.Valor.CERO){
-        //TODO: Cambiar todas las manos en sentido del juego
+        let i = 1;
+        this.gameService.jugadores.forEach(element => {
+          this.gameService.cambiarMano(element.nombre,this.gameService.jugadores[i].nombre);
+          i = (i+1) % this.gameService.jugadores.length;
+        });
       }
       if(this.gameService.partida.reglas.includes('CRAZY_7') && c.value == util.Valor.SIETE){
-        let user = ""
-        await this.popupJugador(user).then(); //TODO: recoger valor de la promise como jugador seleccionado
-        //TODO: cambiar mano con user
-        console.log("Cambiar mano con "+user);
+        let user = await this.popupJugador().then();
+        console.log("Cambiando mano con "+user);
+        this.gameService.cambiarMano(this.userService.username,user);
       }
+
       if(!this.gameService.saidUno && this.gameService.jugadores[this.gameService.indexYo].cartas.length() == 1) {
+        this.gameService.robando = true;
         console.log("No dije uno!")
         this.gameService.skipNextJugada = true;
         this.gameService.pilaCartas.push(c);
@@ -138,12 +143,11 @@ export class GameComponent implements OnInit {
     });
   }
 
-  async popupJugador(j:string): Promise<any> {
+  async popupJugador(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       const dialogRef = this.dialog.open(ChosePlayerComponent);
       dialogRef.disableClose = true;
       dialogRef.afterClosed().subscribe(result => {
-        j = result;
         resolve(result);
       })
     });
@@ -181,7 +185,7 @@ export class ChoseColorComponent {
   styleUrls: ['choseplayer.css']
 })
 export class ChosePlayerComponent {
-  constructor(public dialogRef: MatDialogRef<ChosePlayerComponent>, public gameService: GameService) {}
+  constructor(public dialogRef: MatDialogRef<ChosePlayerComponent>, public gameService: GameService, public userService: UsersService) {}
   close(n: string) {
     this.dialogRef.close(n);
   }
