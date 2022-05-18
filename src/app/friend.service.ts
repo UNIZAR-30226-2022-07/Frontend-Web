@@ -86,4 +86,10 @@ export class FriendService {
     return this.http.post("https://onep1.herokuapp.com/game/getInvitacionesPartida",body);
   }
 
+
+  cancelInvitation(id:string): Observable<any>{
+
+    let body = {username: this.userService.username,gameId:id}
+    return this.http.post("https://onep1.herokuapp.com/game/cancelarInvitacionPartida",body);
+  }
 }

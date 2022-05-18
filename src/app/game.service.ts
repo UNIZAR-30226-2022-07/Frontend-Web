@@ -427,4 +427,86 @@ export class GameService {
   }
 
 
+  getTorneos(): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': "Bearer "+this.userService.getToken()
+      }),
+      withCredentials: true
+    }
+    let body = {};
+    return this.http.post("https://onep1.herokuapp.com/torneo/getTorneos",body,httpOptions);
+  }
+
+
+  
+  /**
+   * Crea una partida de un torneo y se conecta
+   * 
+   * @param tturn Tiempo de turno de cada jugador
+   * @returns void
+  */
+   public async newMatchTorneo( tturn:number, reglas_:Array<boolean>): Promise<any>{
+    return new Promise<any>(async (resolve, reject) => {
+      console.log("REGLAS:",reglas_);
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Authorization': "Bearer "+this.userService.getToken()
+        }),
+        withCredentials: true
+      };
+      let reglas=[];
+      if(reglas_[0]) { reglas.push(util.Reglas.CERO_SWITCH) }
+      if(reglas_[1]) { reglas.push(util.Reglas.CRAZY_7) }
+      if(reglas_[2]) { reglas.push(util.Reglas.PROGRESSIVE_DRAW) }
+      if(reglas_[3]) { reglas.push(util.Reglas.CHAOS_DRAW) }
+      if(reglas_[4]) { reglas.push(util.Reglas.BLOCK_DRAW) }
+      if(reglas_[5]) { reglas.push(util.Reglas.REPEAT_DRAW) }
+      this.reglas = reglas;
+      let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/torneo/createTorneo",
+      {
+        username: this.userService.username,
+        tiempoTurno: tturn,
+        reglas: reglas,
+      },
+      httpOptions)
+      test.subscribe({
+        next: async (v: any) => {
+          console.log("Partida creada:",v);
+          this.id = v.id;
+          v.jugadores.forEach((e: { nombre: string; cartas: Carta[]; }) => {
+            this.jugadores.push(new Jugador(e.nombre, new Mano(e.cartas)));
+          });
+          this.partida = v;
+          await this.connect().then()
+          resolve(true)
+        },
+        error: (e:any) => {
+          console.error(e);
+          reject(false)
+        }
+      });
+    });
+  }
+
+
+  
+  /**
+   * Se une a una partida
+   * @param id ID de la partida
+   * @returns void
+  */
+   public async joinMatchTorneo(id:string): Promise<any>{
+    return new Promise<any>(async (resolve, reject) => {
+      this.id = id;
+      await this.connect().then(async x => {
+        await this.send(
+          { },
+          "/game/connect/torneo/",
+          undefined
+        ).then();
+      }).then()
+      resolve(true);
+    });
+  }
 }
