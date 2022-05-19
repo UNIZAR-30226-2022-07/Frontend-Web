@@ -16,7 +16,8 @@ export class TorneoComponent implements OnInit {
   constructor(public router: Router, public gameService:GameService, public MatDialog:MatDialog) { }
 
   ngOnInit(): void {
-    //TODO: Request a backend para tener torneos
+    
+    //TODO: Request a backend para tener torneos https://onep1.herokuapp.com/torneo/getTorneos
     //TODO: Paginar los torneos?
     this.gameService.getTorneos().subscribe({
       next:(data) =>{
@@ -71,7 +72,7 @@ export class ReglasTorneoPartida {
   }
   async crearPartidaTorneo2() {
     await this.gameService.newMatchTorneo(this.tiempoTurno, this.reglas).then();
-    this.router.navigateByUrl('/torneo/'+this.gameService.idTorneo);
+    this.router.navigateByUrl('/torneoEspera/'+this.gameService.idTorneo);
     this.dialogRef.close();
   }
 
