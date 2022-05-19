@@ -14,6 +14,10 @@ div.reglas {
   right: 10%;
   top: 20vh;
 }
+div.center{
+  text-align: center;
+  align-items: center;
+}
 
 
 
@@ -23,9 +27,7 @@ h1 {
   padding-top: 2vh;
 }
 
-h3 {
-  margin-left:25%;
-}
+
 
 h2 {
   text-align: center;
@@ -68,6 +70,21 @@ div.datos {
   vertical-align: middle;
 }
 
+div.pack {
+  display: flex;
+  flex-flow: column wrap;
+  margin: 2ch;
+  align-items: center;
+  justify-content: center;
+  width: 10%;
+}
+
+.col1{
+  position: absolute;
+  top:50%;
+  margin: 10%;
+}
+
 /*------------------------------ OTHER ------------------------------ */
 
 mat-spinner {
@@ -103,3 +120,22 @@ div.settings .mat-icon-button{
   top: 1vh;
   left: 93vw;
 }
+.reglas {
+
+  position: absolute;
+  top: 0;
+  right: 0;
+ 
+   font-family: "Fredoka One";
+   background-color: #C7261A;
+   color: white;
+ 
+   border-style: solid;
+   border-width: 4px;
+   border-color: black;
+   cursor: pointer;
+ 
+   
+   
+ }
+ 

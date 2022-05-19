@@ -22,4 +22,30 @@ export class TorneoEsperaComponent implements OnInit {
     //TODO: desapuntarse del torneo
     this.router.navigateByUrl('/torneo')
   }
+  
+  abrirReglas(): void {
+    const dialogRef2 = this.dialog.open(ReglasTorneo,
+      {
+        
+        position: {
+          top: '0px',
+          right: '0px'
+         
+        },
+        height: '100vh',
+        width: '25%'
+      });
+  }
+
+}
+
+@Component({
+  selector: 'ReglasTorneo',
+  templateUrl: './ReglasTorneo.html',
+  styleUrls: ['./torneo-espera.component.css']
+})
+export class ReglasTorneo  {
+  constructor(public gameService:GameService){
+
+  }
 }
