@@ -100,6 +100,8 @@ div.mano {
 
 div.carta {
   display: inline-block;
+  animation-duration: 0.5s;
+  animation-name: slidein;
 }
 
 img.carta {
@@ -110,10 +112,23 @@ img.carta {
   border-radius: 16px;
   
   margin-right: -10ch;
+
+  transition: all 0.05s;
 }
 
-img.carta:hover {
+img.openToSee:hover {
   margin-right: -2ch;
+}
+
+@keyframes slidein {
+  from {
+    transform: translate(0px,-5ch);
+  }
+
+  to {
+    transform: translate(0px,0ch);
+
+  }
 }
 
 button.uno {
