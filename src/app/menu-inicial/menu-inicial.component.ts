@@ -22,7 +22,7 @@ export class MenuInicialComponent implements OnInit {
   hayInvitaciones:boolean = false
   noHayInvitaciones:boolean = true
 
-  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog, public userService: UsersService, public http: HttpClient, public GameService: GameService, private _snackBar: MatSnackBar, public friendService: FriendService) {}
+  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog, public userService: UsersService, public http: HttpClient, public gameService: GameService, private _snackBar: MatSnackBar, public friendService: FriendService) {}
   
   ngOnInit(): void {
     const httpOptions = {
@@ -33,7 +33,7 @@ export class MenuInicialComponent implements OnInit {
     };
     let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/getPartidasActivas",
     {
-      playerName: this.userService.username
+      username: this.userService.username
     },
     httpOptions)
 
@@ -42,7 +42,7 @@ export class MenuInicialComponent implements OnInit {
         console.log("ME LLEGO ",v)
       },
       error: (e:any) => {
-        
+        console.error("ME LLEGO ERROR",e)
       }
     });
 
@@ -120,17 +120,17 @@ export class MenuInicialComponent implements OnInit {
       httpOptions)
       test.subscribe({
         next: async (v: any) => {
-          await this.GameService.infoMatch(v).then();
-          if(this.GameService.jugadores.length >= this.GameService.partida.njugadores) {
+          await this.gameService.infoMatch(v).then();
+          if(this.gameService.jugadores.length >= this.gameService.partida.njugadores) {
             this._snackBar.open("¡Partida llena!",'',{duration: 4000});
             return;
           }
-          this.GameService.jugadores.forEach(j => {
+          this.gameService.jugadores.forEach(j => {
             if(j.nombre == this.userService.username) {
               this._snackBar.open("Estas ya unido a esta partida...",'',{duration: 4000});
             }
           });
-          await this.GameService.joinMatch(v).then();
+          await this.gameService.joinMatch(v).then();
           this.router.navigateByUrl('/partidaPrivada/'+v);
           this.loading = false;
         },
@@ -270,7 +270,7 @@ export class NotisContent {
   
  
 
-  constructor(public dialog:MatDialog, public friendService: FriendService ,public dialogRef: MatDialogRef<UnirsePrivada>, public userService:UsersService, public GameService: GameService, public router: Router,private _snackBar: MatSnackBar){
+  constructor(public dialog:MatDialog, public friendService: FriendService ,public dialogRef: MatDialogRef<UnirsePrivada>, public userService:UsersService, public gameService: GameService, public router: Router,private _snackBar: MatSnackBar){
      
   }
   
@@ -384,18 +384,18 @@ export class NotisContent {
 
   async joinGame(id:string) {
     console.info("El codigo es " + id);
-    await this.GameService.infoMatch(id).then();
-    if(this.GameService.jugadores.length >= this.GameService.partida.njugadores) {
+    await this.gameService.infoMatch(id).then();
+    if(this.gameService.jugadores.length >= this.gameService.partida.njugadores) {
       this._snackBar.open("¡Partida llena!",'',{duration: 4000});
       return;
     }
-    this.GameService.jugadores.forEach(j => {
+    this.gameService.jugadores.forEach(j => {
       if(j.nombre == this.userService.username) {
         this._snackBar.open("Estas ya unido a esta partida...",'',{duration: 4000});
         return;
       }
     });
-    await this.GameService.joinMatch(id).then();
+    await this.gameService.joinMatch(id).then();
     this.router.navigateByUrl('/partidaPrivada/'+id);
     this.dialogRef.close();
   }
@@ -413,21 +413,21 @@ export class NotisContent {
 })
 export class UnirsePrivada {
   id: string = ""
-  constructor(public dialogRef: MatDialogRef<UnirsePrivada>, public userService:UsersService, public GameService: GameService, public router: Router,private _snackBar: MatSnackBar) {}
+  constructor(public dialogRef: MatDialogRef<UnirsePrivada>, public userService:UsersService, public gameService: GameService, public router: Router,private _snackBar: MatSnackBar) {}
 
   async joinGame() {
-    await this.GameService.infoMatch(this.id).then();
-    if(this.GameService.jugadores.length >= this.GameService.partida.njugadores) {
+    await this.gameService.infoMatch(this.id).then();
+    if(this.gameService.jugadores.length >= this.gameService.partida.njugadores) {
       this._snackBar.open("¡Partida llena!",'',{duration: 4000});
       return;
     }
-    this.GameService.jugadores.forEach(j => {
+    this.gameService.jugadores.forEach(j => {
       if(j.nombre == this.userService.username) {
         this._snackBar.open("Estas ya unido a esta partida...",'',{duration: 4000});
         return;
       }
     });
-    await this.GameService.joinMatch(this.id).then();
+    await this.gameService.joinMatch(this.id).then();
     this.router.navigateByUrl('/partidaPrivada/'+this.id);
     this.dialogRef.close();
   }
@@ -445,7 +445,7 @@ export class ReglasPartidaComponent {
   nJugadores: number = 6;
   tiempoTurno: number = 10;
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
-  constructor(public dialogRef: MatDialogRef<ReglasPartidaComponent>, public GameService: GameService, public router: Router) {}
+  constructor(public dialogRef: MatDialogRef<ReglasPartidaComponent>, public gameService: GameService, public router: Router) {}
 
   changeNplayers(e: any) {
     this.nJugadores = e.target.value;
@@ -456,8 +456,8 @@ export class ReglasPartidaComponent {
   }
 
   async crearPartida() {
-    await this.GameService.newMatch(this.nJugadores,this.tiempoTurno, this.reglas).then();
-    this.router.navigateByUrl('/partidaPrivada/'+this.GameService.id);
+    await this.gameService.newMatch(this.nJugadores,this.tiempoTurno, this.reglas).then();
+    this.router.navigateByUrl('/partidaPrivada/'+this.gameService.id);
     this.dialogRef.close();
   }
 }
