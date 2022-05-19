@@ -32,9 +32,9 @@
     <div class="center">
         <div class="pack" *ngFor="let e of [].constructor(nJugadores); let i = index">
             <div class="persona" *ngIf="gameService.jugadores[i] === undefined">
-                <button mat-icon-button mat-button (click)="openFriends()">
-                      <mat-icon class="empty">add</mat-icon>
-                </button>
+                <a (click)="openFriends()">
+                      <mat-icon class="empty" >add</mat-icon>
+                </a>
             </div>
             <div class="persona filled" *ngIf="gameService.jugadores[i] !== undefined">
                 <mat-icon class="filled">person</mat-icon>

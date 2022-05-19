@@ -49,6 +49,17 @@ export class PartidaPrivadaComponent implements OnInit {
               });
             }).then();
           }
+          if(this.gameService.robando) {
+            console.log("Tengo que esperar pq no me ha llegado las cartas que he robado todavia")
+            new Promise(function (resolve, reject) {
+              that.gameService.privatemsg.subscribe({
+                next: (v: any) => {
+                  console.log("Luz verde!")
+                  resolve(true);
+                }
+              });
+            }).then();
+          }
           //--------------INICIALIZACION DE VARIABLES--------------
           let ultimaCarta = util.BTF_carta(msg.carta.color, msg.carta.numero)
           let jugadoresAntes = this.gameService.jugadores
@@ -171,7 +182,7 @@ export class PartidaPrivadaComponent implements OnInit {
             ];
             let i=0;
             posiblesSalvaciones.forEach(c => {
-              if(!util.isWild(c.value) && !(c.value==ultimaCarta.value || c.color==ultimaCarta.color)) {
+              if(!util.sePuedeJugar(ultimaCarta,c)) {
                 posiblesSalvaciones.splice(i,1);
               }
               i++;
@@ -239,6 +250,12 @@ export class PartidaPrivadaComponent implements OnInit {
           if(hanRobado) {
             console.log("Jugadores han robado ",quienHaRobado)
           }
+
+          console.log("RESUMEN:\n    letoca: "+letoca+
+                              "\n    acaboDeRobar: "+acaboDeRobar+
+                              "\n    tengoQueRobar: "+tengoQueRobar+
+                              "\n    hanJugado: "+hanJugado+
+                              "\n    mesaltan: "+mesaltan);
   
           if(letoca == this.userService.username) { //Me toca
             console.log("Me toca")

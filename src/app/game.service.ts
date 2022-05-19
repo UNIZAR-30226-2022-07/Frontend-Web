@@ -207,6 +207,7 @@ export class GameService {
       <Object[]>JSON.parse(arrayasstring).forEach(function (v:any) {
         ref.jugadores[ref.indexYo].cartas.add(util.BTF_carta(v.color,v.numero))
       });
+      this.robando = false;
       e.emit(ref.jugadores[ref.indexYo].cartas);
     }
     else {
