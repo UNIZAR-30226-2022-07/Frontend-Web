@@ -62,7 +62,7 @@ export class GameService {
           const that = this;
           if(this.parseandomsg) {
             console.log("Tengo que esperar")
-            new Promise(function (resolve, reject) {
+            await new Promise(function (resolve, reject) {
               that.finished.subscribe({
                 next: (v: any) => {
                   console.log("Luz verde!")
@@ -73,7 +73,7 @@ export class GameService {
           }
           if(this.robando) {
             console.log("Tengo que esperar pq no me ha llegado las cartas que he robado todavia")
-            new Promise(function (resolve, reject) {
+            await new Promise(function (resolve, reject) {
               that.privatemsg.subscribe({
                 next: (v: any) => {
                   console.log("Luz verde!")
@@ -297,6 +297,7 @@ export class GameService {
               this.robando = true;
               if(!acaboDeRobar) {
                 console.log("Tengo que robar "+cardsToDraw)
+                await this.delay(500);
                 this.robar(cardsToDraw);
                 this.changeMano().then();
               }
@@ -313,6 +314,7 @@ export class GameService {
                     "/game/pasarTurno/",
                     undefined
                   ).then()
+                  this.robando = false;
                 }
               }
               this.letoca = letoca;

@@ -8,6 +8,7 @@ html, body{
 
 body{
   background: url("../../assets/img/fondo.png");
+  overflow-x: hidden;
 }
 
 /*------------------------------------TOOLBAR-----------------------------------------*/
