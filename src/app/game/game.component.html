@@ -30,6 +30,7 @@
     <div class="mano" [ngClass]="{'fade': (this.gameService.letoca != this.userService.username) || this.gameService.robando}">
         <div class="carta" *ngFor="let item of this.gameService.jugadores[this.gameService.indexYo].cartas.getArray();let indice=index">
             <img class="carta" 
+            [ngClass]="{'openToSee': indice != (this.gameService.jugadores[this.gameService.indexYo].cartas.length()-1)}"
                 src="assets/img/cartas/{{item.color}}-{{item.value}}.png"
                 (click)="playCard(item)"
             >

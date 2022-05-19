@@ -24,10 +24,13 @@ export class GameService {
   public saidUno: boolean = false;
   public robando: boolean = false;
   
-  idTorneo:string = "";
   id:string = "";
   partida:any;
   reglas: Array<util.Reglas> = [];
+
+  idTorneo:string = "";
+  torneo: any;
+  jugadoresTorneo: Jugador[] = [];
 
   //Lista de jugadores
   jugadores: Jugador[] = [];
@@ -224,6 +227,10 @@ export class GameService {
       this.jugadores[this.indexYo].cartas = new Mano(cartas);
     }
   };
+
+  onTorneoPrivateMessage(message:any, ref:GameService,e:any): void {
+    console.log("TORNEO PRIVADO HE RECIBIDO", message);
+  }
 
   onConnect(message:any): void {
     console.info("connect: "+message.body);
@@ -475,11 +482,11 @@ export class GameService {
       test.subscribe({
         next: async (v: any) => {
           console.log("Partida creada:",v);
-          this.idTorneo = v.id;
-          v.jugadores.forEach((e: { nombre: string; cartas: Carta[]; }) => {
-            this.jugadores.push(new Jugador(e.nombre, new Mano(e.cartas)));
+          this.idTorneo = v.idTorneo;
+          v.jugadores.forEach((e:string) => {
+            this.jugadoresTorneo.push(new Jugador(e, new Mano([])));
           });
-          this.partida = v;
+          this.torneo = v;
           await this.connectTorneo().then()
           resolve(true)
         },
@@ -524,8 +531,7 @@ export class GameService {
       const that = this;
       this.stompClient.connect({"Authorization": "Bearer " + this.userService.getToken()}, function(frame: any) {
         
-        that.suscripciones.push(that.stompClient.subscribe('/user/'+that.userService.username+'/msg', (message: any) => that.onPrivateMessage(message, that, that.privatemsg), {"Authorization": "Bearer " + that.userService.getToken()}));
-
+        that.suscripciones.push(that.stompClient.subscribe('/user/'+that.userService.username+'/msg', (message: any) => that.onTorneoPrivateMessage(message, that, that.privatemsg), {"Authorization": "Bearer " + that.userService.getToken()}));
         that.suscripciones.push(that.stompClient.subscribe('/topic/connect/'+that.idTorneo, (message: any) => that.onConnect(message), {"Authorization": "Bearer " + that.userService.getToken()}));
         
         resolve(true);
