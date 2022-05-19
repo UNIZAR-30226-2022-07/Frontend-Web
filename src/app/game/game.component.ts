@@ -70,14 +70,14 @@ export class GameComponent implements OnInit {
         console.log("No dije uno!")
         this.gameService.skipNextJugada = true;
         this.gameService.pilaCartas.push(c);
-        this.gameService.robar(2);
-        this.changeMano().then();
         this._snackBar.open('¡No dijiste uno!', '', {
           horizontalPosition: 'center',
           verticalPosition: 'top',
           duration: 3000
         });
-        await this.delay(500);
+        await this.delay(3000);
+        this.gameService.robar(2);
+        this.changeMano().then();
       }
       //Enviar jugada a backend
       await this.gameService.send(
