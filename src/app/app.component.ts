@@ -9,7 +9,7 @@ import { GameService } from './game.service';
 export class AppComponent implements OnInit{
   title = 'frontend-web';
 
-  constructor(public GameService: GameService) { }  
+  constructor(public gameService: GameService) { }  
 
   ngOnInit(): void { }
 

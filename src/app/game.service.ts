@@ -24,6 +24,7 @@ export class GameService {
   public saidUno: boolean = false;
   public robando: boolean = false;
   
+  idTorneo:string = "";
   id:string = "";
   partida:any;
   reglas: Array<util.Reglas> = [];
@@ -207,6 +208,7 @@ export class GameService {
       <Object[]>JSON.parse(arrayasstring).forEach(function (v:any) {
         ref.jugadores[ref.indexYo].cartas.add(util.BTF_carta(v.color,v.numero))
       });
+      this.robando = false;
       e.emit(ref.jugadores[ref.indexYo].cartas);
     }
     else {
@@ -473,12 +475,12 @@ export class GameService {
       test.subscribe({
         next: async (v: any) => {
           console.log("Partida creada:",v);
-          this.id = v.id;
+          this.idTorneo = v.id;
           v.jugadores.forEach((e: { nombre: string; cartas: Carta[]; }) => {
             this.jugadores.push(new Jugador(e.nombre, new Mano(e.cartas)));
           });
           this.partida = v;
-          await this.connect().then()
+          await this.connectTorneo().then()
           resolve(true)
         },
         error: (e:any) => {
@@ -509,4 +511,48 @@ export class GameService {
       resolve(true);
     });
   }
+
+  /**
+   * Crea un socket y se conecta, suscribiendose a "/topic/connect/<id>"
+   * @returns Promesa de finalizacion
+  */
+   private async connectTorneo(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      const ws = new SockJS("https://onep1.herokuapp.com/onep1-game");
+      this.stompClient = Stomp.over(ws);
+
+      const that = this;
+      this.stompClient.connect({"Authorization": "Bearer " + this.userService.getToken()}, function(frame: any) {
+        
+        that.suscripciones.push(that.stompClient.subscribe('/user/'+that.userService.username+'/msg', (message: any) => that.onPrivateMessage(message, that, that.privatemsg), {"Authorization": "Bearer " + that.userService.getToken()}));
+
+        that.suscripciones.push(that.stompClient.subscribe('/topic/connect/'+that.idTorneo, (message: any) => that.onConnect(message), {"Authorization": "Bearer " + that.userService.getToken()}));
+        
+        resolve(true);
+      });
+    });
+  }
+
+   /**
+   * Envia un mensaje al backend a traves del socket para empezar una partida de torneo
+   * @param message JSON que se envia en body
+   * @param dir Lugar a donde enviar el mensaje. Debe terminar en '/'. Ej: "/game/connect/"
+   * @returns Promesa de finalizacion
+  */
+    async sendTorneo(message:any, dir:string, headers:any): Promise<any> {
+      return new Promise<any>((resolve, reject) => {
+        if (!this.stompClient) {
+          throw new Error('Socket not connected');
+        }
+        if(headers == undefined) {
+          this.stompClient.send(dir+this.idTorneo,{"Authorization": "Bearer " + this.userService.getToken(),"username":this.userService.username},JSON.stringify(message));
+          resolve(true);
+        }
+        else {
+          this.stompClient.send(dir+this.idTorneo,headers,JSON.stringify(message));
+          resolve(true);
+        }
+      });
+    }
+  
 }

@@ -98,9 +98,8 @@ div.persona {
   border-color: black;
   transition: 5;
 }
-
-div.persona:hover{
-
+.persona a:hover {
+  cursor: pointer;
 }
 
 div.pack {

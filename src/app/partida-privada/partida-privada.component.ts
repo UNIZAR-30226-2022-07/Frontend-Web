@@ -26,17 +26,17 @@ export class PartidaPrivadaComponent implements OnInit {
   private finished = new EventEmitter();
 
 
-  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog,public GameService: GameService, public userService: UsersService,private clipboardApi: ClipboardService) { }
+  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog,public gameService: GameService, public userService: UsersService,private clipboardApi: ClipboardService) { }
 
   ngOnInit(): void {
     
-    console.log("Valor en gamservice: ",this.GameService.partida);
-    console.log("Valor en gamservice jug: ",this.GameService.jugadores);
+    console.log("Valor en gamservice: ",this.gameService.partida);
+    console.log("Valor en gamservice jug: ",this.gameService.jugadores);
     this.matchID = this.route.snapshot.paramMap.get('id');
     
-    this.GameService.messageReceived.subscribe({
+    this.gameService.messageReceived.subscribe({
       next: async (msg: any) => {
-        if(!this.GameService.skipNextJugada){
+        if(!this.gameService.skipNextJugada){
           const that = this;
           if(this.parseandomsg) {
             console.log("Tengo que esperar")
@@ -49,9 +49,20 @@ export class PartidaPrivadaComponent implements OnInit {
               });
             }).then();
           }
+          if(this.gameService.robando) {
+            console.log("Tengo que esperar pq no me ha llegado las cartas que he robado todavia")
+            new Promise(function (resolve, reject) {
+              that.gameService.privatemsg.subscribe({
+                next: (v: any) => {
+                  console.log("Luz verde!")
+                  resolve(true);
+                }
+              });
+            }).then();
+          }
           //--------------INICIALIZACION DE VARIABLES--------------
           let ultimaCarta = util.BTF_carta(msg.carta.color, msg.carta.numero)
-          let jugadoresAntes = this.GameService.jugadores
+          let jugadoresAntes = this.gameService.jugadores
           let jugadoresDespues = []
           let hanRobado = false;
           let hanJugado = false;
@@ -101,19 +112,19 @@ export class PartidaPrivadaComponent implements OnInit {
           });
           if(hanJugado) {
             console.log(quienHaJugado[0] + " ha jugado la carta ", ultimaCarta);
-            this.GameService.pilaCartas.push(ultimaCarta);
+            this.gameService.pilaCartas.push(ultimaCarta);
           }
           let cardsToDraw = 0;
-          if(this.GameService.hasRegla(util.Reglas.PROGRESSIVE_DRAW)) {
-            let i = this.GameService.pilaCartas.length-1 
+          if(this.gameService.hasRegla(util.Reglas.PROGRESSIVE_DRAW)) {
+            let i = this.gameService.pilaCartas.length-1 
             while(i>0) {
-              if(this.GameService.pilaCartas[i].value == util.Valor.DRAW2 && this.GameService.pilaCartas[i].accionTomadaPor=="") {
+              if(this.gameService.pilaCartas[i].value == util.Valor.DRAW2 && this.gameService.pilaCartas[i].accionTomadaPor=="") {
                 cardsToDraw += 2;
               }
-              else if(this.GameService.pilaCartas[i].value == util.Valor.DRAW4 && this.GameService.pilaCartas[i].accionTomadaPor=="") {
+              else if(this.gameService.pilaCartas[i].value == util.Valor.DRAW4 && this.gameService.pilaCartas[i].accionTomadaPor=="") {
                 cardsToDraw += 4;
               }
-              else if(this.GameService.hasRegla(util.Reglas.BLOCK_DRAW) && this.GameService.pilaCartas[i].value == util.Valor.SKIP && this.GameService.pilaCartas[i].accionTomadaPor=="") {
+              else if(this.gameService.hasRegla(util.Reglas.BLOCK_DRAW) && this.gameService.pilaCartas[i].value == util.Valor.SKIP && this.gameService.pilaCartas[i].accionTomadaPor=="") {
                 cardsToDraw += 0;
               }
               else {
@@ -136,7 +147,7 @@ export class PartidaPrivadaComponent implements OnInit {
           if(cardsToDraw>0 && hanJugado && ultimaCarta.value != util.Valor.SKIP) {
             tengoQueRobar = true;
           }
-          if(this.GameService.hasRegla(util.Reglas.BLOCK_DRAW) && cardsToDraw>0 && ultimaCarta.accionTomadaPor!="" && ultimaCarta.value == util.Valor.SKIP) { 
+          if(this.gameService.hasRegla(util.Reglas.BLOCK_DRAW) && cardsToDraw>0 && ultimaCarta.accionTomadaPor!="" && ultimaCarta.value == util.Valor.SKIP) { 
             tengoQueRobar = true;
           }
           if(!hanJugado) {
@@ -144,8 +155,8 @@ export class PartidaPrivadaComponent implements OnInit {
           }
           //O no puedo jugar ninguna carta...
           let _canPlay = false;
-          this.GameService.jugadores[this.GameService.indexYo].cartas.getArray().forEach(c => {
-            if(this.GameService.hasRegla(util.Reglas.BLOCK_DRAW) && cardsToDraw>1){
+          this.gameService.jugadores[this.gameService.indexYo].cartas.getArray().forEach(c => {
+            if(this.gameService.hasRegla(util.Reglas.BLOCK_DRAW) && cardsToDraw>1){
               if(c.value == util.Valor.SKIP && c.color == ultimaCarta.color) {
                 console.log("Me salvo por tener un bloqueo")
                 tengoQueRobar = false
@@ -156,7 +167,7 @@ export class PartidaPrivadaComponent implements OnInit {
               _canPlay = true;
             }
           });
-          if(this.GameService.hasRegla(util.Reglas.PROGRESSIVE_DRAW) && cardsToDraw>1){
+          if(this.gameService.hasRegla(util.Reglas.PROGRESSIVE_DRAW) && cardsToDraw>1){
             //Calcular cuales te salvan
             let posiblesSalvaciones = [
               new Carta(util.Valor.DRAW2,util.Color.AZUL),
@@ -171,14 +182,14 @@ export class PartidaPrivadaComponent implements OnInit {
             ];
             let i=0;
             posiblesSalvaciones.forEach(c => {
-              if(!util.isWild(c.value) && !(c.value==ultimaCarta.value || c.color==ultimaCarta.color)) {
+              if(!util.sePuedeJugar(ultimaCarta,c)) {
                 posiblesSalvaciones.splice(i,1);
               }
               i++;
             });
             console.log("Me salvan:",posiblesSalvaciones);
             posiblesSalvaciones.forEach(c => {
-              if(this.GameService.jugadores[this.GameService.indexYo].cartas.has(c)) {
+              if(this.gameService.jugadores[this.gameService.indexYo].cartas.has(c)) {
                 console.log("me salvo por tener un +2 o +4 jugable");
                 tengoQueRobar = false
                 _canPlay = true;
@@ -192,13 +203,13 @@ export class PartidaPrivadaComponent implements OnInit {
             }
           }
           let acaboDeRobar = false;
-          if(hanRobado && (quienHaRobado[0] == this.userService.username)) {
+          if(hanRobado && (quienHaRobado[0] == this.userService.username) && !(this.gameService.hasRegla(util.Reglas.REPEAT_DRAW) && (cardsToDraw==1))) {
             console.log("acaboDeRobar")
             acaboDeRobar = true;
             tengoQueRobar = false;
           }
           else {
-            console.log("noAcaboDeRobar")
+            console.log("noAcaboDeRobar o tengo que seguir robando")
           }
           
   
@@ -212,19 +223,19 @@ export class PartidaPrivadaComponent implements OnInit {
             }
             ultimaCarta.accionTomadaPor = letoca;
           }
-          console.log("Ultima carta: ",this.GameService.pilaCartas[this.GameService.pilaCartas.length-1])
+          console.log("Ultima carta: ",this.gameService.pilaCartas[this.gameService.pilaCartas.length-1])
           
           if(hanRobado) { //Actualizar las cartas
-            let i = this.GameService.pilaCartas.length-1 
+            let i = this.gameService.pilaCartas.length-1 
             while(i>0) {
-              if(this.GameService.pilaCartas[i].value == util.Valor.DRAW2 && this.GameService.pilaCartas[i].accionTomadaPor=="") {
-                this.GameService.pilaCartas[i].accionTomadaPor = quienHaRobado[0];
+              if(this.gameService.pilaCartas[i].value == util.Valor.DRAW2 && this.gameService.pilaCartas[i].accionTomadaPor=="") {
+                this.gameService.pilaCartas[i].accionTomadaPor = quienHaRobado[0];
               }
-              else if(this.GameService.pilaCartas[i].value == util.Valor.DRAW4 && this.GameService.pilaCartas[i].accionTomadaPor=="") {
-                this.GameService.pilaCartas[i].accionTomadaPor = quienHaRobado[0];
+              else if(this.gameService.pilaCartas[i].value == util.Valor.DRAW4 && this.gameService.pilaCartas[i].accionTomadaPor=="") {
+                this.gameService.pilaCartas[i].accionTomadaPor = quienHaRobado[0];
               }
-              else if(this.GameService.hasRegla(util.Reglas.BLOCK_DRAW) && this.GameService.pilaCartas[i].value == util.Valor.SKIP && this.GameService.pilaCartas[i].accionTomadaPor=="") {
-                this.GameService.pilaCartas[i].accionTomadaPor = quienHaRobado[0];
+              else if(this.gameService.hasRegla(util.Reglas.BLOCK_DRAW) && this.gameService.pilaCartas[i].value == util.Valor.SKIP && this.gameService.pilaCartas[i].accionTomadaPor=="") {
+                this.gameService.pilaCartas[i].accionTomadaPor = quienHaRobado[0];
               }
               else {
                 i=-1; //Salir del bucle
@@ -239,6 +250,12 @@ export class PartidaPrivadaComponent implements OnInit {
           if(hanRobado) {
             console.log("Jugadores han robado ",quienHaRobado)
           }
+
+          console.log("RESUMEN:\n    letoca: "+letoca+
+                              "\n    acaboDeRobar: "+acaboDeRobar+
+                              "\n    tengoQueRobar: "+tengoQueRobar+
+                              "\n    hanJugado: "+hanJugado+
+                              "\n    mesaltan: "+mesaltan);
   
           if(letoca == this.userService.username) { //Me toca
             console.log("Me toca")
@@ -246,40 +263,20 @@ export class PartidaPrivadaComponent implements OnInit {
               //Pasar turno
               console.log("Paso turno")
               await this.delay(500);
-              await this.GameService.send(
+              await this.gameService.send(
                 { },
                 "/game/pasarTurno/",
                 undefined
               ).then()
             }
             if(tengoQueRobar) {
-              this.GameService.letoca = "";
+              this.gameService.letoca = "";
               //Robar cardsToDraw
-              this.GameService.robando = true;
+              this.gameService.robando = true;
               if(!acaboDeRobar) {
                 console.log("Tengo que robar "+cardsToDraw)
-                this.GameService.robar(cardsToDraw);
+                this.gameService.robar(cardsToDraw);
                 this.changeMano().then();
-                if(this.GameService.hasRegla(util.Reglas.REPEAT_DRAW) && (cardsToDraw==1)) {
-                  await this.delay(1000);
-                  let _can = false
-                  this.GameService.jugadores[this.GameService.indexYo].cartas.getArray().forEach(c => {
-                    if(util.sePuedeJugar(ultimaCarta,c)) {
-                      _can = true;
-                    }
-                  });
-                  while(!_can) {
-                    console.log("No puedo jugar, tengo que seguir robando")
-                    this.GameService.robar(1);
-                    this.changeMano().then();
-                    await this.delay(1000);
-                    this.GameService.jugadores[this.GameService.indexYo].cartas.getArray().forEach(c => {
-                      if(util.sePuedeJugar(ultimaCarta,c)) {
-                        _can = true;
-                      }
-                    });
-                  }
-                }
               }
             }
             else {
@@ -287,35 +284,35 @@ export class PartidaPrivadaComponent implements OnInit {
                 if(mesaltan) {
                   //Pasar turno
                   console.log("Me saltan")
-                  this.GameService.robando = true;
+                  this.gameService.robando = true;
                   await this.delay(500);
-                  await this.GameService.send(
+                  await this.gameService.send(
                     { },
                     "/game/pasarTurno/",
                     undefined
                   ).then()
                 }
               }
-              this.GameService.letoca = letoca;
+              this.gameService.letoca = letoca;
             }
             
           }
           else {
-            this.GameService.robando = false;
-            this.GameService.letoca = letoca;
+            this.gameService.robando = false;
+            this.gameService.letoca = letoca;
           }
           this.finished.emit(true);
         }
-        this.GameService.skipNextJugada = false;
+        this.gameService.skipNextJugada = false;
       }
     });
 
-    this.nJugadores = this.GameService.partida.njugadores;
-    this.tiempoTurno = this.GameService.partida.tturno;
+    this.nJugadores = this.gameService.partida.njugadores;
+    this.tiempoTurno = this.gameService.partida.tturno;
   }
 
   async beginGame() {
-    await this.GameService.send(
+    await this.gameService.send(
       { },
       "/game/begin/",
       undefined
@@ -323,7 +320,7 @@ export class PartidaPrivadaComponent implements OnInit {
   }
 
   copyText() {
-    this.clipboardApi.copyFromContent(this.GameService.id);
+    this.clipboardApi.copyFromContent(this.gameService.id);
   }
 
   delay(ms: number) {
@@ -333,7 +330,7 @@ export class PartidaPrivadaComponent implements OnInit {
   async changeMano():Promise<any> {
     const that = this;
     return new Promise(function (resolve, reject) {
-      that.GameService.privatemsg.subscribe({
+      that.gameService.privatemsg.subscribe({
         next: async (msg: any) => {
           resolve(msg);
         }
@@ -342,7 +339,7 @@ export class PartidaPrivadaComponent implements OnInit {
   }
 
   async goBack() {
-    await this.GameService.send(
+    await this.gameService.send(
       { },
       "/game/disconnect/",
       undefined
@@ -350,7 +347,7 @@ export class PartidaPrivadaComponent implements OnInit {
   }
 
   async expulsar(user:string) {
-    await this.GameService.send(
+    await this.gameService.send(
       { },
       "/game/disconnect/",
       {"Authorization": "Bearer " + this.userService.getToken(),"username":user}
@@ -491,7 +488,7 @@ export class FriendList {
 })
 export class Reglas {
 
-  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog,public GameService: GameService, public userService: UsersService,private clipboardApi: ClipboardService){
+  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog,public gameService: GameService, public userService: UsersService,private clipboardApi: ClipboardService){
 
   }
 
