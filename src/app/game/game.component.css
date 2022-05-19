@@ -66,7 +66,7 @@ button.openChat {
   position: absolute;
   top: 57%;
   right: 90%;
-  background-color: gray;
+  background-color: white;
   width: 7vw;
   height: 7vw;
 }
@@ -140,8 +140,9 @@ button.uno {
 }
 
 /* ---------------------------- OTHER ---------------------------- */
-body {
-  background: #5bab63;
+::ng-deep body {
+  background: radial-gradient(#02AE48, #005C1A);
+  background-position: initial; 
 }
 
 .final {
