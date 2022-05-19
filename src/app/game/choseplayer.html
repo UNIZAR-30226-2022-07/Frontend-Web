@@ -1,6 +1,6 @@
 <div class="popup">
     <h2 mat-dialog-title>¿Con quien quieres cambiar la mano?</h2>
     <div *ngFor="let p of this.gameService.jugadores">
-        <button mat-button (click)="close(p.nombre)">{{p.nombre}}</button>
+        <button mat-button *ngIf="p.nombre != this.userService.username" (click)="close(p.nombre)">{{p.nombre}}</button>
     </div>
 </div>
