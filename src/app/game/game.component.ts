@@ -77,7 +77,7 @@ export class GameComponent implements OnInit {
         });
         await this.delay(3000);
         this.gameService.robar(2);
-        this.changeMano().then();
+        await this.changeMano().then();
       }
       //Enviar jugada a backend
       await this.gameService.send(
