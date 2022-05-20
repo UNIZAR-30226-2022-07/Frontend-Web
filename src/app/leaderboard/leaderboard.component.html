@@ -1,5 +1,10 @@
-<div class="leaderboard">
 
+<div class="leaderboard">
+    <div class="back">
+        <button mat-icon-button (click)="this.router.navigateByUrl('')">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+    </div>
     <mat-tab-group mat-align-tabs="center">
         <mat-tab label="Amigos">
             <table class="scroll">

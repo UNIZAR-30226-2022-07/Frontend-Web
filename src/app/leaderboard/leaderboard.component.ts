@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 
 import { RankingService } from '../ranking.service';
@@ -35,7 +36,7 @@ export class LeaderboardComponent implements OnInit {
 
   displayedColumns = ['No.', 'Nombre', 'Puntos'];
   
-  constructor(public RankingService : RankingService) {
+  constructor(public RankingService : RankingService, public router: Router) {
    
    }
 
