@@ -16,7 +16,7 @@ import { ChatComponent, ChoseColorComponent, ChosePlayerComponent, GameComponent
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { TorneoComponent, ReglasTorneoPartida } from './torneo/torneo.component';
-import { TorneoEsperaComponent } from './torneo-espera/torneo-espera.component';
+import { TorneoEsperaComponent, ReglasTorneo} from './torneo-espera/torneo-espera.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { PartidaPrivadaComponent, FriendList, Reglas } from './partida-privada/partida-privada.component';
 import { AuthInterceptor } from './auth.interceptor';
@@ -54,6 +54,7 @@ import { ClipboardModule } from 'ngx-clipboard';
     esperarTokenCorreo,
     Reglas,
     ReglasTorneoPartida,
+    ReglasTorneo,
   ],
   imports: [
     BrowserModule,

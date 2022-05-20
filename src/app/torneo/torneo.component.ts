@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { GameService } from '../game.service';
 
+
 @Component({
   selector: 'app-torneo',
   templateUrl: './torneo.component.html',
@@ -12,6 +13,7 @@ export class TorneoComponent implements OnInit {
   torneoData: any;
   searchText!: string;
   tiempoTurno: number = 10;
+  listaTorneosActivos: Array<any> = [];
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
   constructor(public router: Router, public gameService:GameService, public MatDialog:MatDialog) { }
 
@@ -22,6 +24,17 @@ export class TorneoComponent implements OnInit {
     this.gameService.getTorneos().subscribe({
       next:(data) =>{
         console.log("Ha ido bien el mensaje es " + JSON.stringify(data));
+        const msg = JSON.stringify(data);
+        const msg2 = msg.split(",");
+       
+        this.listaTorneosActivos[0] = msg2[0].substring(1,msg2[0].length -1);
+        let i = 1; 
+        for( i = 1 ; i < msg2.length - 1 ; i++  ){
+          console.log("La longitud es " + msg2.length);
+          this.listaTorneosActivos[i] = msg2[1].substring(1,msg2[i].length-1);
+          console.log("El mensaje es " + this.listaTorneosActivos[i]);
+        }
+        this.listaTorneosActivos[i+1] = msg2[i+1].substring(1,msg2[i+1].length-2);
       },error:(e)=>{
 
       }
