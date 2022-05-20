@@ -8,7 +8,12 @@ html, body{
 
 body{
   background: url("../../assets/img/fondo.png");
-  overflow-x: hidden;
+}
+
+div.menuInicial {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 /*------------------------------------TOOLBAR-----------------------------------------*/
@@ -108,7 +113,7 @@ body{
 
 .mid-container{
   width: auto;
-  height: 500px;
+  height: auto;
   align-items: center;
   justify-content: center;
   display: flex;
@@ -118,6 +123,10 @@ body{
 
 .example-spacer {
   flex: 1 1 auto;
+}
+
+.example-spacer2 {
+  flex: 1 1 10%;
 }
 
 
@@ -150,9 +159,6 @@ body{
   border-radius: 15px;
 }
 
-.boton1 a:hover{
-    width:300px;
-}
 
 
 .boton1 button{
@@ -274,7 +280,6 @@ div.friend {
 
 .lista-amigos1:hover{
   background: #EEE;
-
 }
 
 .searcher-friends{
