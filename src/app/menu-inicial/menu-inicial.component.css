@@ -22,7 +22,7 @@ div.menuInicial {
 .mat-toolbar{
   background-color: #6b67667e;
   padding: 2ch;
-  margin-bottom: 5%;
+  margin-bottom: 5vh;
 }
 
 .mat-icon{
@@ -132,35 +132,6 @@ div.menuInicial {
 
 
 
-
-
-
-
-.boton1 a{
-  text-decoration: none;
-  display: block;
-  border: 1px solid transparent;
-  width: 200px;
-  height: 35px;
-  text-align: center;
-  padding-top: 15px;
-  margin: auto;
-  transition: 0.15s;
-
-  font-family: "Permanent Marker";
-  
-  background-color: #080808;
-  color:white;
-
-  
-  margin-bottom: 100px;
-  margin-top: 100px;
-
-  border-radius: 15px;
-}
-
-
-
 .boton1 button{
   text-decoration: none;
   display: block;
@@ -182,8 +153,7 @@ div.menuInicial {
   font-family: "Permanent Marker";
   
   
-  margin-bottom: 100px;
-  margin-top: 100px;
+  margin-bottom: 10vh;
 
   border-radius: 15px;
 }

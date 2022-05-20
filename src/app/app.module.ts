@@ -23,6 +23,7 @@ import { AuthInterceptor } from './auth.interceptor';
 import { ConfirmarBorrar, EditProfileComponent } from './edit-profile/edit-profile.component';
 import { RestablecerContraComponent } from './restablecer-contra/restablecer-contra.component';
 import { ClipboardModule } from 'ngx-clipboard';
+import { PartidaPublicaComponent } from './partida-publica/partida-publica.component';
 
 
 
@@ -55,6 +56,7 @@ import { ClipboardModule } from 'ngx-clipboard';
     Reglas,
     ReglasTorneoPartida,
     ReglasTorneo,
+    PartidaPublicaComponent,
   ],
   imports: [
     BrowserModule,

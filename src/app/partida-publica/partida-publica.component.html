@@ -1,0 +1,35 @@
+
+<body>
+    <div class="boton back">
+        <button mat-icon-button (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+    </div>
+    <h1>Partida publica</h1>
+    <h3>Jugadores:  {{gameService.jugadores.length}} / {{nJugadores}}</h3>
+    <div class="center">
+        <div class="pack" *ngFor="let e of [].constructor(nJugadores); let i = index">
+            <div class="persona" *ngIf="gameService.jugadores[i] === undefined">
+                <mat-icon class="empty">person</mat-icon>
+            </div>
+            <div class="persona filled" *ngIf="gameService.jugadores[i] !== undefined">
+                <mat-icon class="filled">person</mat-icon>
+            </div>
+            <div class="datos" *ngIf="gameService.jugadores[i] !== undefined">
+                <b>{{gameService.jugadores[i].nombre}}</b>
+            </div>
+        </div>
+    </div>
+    <div class="status" *ngIf="(gameService.jugadores.length == nJugadores)">
+        <h2>La partida comenzara pronto...</h2>
+    </div>
+    
+    
+    <div class="caja_abajo">
+        <div class="status" *ngIf="gameService.jugadores.length != nJugadores">
+            <h2>Esperando a jugadores</h2>
+            <mat-spinner class="spinner"></mat-spinner>
+        </div>  
+    </div>
+    
+</body>

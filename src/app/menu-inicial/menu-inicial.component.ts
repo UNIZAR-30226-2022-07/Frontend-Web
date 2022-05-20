@@ -116,7 +116,6 @@ export class MenuInicialComponent implements OnInit {
 
     buscarPublica() {
       this.loading = true;
-      // POST https://onep1.herokuapp.com/game/getPartidaPublica
       const httpOptions = {
         headers: new HttpHeaders({
           'Authorization': "Bearer "+this.userService.getToken()
@@ -138,8 +137,9 @@ export class MenuInicialComponent implements OnInit {
               this._snackBar.open("Estas ya unido a esta partida...",'',{duration: 4000});
             }
           });
+          this.gameService.ppublica = true;
           await this.gameService.joinMatch(v).then();
-          this.router.navigateByUrl('/partidaPrivada/'+v);
+          this.router.navigateByUrl('/partidaPublica/'+v);
           this.loading = false;
         },
         error: (e:any) => {
@@ -421,23 +421,28 @@ export class NotisContent {
 })
 export class UnirsePrivada {
   id: string = ""
-  constructor(public dialogRef: MatDialogRef<UnirsePrivada>, public userService:UsersService, public gameService: GameService, public router: Router,private _snackBar: MatSnackBar) {}
+  loading: boolean = false;
+  constructor(public dialogRef: MatDialogRef<UnirsePrivada>, public userService:UsersService, public gameService: GameService, public router: Router,private _snackBar: MatSnackBar) {this.loading = false;}
 
   async joinGame() {
-    await this.gameService.infoMatch(this.id).then();
-    if(this.gameService.jugadores.length >= this.gameService.partida.njugadores) {
-      this._snackBar.open("¡Partida llena!",'',{duration: 4000});
-      return;
-    }
-    this.gameService.jugadores.forEach(j => {
-      if(j.nombre == this.userService.username) {
-        this._snackBar.open("Estas ya unido a esta partida...",'',{duration: 4000});
+    if(!this.loading) {
+      this.loading = true;
+      await this.gameService.infoMatch(this.id).then();
+      if(this.gameService.jugadores.length >= this.gameService.partida.njugadores) {
+        this._snackBar.open("¡Partida llena!",'',{duration: 4000});
         return;
       }
-    });
-    await this.gameService.joinMatch(this.id).then();
-    this.router.navigateByUrl('/partidaPrivada/'+this.id);
-    this.dialogRef.close();
+      this.gameService.jugadores.forEach(j => {
+        if(j.nombre == this.userService.username) {
+          this._snackBar.open("Estas ya unido a esta partida...",'',{duration: 4000});
+          return;
+        }
+      });
+      await this.gameService.joinMatch(this.id).then();
+      this.router.navigateByUrl('/partidaPrivada/'+this.id);
+      this.dialogRef.close();
+      this.loading = false;
+    }
   }
 
 }
@@ -453,7 +458,8 @@ export class ReglasPartidaComponent {
   nJugadores: number = 6;
   tiempoTurno: number = 10;
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
-  constructor(public dialogRef: MatDialogRef<ReglasPartidaComponent>, public gameService: GameService, public router: Router) {}
+  loading: boolean = false;
+  constructor(public dialogRef: MatDialogRef<ReglasPartidaComponent>, public gameService: GameService, public router: Router) {this.loading = false;}
 
   changeNplayers(e: any) {
     this.nJugadores = e.target.value;
@@ -464,8 +470,12 @@ export class ReglasPartidaComponent {
   }
 
   async crearPartida() {
-    await this.gameService.newMatch(this.nJugadores,this.tiempoTurno, this.reglas).then();
-    this.router.navigateByUrl('/partidaPrivada/'+this.gameService.id);
-    this.dialogRef.close();
+    if(!this.loading) {
+      this.loading = true;
+      await this.gameService.newMatch(this.nJugadores,this.tiempoTurno, this.reglas).then();
+      this.router.navigateByUrl('/partidaPrivada/'+this.gameService.id);
+      this.dialogRef.close();
+      this.loading = false;
+    }
   }
 }
