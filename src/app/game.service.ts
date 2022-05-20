@@ -18,6 +18,9 @@ declare var Stomp: any;
 export class GameService {
 
   public inicializado:boolean = false;
+  public ppublica: boolean = false;
+  public psemiTorneo: boolean = false;
+  public ptorneo: boolean = false;
   
   public messageReceived = new EventEmitter<any>();
   public privatemsg = new EventEmitter<any>();
@@ -359,11 +362,19 @@ export class GameService {
   public restart(): Promise<any>  {
     return new Promise<any>((resolve, reject) => {
       this.id = "";
+      this.idTorneo = "";
+      this.jugadoresTorneo = [];
       this.jugadores = [];
       this.pilaCartas = [];
       this.reglas = [];
+      this.parseandomsg = false;
+      this.ppublica = false;
+      this.ptorneo = false;
+      this.psemiTorneo = false;
       this.indexYo = 0;
       this.letoca = "";
+      this.saidUno = false;
+      this.robando = false;
       this.suscripciones.forEach(s => {
         this.stompClient.unsubscribe(s,{"Authorization": "Bearer " + this.userService.getToken()})
       });
@@ -565,6 +576,14 @@ export class GameService {
     }
     else {
       this.jugadores[this.jugadores.length-1].cartas.set(8);
+    }
+
+    if((this.ppublica || this.ptorneo) && this.jugadores[0].nombre == this.userService.username && this.jugadores.length==4) {
+      this.send(
+        { },
+        "/game/begin/",
+        undefined
+      )
     }
   };
 

@@ -14,6 +14,7 @@ import { PartidaPrivadaComponent } from './partida-privada/partida-privada.compo
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { LoggedGuard } from './logged.guard';
 import { RestablecerContraComponent } from './restablecer-contra/restablecer-contra.component';
+import { PartidaPublicaComponent } from './partida-publica/partida-publica.component';
 
 
 const routes: Routes = [
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: "torneoEspera/:id", component: TorneoEsperaComponent, canActivate: [LoggedGuard] },
   { path: "leaderboard", component: LeaderboardComponent, canActivate: [LoggedGuard] },
   { path: "partidaPrivada/:id", component:PartidaPrivadaComponent, canActivate: [LoggedGuard] },
+  { path: "partidaPublica/:id", component:PartidaPublicaComponent, canActivate: [LoggedGuard] },
   { path: "edit-profile", component:EditProfileComponent, canActivate: [LoggedGuard] },
   { path: "restablecerContra", component:RestablecerContraComponent},
 ];

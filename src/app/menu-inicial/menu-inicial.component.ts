@@ -116,7 +116,6 @@ export class MenuInicialComponent implements OnInit {
 
     buscarPublica() {
       this.loading = true;
-      // POST https://onep1.herokuapp.com/game/getPartidaPublica
       const httpOptions = {
         headers: new HttpHeaders({
           'Authorization': "Bearer "+this.userService.getToken()
@@ -138,8 +137,9 @@ export class MenuInicialComponent implements OnInit {
               this._snackBar.open("Estas ya unido a esta partida...",'',{duration: 4000});
             }
           });
+          this.gameService.ppublica = true;
           await this.gameService.joinMatch(v).then();
-          this.router.navigateByUrl('/partidaPrivada/'+v);
+          this.router.navigateByUrl('/partidaPublica/'+v);
           this.loading = false;
         },
         error: (e:any) => {
