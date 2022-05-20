@@ -4,13 +4,26 @@ import { Router } from '@angular/router';
 import { GameService } from '../game.service';
 
 
+export class TorneoFeatures {
+  id:string = "";
+  jugadores: Array<string> = [];
+  nJugadores : number = 0;
+  reglas : Array<string> = [];
+  creador:string = "";
+
+}
+
+
 @Component({
   selector: 'app-torneo',
   templateUrl: './torneo.component.html',
   styleUrls: ['./torneo.component.css']
 })
 export class TorneoComponent implements OnInit {
-  torneoData: any;
+
+
+  id : string = "";
+  torneoData: Array<TorneoFeatures> = [];
   searchText!: string;
   tiempoTurno: number = 10;
   listaTorneosActivos: Array<any> = [];
@@ -25,21 +38,30 @@ export class TorneoComponent implements OnInit {
       next:(data) =>{
         console.log("Ha ido bien el mensaje es " + JSON.stringify(data));
         const msg = JSON.stringify(data);
-        const msg2 = msg.split(",");
        
-        this.listaTorneosActivos[0] = msg2[0].substring(1,msg2[0].length -1);
-        let i = 1; 
-        for( i = 1 ; i < msg2.length - 1 ; i++  ){
-          console.log("La longitud es " + msg2.length);
-          this.listaTorneosActivos[i] = msg2[1].substring(1,msg2[i].length-1);
-          console.log("El mensaje es " + this.listaTorneosActivos[i]);
-        }
-        this.listaTorneosActivos[i+1] = msg2[i+1].substring(1,msg2[i+1].length-2);
+        data.forEach((element:any) => {
+          let TorneoFeatures = {
+            id : element.idTorneo,
+            jugadores: element.jugadores,
+            nJugadores: element.jugadores.length,
+            reglas: element.reglas,
+            creador: element.jugadores[0],
+          }
+          this.torneoData.push(TorneoFeatures);
+          console.info("El id es " + element.idTorneo);
+          console.info("El num  es " + element.jugadores.length);
+          console.info("Los jugadores son" + element.jugadores);
+          console.info("El creador es " + element.jugadores[0]);
+          console.info("Las reglas son" + element.reglas);
+           
+        });
+       
+
       },error:(e)=>{
 
       }
     })
-    //Pruebas:
+    /*//Pruebas:
     this.torneoData = [
       {
         id: 1,
@@ -60,6 +82,7 @@ export class TorneoComponent implements OnInit {
         jugadores: 7
       }
     ]
+    */
   }
 
   crearPartidaTorneo(){
