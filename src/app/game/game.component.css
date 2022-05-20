@@ -140,9 +140,11 @@ button.uno {
 }
 
 /* ---------------------------- OTHER ---------------------------- */
-::ng-deep body {
-  background: radial-gradient(#02AE48, #005C1A);
-  background-position: initial; 
+.game {
+  background: radial-gradient(#02AE48, #005C1A) !important;
+  background-position: initial !important; 
+  width: 100vw;
+  height: 100vh;
 }
 
 .final {
