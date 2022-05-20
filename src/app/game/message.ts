@@ -3,6 +3,6 @@ export class Message {
     message!: string;
     constructor(username:string, message:string) {
         this.username = username;
-        this.message = message;
+        this.message = message.substring(1,message.length-1);
     }
 }

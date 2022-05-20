@@ -38,8 +38,16 @@ export class MenuInicialComponent implements OnInit {
     httpOptions)
 
     test.subscribe({
-      next: (v: any) => {
+      next: async (v:any) => {
         console.log("ME LLEGO ",v)
+        //TODO: Cuando cesar lo solucione
+        // if (typeof v === 'string' || v instanceof String) {
+        //   this.loading = true;
+        //   this.gameService.id = v.replace(" ","");
+        //   await this.gameService.infoMatch(this.gameService.id).then();
+        //   this.router.navigateByUrl('/game');
+        //   this.loading = false;
+        // }
       },
       error: (e:any) => {
         console.error("ME LLEGO ERROR",e)
