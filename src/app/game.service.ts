@@ -142,12 +142,15 @@ export class GameService {
             while(i>0) {
               if(this.pilaCartas[i].value == util.Valor.DRAW2 && this.pilaCartas[i].accionTomadaPor=="") {
                 cardsToDraw += 2;
+                console.log("check ",this.pilaCartas[i])
               }
               else if(this.pilaCartas[i].value == util.Valor.DRAW4 && this.pilaCartas[i].accionTomadaPor=="") {
                 cardsToDraw += 4;
+                console.log("check ",this.pilaCartas[i])
               }
               else if(this.hasRegla(util.Reglas.BLOCK_DRAW) && this.pilaCartas[i].value == util.Valor.SKIP && this.pilaCartas[i].accionTomadaPor=="") {
                 cardsToDraw += 0;
+                console.log("check ",this.pilaCartas[i])
               }
               else {
                 i=-1; //Salir del bucle
@@ -163,10 +166,11 @@ export class GameService {
               cardsToDraw = 4;
             }
           }
+          console.log("cardsToDraw calculo incial: "+cardsToDraw)
   
           let tengoQueRobar = false;
           //O me toca robar...
-          if(cardsToDraw>0 && hanJugado && ultimaCarta.value != util.Valor.SKIP) {
+          if(cardsToDraw>0 && hanJugado && (((ultimaCarta.value == util.Valor.SKIP || ultimaCarta.value == util.Valor.DRAW2 || ultimaCarta.value == util.Valor.DRAW4)&&ultimaCarta.accionTomadaPor=="") || !(ultimaCarta.value == util.Valor.SKIP || ultimaCarta.value == util.Valor.DRAW2 || ultimaCarta.value == util.Valor.DRAW4))) {
             tengoQueRobar = true;
           }
           if(this.hasRegla(util.Reglas.BLOCK_DRAW) && cardsToDraw>0 && ultimaCarta.accionTomadaPor!="" && ultimaCarta.value == util.Valor.SKIP) { 
@@ -192,23 +196,22 @@ export class GameService {
           if(this.hasRegla(util.Reglas.PROGRESSIVE_DRAW) && cardsToDraw>1){
             //Calcular cuales te salvan
             let posiblesSalvaciones = [
-              new Carta(util.Valor.DRAW2,util.Color.AZUL),
-              new Carta(util.Valor.DRAW2,util.Color.AMARILLO),
-              new Carta(util.Valor.DRAW2,util.Color.ROJO),
-              new Carta(util.Valor.DRAW2,util.Color.VERDE),
               new Carta(util.Valor.DRAW4,util.Color.INDEFINIDO),
               new Carta(util.Valor.DRAW4,util.Color.AMARILLO), //NOTE: teoricamente imposible, pero por si acaso
               new Carta(util.Valor.DRAW4,util.Color.AZUL), //NOTE: teoricamente imposible, pero por si acaso
               new Carta(util.Valor.DRAW4,util.Color.ROJO), //NOTE: teoricamente imposible, pero por si acaso
               new Carta(util.Valor.DRAW4,util.Color.VERDE), //NOTE: teoricamente imposible, pero por si acaso
             ];
-            let i=0;
-            posiblesSalvaciones.forEach(c => {
-              if(!util.sePuedeJugar(ultimaCarta,c)) {
-                posiblesSalvaciones.splice(i,1);
-              }
-              i++;
-            });
+            if (ultimaCarta.value == util.Valor.DRAW2) {
+              posiblesSalvaciones.push(new Carta(util.Valor.DRAW2,util.Color.AMARILLO));
+              posiblesSalvaciones.push(new Carta(util.Valor.DRAW2,util.Color.AZUL));
+              posiblesSalvaciones.push(new Carta(util.Valor.DRAW2,util.Color.ROJO));
+              posiblesSalvaciones.push(new Carta(util.Valor.DRAW2,util.Color.VERDE));
+            }
+            else {
+              posiblesSalvaciones.push(new Carta(util.Valor.DRAW2,ultimaCarta.color));
+            }
+            
             console.log("Me salvan:",posiblesSalvaciones);
             posiblesSalvaciones.forEach(c => {
               if(this.jugadores[this.indexYo].cartas.has(c)) {
@@ -266,6 +269,7 @@ export class GameService {
             }
           }
 
+          console.log("cardsToDraw final: "+cardsToDraw)
           //--------------QUE HAY QUE HACER EN ESTE TURNO--------------
   
           
