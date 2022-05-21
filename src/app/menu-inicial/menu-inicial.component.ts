@@ -227,7 +227,7 @@ export class DialogContent {
 
   
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data:any,public friendService: FriendService, public snackBar:MatSnackBar) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data:any,public friendService: FriendService, public snackBar:MatSnackBar, public dialogRef: MatDialogRef<DialogContent>) {
     this.name = data.name;
     this.amigos_vacio = true;
 
@@ -279,6 +279,7 @@ export class DialogContent {
     this.friendService.addRequest(this.nameUser2Search).subscribe({
       next: (v) => {
         this.snackBar.open("Invitación enviada con éxito",'',{duration: 4000});
+        
 
       },
       error: (e) =>{
@@ -295,6 +296,7 @@ export class DialogContent {
     this.friendService.removeFriend(friend).subscribe({
       next: (v) => {
         this.snackBar.open("Amigo borrado con éxito",'',{duration: 4000});
+        this.dialogRef.close();
       },error : (e) => {
 
       }
@@ -328,7 +330,7 @@ export class NotisContent {
   
  
 
-  constructor(public dialog:MatDialog, public friendService: FriendService ,public dialogRef: MatDialogRef<UnirsePrivada>, public userService:UsersService, public gameService: GameService, public router: Router,private _snackBar: MatSnackBar){
+  constructor(public dialog:MatDialog, public friendService: FriendService ,public dialogRef: MatDialogRef<UnirsePrivada>, public userService:UsersService, public gameService: GameService, public router: Router,private _snackBar: MatSnackBar,public dialogRef2: MatDialogRef<ReglasPartidaComponent>){
      
   }
   
@@ -394,6 +396,7 @@ export class NotisContent {
       next:(data) => {
         console.log("Ha ido bien");
         this._snackBar.open("Amigo aceptado con éxito",'',{duration: 4000});
+        this.dialogRef2.close();
       },
       error: (e) => {
         console.log("Ha ido mal");
@@ -408,6 +411,7 @@ export class NotisContent {
       next:(data) => {
         console.log("Ha ido bien");
         this._snackBar.open("Amigo rechazado con éxito",'',{duration: 4000});
+        this.dialogRef2.close();
       },
       error: (e) => {
         console.log("Ha ido mal");
@@ -419,6 +423,7 @@ export class NotisContent {
     this.friendService.cancelInvitation(id).subscribe({
       next:(data) => {
         this._snackBar.open("Invitación eliminada",'',{duration: 4000});
+        this.dialogRef2.close();
       },
       error: (e) => {
         console.log("Ha ido mal");
