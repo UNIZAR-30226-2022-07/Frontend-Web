@@ -12,6 +12,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTableModule} from '@angular/material/table';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatSidenavModule} from '@angular/material/sidenav'
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   imports: [
@@ -27,6 +29,8 @@ import {MatSidenavModule} from '@angular/material/sidenav'
     MatTableModule,
     MatSnackBarModule,
     MatSidenavModule,
+    MatCheckboxModule,
+    MatRadioModule,
   ],
 
   exports: [
@@ -42,6 +46,8 @@ import {MatSidenavModule} from '@angular/material/sidenav'
     MatTableModule,
     MatSnackBarModule,
     MatSidenavModule,
+    MatCheckboxModule,
+    MatRadioModule,
   ]
 })
 

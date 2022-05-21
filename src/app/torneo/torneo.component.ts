@@ -22,7 +22,7 @@ export class TorneoFeatures {
 })
 export class TorneoComponent implements OnInit {
 
-
+  disabled :boolean = true;
   id : string = "";
   torneoData: Array<TorneoFeatures> = [];
   searchText!: string;
@@ -47,6 +47,7 @@ export class TorneoComponent implements OnInit {
             creador: element.jugadores[0],
           }
           this.torneoData.push(TorneoFeatures);
+          
           console.info("El id es " + element.idTorneo);
           console.info("El num  es " + element.jugadores.length);
           console.info("Los jugadores son" + element.jugadores);
@@ -79,6 +80,10 @@ export class TorneoComponent implements OnInit {
     }
   }
 
+  abrirAyudaReglas(){
+    const dialogRef= this.MatDialog.open(AyudaReglas);
+  }
+
 }
 
 @Component({
@@ -104,5 +109,19 @@ export class ReglasTorneoPartida {
 
   changeTturno(e: any) {
     this.tiempoTurno = e.target.value;
+  }
+
+
+}
+
+
+@Component({
+selector: 'AyudaReglas',
+templateUrl: './AyudaReglas.html',
+styleUrls: ['./ReglasTorneoPartida.css']
+})
+export class AyudaReglas {
+  constructor(){
+
   }
 }

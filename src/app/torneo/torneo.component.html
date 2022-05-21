@@ -12,7 +12,11 @@
             <tr>
                 <th>Creado por</th>
                 <th>Jugadores</th>
-                <th>Reglas</th>
+                <th>Reglas
+                    <button mat-icon-button mat-button (click)="abrirAyudaReglas()">
+                        <mat-icon>help</mat-icon>
+                        </button>
+                </th>
                 <th></th>
             </tr>
         </thead>
@@ -20,7 +24,19 @@
             <tr *ngFor="let t of torneoData | filter:searchText">
                 <td>{{t.creador}}</td>
                 <td>{{t.nJugadores}}/9</td>
-                <td>{{t.reglas}}</td>
+                <td class="reglas-block">
+                    <span *ngFor="let index of [0,1,2,3,4,5,6]">
+                        <span *ngIf="t.reglas[index] != undefined">
+                            <mat-checkbox [(ngModel)] = "disabled">
+                            </mat-checkbox>
+                        </span>
+                        <span *ngIf="t.reglas[index] == undefined">
+                            <mat-checkbox [disabled]="false">
+                            </mat-checkbox>
+
+                        </span>
+                    </span>
+                </td>
                 <td>
                     <button class="btn-unirse" (click)="joinTorneo(t)">UNIRSE</button>
                 </td>
