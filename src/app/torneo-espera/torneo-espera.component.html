@@ -1,59 +1,33 @@
-<div>
-    <div class="boton back">
-        <button mat-icon-button (click)="exit()">
-            <mat-icon>arrow_back</mat-icon>
-          </button>
+<body>
+
+    <h1>Torneo de {{gameService.jugadoresTorneo[0].nombre}}</h1>
+    <h3>Jugadores:  {{gameService.jugadoresTorneo.length}} / {{nJugadores}}</h3>
+    <div class="center">
+        <div class="pack" *ngFor="let e of [].constructor(nJugadores); let i = index">
+            <div class="persona" *ngIf="gameService.jugadoresTorneo[i] === undefined">
+                <a>
+                      <mat-icon class="empty" >add</mat-icon>
+                </a>
+            </div>
+            <div class="persona filled" *ngIf="gameService.jugadoresTorneo[i] !== undefined">
+                <mat-icon class="filled">person</mat-icon>
+            </div>
+            <div class="datos" *ngIf="gameService.jugadoresTorneo[i] !== undefined">
+                <b>{{gameService.jugadores[i].nombre}}</b>
+            </div>
+        </div>
     </div>
-    <button  class= "reglas" (click) = "abrirReglas()" mat-button>
-        Reglas
-    </button>
-    <div class = "center">
-        <h1>Torneo de {{this.gameService.jugadoresTorneo[0].nombre}}</h1>
-        <h3>Jugadores:  {{this.gameService.jugadoresTorneo.length}}/9</h3>
-    </div>
-    <table>
-        <td *ngFor="let i of [0,1,2]">
-            <div class="persona" *ngIf="this.gameService.jugadoresTorneo[i] === undefined">
-                <mat-icon class="empty">person</mat-icon>
-            </div>
-            <div class="persona filled" *ngIf="this.gameService.jugadoresTorneo[i] !== undefined">
-                <mat-icon class="filled">person</mat-icon>
-            </div>
-
-            <div class="datos" *ngIf="this.gameService.jugadoresTorneo[i] !== undefined">
-                <b>{{this.gameService.jugadoresTorneo[i].nombre}}</b>
-            </div>
-        </td>
-        <td *ngFor="let i of [3,4,5]">
-            <div class="persona" *ngIf="this.gameService.jugadoresTorneo[i] === undefined">
-                <mat-icon class="empty">person</mat-icon>
-            </div>
-            <div class="persona filled" *ngIf="this.gameService.jugadoresTorneo[i] !== undefined">
-                <mat-icon class="filled">person</mat-icon>
-            </div>
-
-            <div class="datos" *ngIf="this.gameService.jugadoresTorneo[i] !== undefined">
-                <b>{{this.gameService.jugadoresTorneo[i].nombre}}</b>
-            </div>
-        </td>
-        <td *ngFor="let i of [6,7,8]">
-            <div class="persona" *ngIf="this.gameService.jugadoresTorneo[i] === undefined">
-                <mat-icon class="empty">person</mat-icon>
-            </div>
-            <div class="persona filled" *ngIf="this.gameService.jugadoresTorneo[i] !== undefined">
-                <mat-icon class="filled">person</mat-icon>
-            </div>
-
-            <div class="datos" *ngIf="this.gameService.jugadoresTorneo[i] !== undefined">
-                <b>{{this.gameService.jugadoresTorneo[i].nombre}}</b>
-            </div>
-        </td>
-    </table>
-    <div class="center" *ngIf="this.gameService.jugadoresTorneo.length == 9">
+    <div class="status" *ngIf="this.gameService.jugadoresTorneo.length == 9">
         <h2>La partida comenzara pronto...</h2>
     </div>
-    <div class="center" *ngIf="this.gameService.jugadoresTorneo.length != 9">
-        <h2>Esperando a jugadores</h2>
-        <mat-spinner class="spinner"></mat-spinner>
+    
+    
+    
+    <div class="caja_abajo">
+        <div class="status" *ngIf="this.gameService.jugadoresTorneo.length != 9">
+            <h2>Esperando a jugadores</h2>
+            <mat-spinner class="spinner"></mat-spinner>
+        </div>    
     </div>
-</div>
+    
+</body>

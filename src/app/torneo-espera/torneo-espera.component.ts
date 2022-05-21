@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GameService } from '../game.service';
 import * as util from "../game/logica/util";
+import { UsersService } from '../users.service';
 
 @Component({
   selector: 'app-torneo-espera',
@@ -11,8 +12,8 @@ import * as util from "../game/logica/util";
 })
 export class TorneoEsperaComponent implements OnInit {
   tournamentID: string | null = null;
-  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog, public gameService: GameService) { }
-
+  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog, public gameService: GameService, public userService:UsersService) { }
+  nJugadores:number = 9;
   ngOnInit(): void {
     this.tournamentID = this.route.snapshot.paramMap.get('id')
     console.log("jugadores: ",this.gameService.jugadoresTorneo)
