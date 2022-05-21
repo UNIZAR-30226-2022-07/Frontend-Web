@@ -15,7 +15,7 @@ import { TosComponent } from './tos/tos.component';
 import { ChatComponent, ChoseColorComponent, ChosePlayerComponent, GameComponent } from './game/game.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
-import { TorneoComponent, ReglasTorneoPartida } from './torneo/torneo.component';
+import { TorneoComponent, ReglasTorneoPartida , AyudaReglas} from './torneo/torneo.component';
 import { TorneoEsperaComponent, ReglasTorneo} from './torneo-espera/torneo-espera.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { PartidaPrivadaComponent, FriendList, Reglas } from './partida-privada/partida-privada.component';
@@ -57,6 +57,7 @@ import { PartidaPublicaComponent } from './partida-publica/partida-publica.compo
     ReglasTorneoPartida,
     ReglasTorneo,
     PartidaPublicaComponent,
+    AyudaReglas,
   ],
   imports: [
     BrowserModule,

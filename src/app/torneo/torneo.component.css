@@ -96,4 +96,18 @@ div.back .mat-icon {
   font-size: large;
 }
 
+mat-checkbox{
+  margin:5px;
+}
+
+.reglas-block{
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin-left: 20%;
+ 
+}
+
+
+
 

@@ -1,25 +1,70 @@
 /*------------------------------ DIVS ------------------------------ */
-div.status {
+div.caja_abajo{
+  display: block;
+  justify-content: center;
+  position: relative;
+  margin-top: 10%;
+}
+
+div.begin button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  width: auto;
+  height: auto;
+  border-radius: 10%;
+  color: white;
+  padding: 10px;
+}
+
+div.div.status {
   width: 25%;
   position: absolute;
-  right: 15%;
-  top: 65vh;
+  margin-right: auto;
+  margin-left: auto;
 
   align-items: center;
 }
+  
+.reglas {
 
-div.reglas {
-  width: 35%;
-  position: absolute;
-  right: 10%;
-  top: 20vh;
+ position: absolute;
+ top: 0;
+ right: 0;
+
+  font-family: "Fredoka One";
+  background-color: #C7261A;
+  color: white;
+
+  border-style: solid;
+  border-width: 4px;
+  border-color: black;
+  cursor: pointer;
+
+  
+  
 }
-div.center{
-  text-align: center;
+
+
+
+
+div.center {
+  display: flex;
   align-items: center;
+  justify-content: center;
 }
 
+  
 
+.posicion-clipboard{
+  display: flex;
+  justify-items: center;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+}
 
 /*------------------------------ TEXTO ------------------------------ */
 h1 {
@@ -27,19 +72,15 @@ h1 {
   padding-top: 2vh;
 }
 
-
+h3 {
+  text-align: center;
+}
 
 h2 {
   text-align: center;
 }
 
 /*------------------------------ TABLA ------------------------------ */
-table {
-  width: 100%;
-  margin-left:25%;
-  width: 50%;
-}
-
 mat-icon {
   display: inline;
   font-size: 6vh;
@@ -50,24 +91,15 @@ mat-icon.filled {
 }
 
 div.persona {
-  display: inline-block;
+  display: block;
 
   border: 1ch;
   border-style: solid;
   border-color: black;
+  transition: 5;
 }
-
-div.filled {
-  border-color: red;
-}
-
-div.datos {
-  display: table-cell;
-  width: 100%;
-  padding-left: 1ch;
-
-  font-size: x-large;
-  vertical-align: middle;
+.persona a:hover {
+  cursor: pointer;
 }
 
 div.pack {
@@ -79,10 +111,17 @@ div.pack {
   width: 10%;
 }
 
-.col1{
-  position: absolute;
-  top:50%;
-  margin: 10%;
+div.filled {
+  border-color: red;
+}
+
+div.datos {
+  display: table-cell;
+  width: 100%;
+  margin-top: 0.5ch;
+  text-align: center;
+
+  font-size: x-large;
 }
 
 /*------------------------------ OTHER ------------------------------ */
@@ -120,22 +159,57 @@ div.settings .mat-icon-button{
   top: 1vh;
   left: 93vw;
 }
-.reglas {
 
-  position: absolute;
-  top: 0;
-  right: 0;
- 
-   font-family: "Fredoka One";
-   background-color: #C7261A;
-   color: white;
- 
-   border-style: solid;
-   border-width: 4px;
-   border-color: black;
-   cursor: pointer;
- 
-   
-   
- }
- 
+
+
+/*--------------------------POP UP INVITAR AMIGOS-------------------------*/
+
+
+div.friend_list {
+  height: 100%;
+  width: 100%;
+  display: block;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  
+}
+
+div.title{
+  align-items: center;
+  text-align: center;
+}
+
+
+.lista-amigos1{
+
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+.lista-amigos1:hover{
+  background: #EEE;
+
+}
+
+
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+
+
+
+
+/*------------------------------------------POP UP REGLAS-----------------------------*/
+
+
+.r-list{
+  align-items: center;
+  text-align: center;
+}
