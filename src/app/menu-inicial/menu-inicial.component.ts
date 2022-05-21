@@ -47,14 +47,21 @@ export class MenuInicialComponent implements OnInit {
     test.subscribe({
       next: async (v:any) => {
         console.log("ME LLEGO ",v)
-        //TODO: Cuando cesar lo solucione
-        // if (typeof v === 'string' || v instanceof String) {
-        //   this.loading = true;
-        //   this.gameService.id = v.replace(" ","");
-        //   await this.gameService.infoMatch(this.gameService.id).then();
-        //   this.router.navigateByUrl('/game');
-        //   this.loading = false;
-        // }
+        if (v.hasOwnProperty('partidas')) {
+          this.loading = true;
+          this.gameService.id = v.partidas
+          await this.gameService.infoMatch(this.gameService.id).then();
+          this.gameService.getMano().subscribe({
+            next: async (mano: any) => {
+              console.log("LA MANO ES", mano);
+              this.router.navigateByUrl('/game');
+              this.loading = false;
+            },
+            error: (e:any) => {
+              console.error("ERROR EN LA MANO",e)
+            }
+          });
+        }
       },
       error: (e:any) => {
         console.error("ME LLEGO ERROR",e)
