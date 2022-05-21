@@ -11,6 +11,7 @@ export class TorneoFeatures {
   nJugadores : number = 0;
   reglas : Array<string> = [];
   creador:string = "";
+  reglasBool: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
 
 }
 
@@ -29,6 +30,7 @@ export class TorneoComponent implements OnInit {
   tiempoTurno: number = 10;
   listaTorneosActivos: Array<any> = [];
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
+ 
   constructor(public router: Router, public gameService:GameService, public MatDialog:MatDialog, public userService: UsersService) { }
 
   ngOnInit(): void {
@@ -45,7 +47,31 @@ export class TorneoComponent implements OnInit {
             nJugadores: element.jugadores.length,
             reglas: element.reglas,
             creador: element.jugadores[0],
+            reglasBool:[false, false, false, false, false, false],
           }
+
+          //Se miran que reglas exactamente estan activas
+          for (let i = 0; i < TorneoFeatures.reglas.length; i++) {
+            const element = TorneoFeatures.reglas[i];
+            if(element == "CERO_SWITCH"){
+              TorneoFeatures.reglasBool[0] = true;
+            }else if(element == "CRAZY_7"){
+              TorneoFeatures.reglasBool[1] = true;
+            }else if(element == "PROGRESSIVE_DRAW"){
+              TorneoFeatures.reglasBool[2] = true;
+            }else if(element == "CHAOS_DRAW"){
+              TorneoFeatures.reglasBool[3] = true;
+            }else if(element == "BLOCK_DRAW"){
+              TorneoFeatures.reglasBool[4] = true;
+            }else if(element == "REPEAT_DRAW"){
+              TorneoFeatures.reglasBool[5] = true;
+            } 
+          }
+
+          
+          
+          console.log("El tamaño es " + data[0].reglas.length);
+          console.log("La primera regla es " + data[0].reglas[0]);
           this.torneoData.push(TorneoFeatures);
           
           console.info("El id es " + element.idTorneo);

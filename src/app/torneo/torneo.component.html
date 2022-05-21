@@ -25,17 +25,19 @@
                 <td>{{t.creador}}</td>
                 <td>{{t.nJugadores}}/9</td>
                 <td class="reglas-block">
-                    <span *ngFor="let index of [0,1,2,3,4,5,6]">
-                        <span *ngIf="t.reglas[index] != undefined">
-                            <mat-checkbox [(ngModel)] = "disabled">
+                   
+                    <span *ngFor="let index of [0,1,2,3,4,5]">
+                        <span *ngIf="t.reglasBool[index] != false">
+                            <mat-checkbox  [(ngModel)] = "disabled">
                             </mat-checkbox>
                         </span>
-                        <span *ngIf="t.reglas[index] == undefined">
-                            <mat-checkbox [disabled]="false">
+                        <span *ngIf="t.reglasBool[index] == false">
+                            <mat-checkbox   [disabled]="false">
                             </mat-checkbox>
 
                         </span>
                     </span>
+                    
                 </td>
                 <td>
                     <button class="btn-unirse" (click)="joinTorneo(t)">UNIRSE</button>
