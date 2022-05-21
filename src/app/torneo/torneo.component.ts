@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { GameService } from '../game.service';
+import { UsersService } from '../users.service';
 
 
 export class TorneoFeatures {
@@ -28,11 +29,9 @@ export class TorneoComponent implements OnInit {
   tiempoTurno: number = 10;
   listaTorneosActivos: Array<any> = [];
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
-  constructor(public router: Router, public gameService:GameService, public MatDialog:MatDialog) { }
+  constructor(public router: Router, public gameService:GameService, public MatDialog:MatDialog, public userService: UsersService) { }
 
   ngOnInit(): void {
-    
-    //TODO: Request a backend para tener torneos https://onep1.herokuapp.com/torneo/getTorneos
     //TODO: Paginar los torneos?
     this.gameService.getTorneos().subscribe({
       next:(data) =>{
@@ -61,32 +60,23 @@ export class TorneoComponent implements OnInit {
 
       }
     })
-    /*//Pruebas:
-    this.torneoData = [
-      {
-        id: 1,
-        name: "3nsaladita",
-        reglas: "regla1, regla2",
-        jugadores: 4
-      },
-      {
-        id: 2,
-        name: "Vicks8",
-        reglas: "regla3",
-        jugadores: 2
-      },
-      {
-        id: 3,
-        name: "Helios",
-        reglas: "regla1, regla3",
-        jugadores: 7
-      }
-    ]
-    */
+    
   }
 
   crearPartidaTorneo(){
     const dialogRef = this.MatDialog.open(ReglasTorneoPartida);
+  }
+
+  async joinTorneo(torneo:any) {
+    console.log("click",torneo);
+    if(torneo.nJugadores<9 && torneo.jugadores.indexOf(this.userService.username)==-1) {
+      this.gameService.idTorneo = torneo.id;
+      this.gameService.ptorneo = true;
+      this.gameService.psemiTorneo = true;
+      this.gameService.reglas = torneo.reglas;
+      await this.gameService.joinTorneo(torneo.id).then()
+      this.router.navigateByUrl("/torneoEspera/"+torneo.id)
+    }
   }
 
 }
