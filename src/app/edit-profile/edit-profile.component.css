@@ -42,7 +42,7 @@ div.forgot-password {
     border-radius: 4px;
   }
   
-  button {
+  button.cuadrado {
     font-family: "Fredoka One";
     background-color: #C7261A;
     color: white;
@@ -143,3 +143,29 @@ div.forgot-password {
   }
 
   
+
+  div.back {
+    z-index: 99999;
+    width: auto;
+    height: auto;
+  }
+  div.back .mat-icon-button{
+    z-index: 99999;
+    height: 10vh;
+    width: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 1vh;
+    left: 1vw;
+  
+    background-color:black;
+  }
+  
+  div.back .mat-icon {
+    z-index: 999;
+    display: inline;
+    font-size: 6vh;
+    color:white;
+  }
