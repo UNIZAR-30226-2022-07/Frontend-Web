@@ -920,5 +920,32 @@ export class GameService {
         }
       });
     }
+
+    
+    getMano(): Observable<any> {
+      let body = { 
+        "username" : this.userService.username,
+        "idPartida" : this.id
+       };
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Authorization': "Bearer "+this.userService.getToken()
+        }),
+        withCredentials: true
+      };
+      return this.http.post("https://onep1.herokuapp.com/game/getManoJugador",body, httpOptions)
+    }
+
+    //TODO: completar funcion
+    isSemi(): Observable<any> {
+      let body = { };
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Authorization': "Bearer "+this.userService.getToken()
+        }),
+        withCredentials: true
+      };
+      return this.http.post("https://onep1.herokuapp.com/game/getManoJugador",body, httpOptions)
+    }
   
 }
