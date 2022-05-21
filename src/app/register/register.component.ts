@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UsersService } from '../users.service';
 
@@ -337,13 +338,15 @@ export class esperarTokenCorreo {
   usuarioVacio:boolean = false;
   tokenVacio:boolean = false;
   tokenIncorrecto:boolean = false;
-  constructor(public userService: UsersService,public route:Router){}
+  constructor(public userService: UsersService,public route:Router,public dialogRef: MatDialogRef<esperarTokenCorreo>, public snackBar:MatSnackBar){}
 
   mandarCodigo(){
     this.userService.mandarEmail(this.nombre,this.token).subscribe({
       next: (data) => {
         console.log("Ha ido bien");
+        this.dialogRef.close();
         this.route.navigateByUrl('/login');
+        this.snackBar.open("Cuenta activada con éxito",'',{duration: 4000});
       },error: (e) =>{
         console.log("Token incorrecto");
         if( this.nombre == ""){
