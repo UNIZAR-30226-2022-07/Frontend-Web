@@ -446,6 +446,15 @@ export class NotisContent {
     });
     await this.gameService.joinMatch(id).then();
     this.router.navigateByUrl('/partidaPrivada/'+id);
+    this.friendService.cancelInvitation(id).subscribe({
+      next:(data) => {
+  
+
+      },
+      error: (e) => {
+        console.log("Ha ido mal");
+      }
+    })
     this.dialogRef.close();
   }
 
