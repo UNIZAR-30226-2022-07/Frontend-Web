@@ -22,6 +22,13 @@ export class MenuInicialComponent implements OnInit {
   hayInvitaciones:boolean = false
   noHayInvitaciones:boolean = true
 
+
+  listaNotis: Array<string> = [];
+  listaInvitaciones: Array<Mensaje> = [];
+  cuerpo_mensaje: any;
+  mensaje_final:any;
+  numInvi:number=0;
+
   constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog, public userService: UsersService, public http: HttpClient, public gameService: GameService, private _snackBar: MatSnackBar, public friendService: FriendService) {}
   
   ngOnInit(): void {
@@ -81,6 +88,49 @@ export class MenuInicialComponent implements OnInit {
       }
     })
     */
+    console.log("Vamos a pedir mensajes")
+    this.friendService.getRequests().subscribe({
+      next: (data) => {
+
+
+        console.info("El tamaño es " + data.length);
+        const msg = data.message;
+      
+        this.cuerpo_mensaje = msg.split("\"");
+        console.info("Mensaje recibido: ", data.message);
+        for (let n = 0; (2*n + 1) < this.cuerpo_mensaje.length; n++) {
+          this.numInvi = this.numInvi + 1;
+          //this.listaNotis.push(this.cuerpo_mensaje[2*n + 1]);
+          
+        }
+       
+        
+      },
+      error: (e) => {
+        if (e.status == 401) {
+          console.log("ha ido mal")
+        }
+        else {
+          console.error(e);
+          
+        }
+      }
+    })
+
+    this.friendService.getInvitations().subscribe({
+      next: (data) =>{
+
+
+        data.forEach((element:any) => {
+          this.numInvi++;
+        });
+      
+
+      },error: (e) =>{
+
+      }
+    })
+    
   }
 
 
@@ -289,6 +339,7 @@ export class NotisContent {
       next: (data) => {
 
 
+        console.info("El tamaño es " + data.length);
         const msg = data.message;
       
         this.cuerpo_mensaje = msg.split("\"");
@@ -316,32 +367,17 @@ export class NotisContent {
     })
     this.friendService.getInvitations().subscribe({
       next: (data) =>{
-        const msg = JSON.stringify(data);
-    
-        this.cuerpo_mensaje = msg.split(",");
-        for (let n = 0; n < this.cuerpo_mensaje.length; n=n+2) {
-          
-          const msg = this.cuerpo_mensaje[n].split(":");
-          const msg2 = msg[1].substring(1,msg[1].length -1);
 
-          const cod = this.cuerpo_mensaje[n+1].split(":");
-          let cod2:string = "";
-          // Es el ultimo mensaje
-          if(n == this.cuerpo_mensaje.length -2){
-            cod2 = cod[1].substring(1,cod[1].length -3);  
-          }else{
-             cod2 = cod[1].substring(1,cod[1].length -2);
-          }
-  
-        
+
+        data.forEach((element:any) => {
           let Mensaje = {
-            name : msg2,
-            codigo : cod2,
+            name : element.invitador,
+            codigo : element.game,
             mensaje: "Te ha invitado a su partida",
           }
           this.listaInvitaciones.push(Mensaje);
-          
-        }
+        });
+        
        
       
 
