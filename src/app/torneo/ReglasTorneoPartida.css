@@ -171,8 +171,27 @@ html, body{
   }
   
   
-  /*-------Reglas partida privada------------*/
+  /*-------Ayuda Reglas------------*/
   
-  
+  mat-checkbox{
+    margin:30px;
+  }
+
+  div.mat-icon{
+    margin-left: 30px;
+  }
+
+  .nombres{
+    display: inline-flex;
+  }
+
+  .separacion{
+    margin: 15px;
+  }
+
+  .check1{
+    display: block;
+  }
+
   
   
