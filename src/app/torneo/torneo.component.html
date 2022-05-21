@@ -22,7 +22,7 @@
                 <td>{{t.nJugadores}}/9</td>
                 <td>{{t.reglas}}</td>
                 <td>
-                    <button class="btn-unirse" [routerLink]="'/torneoEspera/'+t.id">UNIRSE</button>
+                    <button class="btn-unirse" (click)="joinTorneo(t)">UNIRSE</button>
                 </td>
             </tr>
         </tbody>

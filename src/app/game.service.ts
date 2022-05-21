@@ -578,7 +578,7 @@ export class GameService {
       this.jugadores[this.jugadores.length-1].cartas.set(8);
     }
 
-    if((this.ppublica || this.ptorneo) && this.jugadores[0].nombre == this.userService.username && this.jugadores.length==4) {
+    if((this.ppublica && this.jugadores[0].nombre == this.userService.username && this.jugadores.length==4) || (this.ptorneo  && this.jugadores[0].nombre == this.userService.username && this.jugadores.length==3)) {
       this.send(
         { },
         "/game/begin/",
@@ -586,6 +586,39 @@ export class GameService {
       )
     }
   };
+
+  onConnectTorneo(message:any): void {
+    console.info("connect: "+message.body);
+    let msg = JSON.parse(message.body);
+    this.jugadoresTorneo = [];
+    let i = 0;
+    msg.forEach((e: { nombre: string; cartas: Carta[]; }) => {
+      if(e.cartas == undefined) {
+        if(e.nombre == this.userService.username) {
+          this.jugadoresTorneo.push(new Jugador(e.nombre, new Mano([])));
+        }
+        else {
+          let m = new Mano([]);
+          m.set(7);
+          this.jugadoresTorneo.push(new Jugador(e.nombre, m));
+        }
+      }
+      else {
+        this.jugadoresTorneo.push(new Jugador(e.nombre, new Mano(e.cartas)));
+      }
+    });
+
+    if(this.jugadoresTorneo[0].nombre == this.userService.username && this.jugadoresTorneo.length==9) {
+      this.sendTorneo(
+        { },
+        "/game/begin/torneo/",
+        undefined
+      )
+    }
+  };
+
+
+
 
   onDisconnect(message:any): void {
     console.info("disconnect: "+message);
@@ -828,17 +861,19 @@ export class GameService {
    * @param id ID de la partida
    * @returns void
   */
-   public async joinMatchTorneo(id:string): Promise<any>{
+   public async joinTorneo(id:string): Promise<any>{
     return new Promise<any>(async (resolve, reject) => {
-      this.id = id;
-      await this.connect().then(async x => {
-        await this.send(
+      this.idTorneo = id;
+      console.log("creando conexion...")
+      await this.connectTorneo().then(async x => {
+        console.log("uniendose...")
+        await this.sendTorneo(
           { },
           "/game/connect/torneo/",
           undefined
         ).then();
+        resolve(true);
       }).then()
-      resolve(true);
     });
   }
 
@@ -855,7 +890,7 @@ export class GameService {
       this.stompClient.connect({"Authorization": "Bearer " + this.userService.getToken()}, function(frame: any) {
         
         that.suscripciones.push(that.stompClient.subscribe('/user/'+that.userService.username+'/msg', (message: any) => that.onTorneoPrivateMessage(message, that, that.privatemsg), {"Authorization": "Bearer " + that.userService.getToken()}));
-        that.suscripciones.push(that.stompClient.subscribe('/topic/connect/'+that.idTorneo, (message: any) => that.onConnect(message), {"Authorization": "Bearer " + that.userService.getToken()}));
+        that.suscripciones.push(that.stompClient.subscribe('/topic/connect/torneo/'+that.idTorneo, (message: any) => that.onConnectTorneo(message), {"Authorization": "Bearer " + that.userService.getToken()}));
         
         resolve(true);
       });

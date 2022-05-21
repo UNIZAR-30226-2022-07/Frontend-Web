@@ -17,9 +17,14 @@ export class TorneoEsperaComponent implements OnInit {
     this.tournamentID = this.route.snapshot.paramMap.get('id')
     console.log("jugadores: ",this.gameService.jugadoresTorneo)
   }
+
   //Ejecutado cuando un jugador se quiere sale del torneo
-  exit() {
-    //TODO: desapuntarse del torneo
+  async exit() {
+    await this.gameService.sendTorneo(
+      { },
+      "/game/disconnect/torneo/",
+      undefined
+    ).then();
     this.router.navigateByUrl('/torneo')
   }
   
