@@ -128,8 +128,13 @@ export class GameComponent implements OnInit {
   }
 
   async salir() {
-    await this.gameService.restart().then();
-    this.router.navigateByUrl("");
+    if(this.gameService.psemiTorneo) {
+      //TODO: Pedir final y unirse
+    }
+    else {
+      await this.gameService.restart().then();
+      this.router.navigateByUrl("");
+    }
   }
 
   async popupColor(c:Carta): Promise<any> {

@@ -28,11 +28,14 @@
                    
                     <span *ngFor="let index of [0,1,2,3,4,5]">
                         <span *ngIf="t.reglasBool[index] != false">
-                            <mat-checkbox  [(ngModel)] = "disabled">
+                            <mat-checkbox  [(ngModel)] = "disabled"
+                            [disableRipple]="true"
+                            (click)="$event.preventDefault()">
                             </mat-checkbox>
                         </span>
                         <span *ngIf="t.reglasBool[index] == false">
-                            <mat-checkbox   [disabled]="false">
+                            <mat-checkbox   [disableRipple]="true"
+                            (click)="$event.preventDefault()">
                             </mat-checkbox>
 
                         </span>

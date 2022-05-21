@@ -417,7 +417,9 @@ export class GameService {
           throw new Error('Socket not connected');
       }
 
-      //TODO: cerrar stompclient
+      this.stompClient.disconnect(function() {
+        console.log("stompClient desconectado")
+      });
   }
 
   /**
