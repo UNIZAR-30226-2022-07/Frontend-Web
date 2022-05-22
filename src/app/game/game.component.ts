@@ -7,6 +7,8 @@ import { UsersService } from '../users.service';
 import { GameService } from '../game.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-game',
@@ -26,7 +28,7 @@ export class GameComponent implements OnInit {
   //Si la partida ha terminado
   end:boolean = false;
 
-  constructor(public dialog:MatDialog,public dialog2:MatDialog, public gameService: GameService, public userService: UsersService, public router: Router, private _snackBar: MatSnackBar) { }
+  constructor(public dialog:MatDialog,public dialog2:MatDialog, public gameService: GameService, public userService: UsersService, public router: Router, private _snackBar: MatSnackBar,private http: HttpClient) { }
 
   ngOnInit(): void {
     this.gameService.chat.subscribe({
@@ -128,8 +130,40 @@ export class GameComponent implements OnInit {
   }
 
   async salir() {
+    console.log("AAAAAAAAAa",this.winner)
+    console.log("EEEEEEEEEEEe",this.userService.username)
+    console.log("IIIIIIIIIIIIIIIiiiiii",this.gameService.psemiTorneo)
     if(this.gameService.psemiTorneo) {
-      //TODO: Pedir final y unirse
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Authorization': "Bearer "+this.userService.getToken()
+        }),
+        withCredentials: true
+      };
+      let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/torneo/jugarFinal",
+      {
+        username : this.userService.username,
+        torneoId : this.gameService.idTorneo
+      },
+      httpOptions)
+      test.subscribe({
+        next: async (v: string) => {
+          console.log("He recibido Final: ",v)
+          //Unirse a la partida
+          await this.gameService.restart().then()
+          this.gameService.ptorneo = true;
+          this.gameService.id = v;
+          await this.gameService.infoMatch(this.gameService.id).then(async x => {
+            await this.gameService.joinMatch(this.gameService.id).then(async x => {
+              this.router.navigateByUrl("/partidaTorneo/"+this.gameService.id)
+            });
+          })
+          
+        },
+        error: (e:any) => {
+          console.error(e);
+        }
+      });
     }
     else {
       await this.gameService.restart().then();

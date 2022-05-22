@@ -120,33 +120,6 @@ export class MenuInicialComponent implements OnInit {
       }
     });
 
-
-    // Se comprueba si hay notificaciones
-/*
-    this.friendService.getRequests().subscribe({
-      next: (data) => {
-        const msg = JSON.stringify(data);
-        if(msg != ""){
-          console.info("Entro aquí");
-          this.hayInvitaciones = true;
-          this.noHayInvitaciones = false;
-        }
-      },error: (e) =>{
-
-      }
-    })
-    this.friendService.getInvitations().subscribe({
-      next: (data) =>{
-        const msg = JSON.stringify(data);
-        if(msg != ""){
-          this.hayInvitaciones = true;
-          this.noHayInvitaciones = false;
-        }
-      },error: (e) =>{
-
-      }
-    })
-    */
     console.log("Vamos a pedir mensajes")
     this.friendService.getRequests().subscribe({
       next: (data) => {
