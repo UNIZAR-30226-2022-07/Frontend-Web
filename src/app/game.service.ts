@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { EventEmitter, Injectable, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { Observable } from "rxjs";
+import { delay, Observable } from "rxjs";
 import { Carta } from "./game/logica/carta";
 import { Jugador } from "./game/logica/jugador";
 import { Mano } from "./game/logica/mano";
@@ -378,7 +378,13 @@ export class GameService {
       this.suscripciones.forEach(s => {
         this.stompClient.unsubscribe(s,{"Authorization": "Bearer " + this.userService.getToken()})
       });
-      this.stompClient.disconnect(function(frame: any) { resolve(true); },{"Authorization": "Bearer " + this.userService.getToken()})
+      if(this,this.stompClient != undefined) {
+        this.stompClient.disconnect(function(frame: any) { resolve(true); },{"Authorization": "Bearer " + this.userService.getToken()})
+      }
+      else {
+        resolve(true);
+      }
+      
     });
   }
   
@@ -386,7 +392,7 @@ export class GameService {
    * Crea un socket y se conecta, suscribiendose a "/topic/connect/<id>"
    * @returns Promesa de finalizacion
   */
-  private async connect(): Promise<any> {
+  async connect(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       const ws = new SockJS("https://onep1.herokuapp.com/onep1-game");
       this.stompClient = Stomp.over(ws);
@@ -501,6 +507,29 @@ export class GameService {
   onMessage(message:any, emitter:any, winemitter:any): void {
     if (String(message).indexOf("HA GANADO") != -1) { //Es mensaje de victoria
       winemitter.emit(String(message).substring(String(message).lastIndexOf(' '), String(message).length-1));
+      if(this.psemiTorneo) {
+        const httpOptions = {
+          headers: new HttpHeaders({
+            'Authorization': "Bearer "+this.userService.getToken()
+          }),
+          withCredentials: true
+        };
+        let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/torneo/jugarFinal",
+        {
+          username : this.userService.username,
+          torneoId : this.idTorneo
+        },
+        httpOptions)
+        test.subscribe({
+          next: async (v: any) => {
+            console.log("He recibido Final: ",v)
+            //TODO: unirse a la partida v
+          },
+          error: (e:any) => {
+            console.error(e);
+          }
+        });
+      }
       return;
     }
     let msg = JSON.parse(message.body);
@@ -521,32 +550,54 @@ export class GameService {
   };
 
   onPrivateMessage(message:any, ref:GameService,e:any): void {
-    if(String(message).indexOf("mano") == -1) {
-      let arrayasstring = String(message).substring(String(message).indexOf("["),String(message).indexOf("]")+1)
-      console.log("Añadiendo cartas "+arrayasstring);
-  
-      <Object[]>JSON.parse(arrayasstring).forEach(function (v:any) {
-        ref.jugadores[ref.indexYo].cartas.add(util.BTF_carta(v.color,v.numero))
-      });
-      this.robando = false;
-      e.emit(ref.jugadores[ref.indexYo].cartas);
+    let obj = JSON.parse(message.body);
+    console.log("Mensaje privado: ",message)
+
+    if(obj.hasOwnProperty("turno")) {
+      this.pilaCartas.push(util.BTF_carta(obj.carta.color,obj.carta.numero))
+      console.log("INDEX",this.indexYo)
+      this.messageReceived.emit(obj);
     }
     else {
-      let arrayasstring = String(message).substring(String(message).indexOf("["),String(message).indexOf("]")+1)
-      let cartas: Carta[] = []
-      let splited = arrayasstring.split(" ");
-      for (let i = 0; i<splited.length; i=i+2) {
-        let valor = splited[i].replace("[","").replace("]","").replace(",","");
-        let color = splited[i+1].replace("[","").replace("]","").replace(",","");
-        cartas.push(util.BTF_carta(color as util.Backend_Color,valor as util.Backend_Valor));
+      if(String(message).indexOf("mano") == -1) {
+        let arrayasstring = String(message).substring(String(message).indexOf("["),String(message).indexOf("]")+1)
+        console.log("Añadiendo cartas "+arrayasstring);
+    
+        <Object[]>JSON.parse(arrayasstring).forEach(function (v:any) {
+          ref.jugadores[ref.indexYo].cartas.add(util.BTF_carta(v.color,v.numero))
+        });
+        this.robando = false;
+        e.emit(ref.jugadores[ref.indexYo].cartas);
       }
-      console.log("Voy a cambiar mi mano por: ",cartas);
-      this.jugadores[this.indexYo].cartas = new Mano(cartas);
+      else {
+        let arrayasstring = String(message).substring(String(message).indexOf("["),String(message).indexOf("]")+1)
+        let cartas: Carta[] = []
+        let splited = arrayasstring.split(" ");
+        for (let i = 0; i<splited.length; i=i+2) {
+          let valor = splited[i].replace("[","").replace("]","").replace(",","");
+          let color = splited[i+1].replace("[","").replace("]","").replace(",","");
+          cartas.push(util.BTF_carta(color as util.Backend_Color,valor as util.Backend_Valor));
+        }
+        console.log("Voy a cambiar mi mano por: ",cartas);
+        this.jugadores[this.indexYo].cartas = new Mano(cartas);
+      }
     }
   };
 
-  onTorneoPrivateMessage(message:any, ref:GameService,e:any): void {
+  onTorneoPrivateMessage(message:any): void {
     console.log("TORNEO PRIVADO HE RECIBIDO", message);
+    this.suscripciones.forEach(s => {
+      this.stompClient.unsubscribe(s,{"Authorization": "Bearer " + this.userService.getToken()})
+    });
+    const that = this;
+    this.stompClient.disconnect(async function(frame: any) {
+      await that.delay(Math.random()*2000).then()
+      that.id = message.body;
+      await that.connect().then();
+      await that.joinMatch(message.body).then();
+      that.router.navigateByUrl("/partidaTorneo/"+that.id)
+    },{"Authorization": "Bearer " + this.userService.getToken()})
+    
   }
 
   onConnect(message:any): void {
@@ -768,8 +819,11 @@ export class GameService {
           }
           this.reglas = v.reglas;
           this.jugadores = [];
+          let i = 0;
           v.jugadores.forEach((element: string) => {
             this.jugadores.push(new Jugador(element, new Mano([])));
+            if(element == this.userService.username) { this.indexYo = i; }
+            i++
           });
           resolve(true)
         },
@@ -781,6 +835,35 @@ export class GameService {
       });
     });
   }
+
+
+  infoTorneos() {
+    return new Promise<any>(async (resolve, reject) => {
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Authorization': "Bearer "+this.userService.getToken()
+        }),
+        withCredentials: true
+      };
+      let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/torneo/getTorneosActivos",
+      {
+        username: this.userService.username
+      },
+      httpOptions)
+      test.subscribe({
+        next: async (v: any) => {
+          console.log("Info torneo:",v);
+          resolve(true)
+        },
+        error: (e:any) => {
+          console.error(e);
+          reject(false)
+        }
+      });
+    });
+    
+  }
+
 
   inviteFriend(friendname:string): Observable<any> {
     const httpOptions = {
@@ -891,7 +974,7 @@ export class GameService {
       const that = this;
       this.stompClient.connect({"Authorization": "Bearer " + this.userService.getToken()}, function(frame: any) {
         
-        that.suscripciones.push(that.stompClient.subscribe('/user/'+that.userService.username+'/msg', (message: any) => that.onTorneoPrivateMessage(message, that, that.privatemsg), {"Authorization": "Bearer " + that.userService.getToken()}));
+        that.suscripciones.push(that.stompClient.subscribe('/user/'+that.userService.username+'/msg', (message: any) => that.onTorneoPrivateMessage(message), {"Authorization": "Bearer " + that.userService.getToken()}));
         that.suscripciones.push(that.stompClient.subscribe('/topic/connect/torneo/'+that.idTorneo, (message: any) => that.onConnectTorneo(message), {"Authorization": "Bearer " + that.userService.getToken()}));
         
         resolve(true);
@@ -921,6 +1004,21 @@ export class GameService {
       });
     }
 
+
+    getUltimaJugada(): Observable<any> {
+      let body = { 
+        "username" : this.userService.username,
+        "idPartida" : this.id
+       };
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Authorization': "Bearer "+this.userService.getToken()
+        }),
+        withCredentials: true
+      };
+      return this.http.post("https://onep1.herokuapp.com/game/getUltimaJugada",body, httpOptions)
+    }
+
     
     getMano(): Observable<any> {
       let body = { 
@@ -938,14 +1036,17 @@ export class GameService {
 
     //TODO: completar funcion
     isSemi(): Observable<any> {
-      let body = { };
+      let body = {
+        "idPartida" : this.id,
+        "idTorneo" : this.idTorneo
+      };
       const httpOptions = {
         headers: new HttpHeaders({
           'Authorization': "Bearer "+this.userService.getToken()
         }),
         withCredentials: true
       };
-      return this.http.post("https://onep1.herokuapp.com/game/getManoJugador",body, httpOptions)
+      return this.http.post("https://onep1.herokuapp.com/torneo/game/isSemifinal",body, httpOptions)
     }
   
 }

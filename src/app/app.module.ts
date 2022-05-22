@@ -24,6 +24,7 @@ import { ConfirmarBorrar, EditProfileComponent } from './edit-profile/edit-profi
 import { RestablecerContraComponent } from './restablecer-contra/restablecer-contra.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { PartidaPublicaComponent } from './partida-publica/partida-publica.component';
+import { PartidaTorneoComponent } from './partida-torneo/partida-torneo.component';
 
 
 
@@ -58,6 +59,7 @@ import { PartidaPublicaComponent } from './partida-publica/partida-publica.compo
     ReglasTorneo,
     PartidaPublicaComponent,
     AyudaReglas,
+    PartidaTorneoComponent,
   ],
   imports: [
     BrowserModule,
