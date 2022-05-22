@@ -130,10 +130,8 @@ export class GameComponent implements OnInit {
   }
 
   async salir() {
-    console.log("AAAAAAAAAa",this.winner)
-    console.log("EEEEEEEEEEEe",this.userService.username)
-    console.log("IIIIIIIIIIIIIIIiiiiii",this.gameService.psemiTorneo)
-    if(this.gameService.psemiTorneo) {
+    console.log("Laprueba: ", this.winner, this.userService, this.winner == this.userService.username)
+    if(this.gameService.psemiTorneo && (this.winner == this.userService.username)) {
       const httpOptions = {
         headers: new HttpHeaders({
           'Authorization': "Bearer "+this.userService.getToken()
