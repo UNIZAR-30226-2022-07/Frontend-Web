@@ -555,7 +555,6 @@ export class GameService {
 
     if(obj.hasOwnProperty("turno")) {
       this.pilaCartas.push(util.BTF_carta(obj.carta.color,obj.carta.numero))
-      console.log("INDEX",this.indexYo)
       this.messageReceived.emit(obj);
     }
     else {
@@ -564,7 +563,8 @@ export class GameService {
         console.log("Añadiendo cartas "+arrayasstring);
     
         <Object[]>JSON.parse(arrayasstring).forEach(function (v:any) {
-          ref.jugadores[ref.indexYo].cartas.add(util.BTF_carta(v.color,v.numero))
+          let c = util.BTF_carta(v.color,v.numero)
+          ref.jugadores[ref.indexYo].cartas.add(new Carta(c.value,c.color))
         });
         this.robando = false;
         e.emit(ref.jugadores[ref.indexYo].cartas);
@@ -576,7 +576,8 @@ export class GameService {
         for (let i = 0; i<splited.length; i=i+2) {
           let valor = splited[i].replace("[","").replace("]","").replace(",","");
           let color = splited[i+1].replace("[","").replace("]","").replace(",","");
-          cartas.push(util.BTF_carta(color as util.Backend_Color,valor as util.Backend_Valor));
+          let c = util.BTF_carta(color as util.Backend_Color,valor as util.Backend_Valor)
+          cartas.push(new Carta(c.value,c.color));
         }
         console.log("Voy a cambiar mi mano por: ",cartas);
         this.jugadores[this.indexYo].cartas = new Mano(cartas);
