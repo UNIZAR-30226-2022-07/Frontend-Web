@@ -49,16 +49,68 @@ export class MenuInicialComponent implements OnInit {
         console.log("ME LLEGO ",v)
         if (v.hasOwnProperty('partidas')) {
           this.loading = true;
+          await this.gameService.restart().then();
           this.gameService.id = v.partidas
-          await this.gameService.infoMatch(this.gameService.id).then();
-          this.gameService.getMano().subscribe({
-            next: async (mano: any) => {
-              console.log("LA MANO ES", mano);
-              this.router.navigateByUrl('/game');
-              this.loading = false;
+
+          let tost: Observable<any> = this.http.post("https://onep1.herokuapp.com/torneo/getTorneosActivos",
+          {
+            username: this.userService.username
+          },
+          httpOptions)
+          tost.subscribe({
+            next: async (v: any) => {
+              console.log("Info torneo:",v);
+              if(v.hasOwnProperty('partidas')) {
+                this.gameService.idTorneo = v.partidas
+                this.gameService.ptorneo = true;
+                this.gameService.isSemi().subscribe({
+                  next: async (v: boolean) => {
+                    console.log("isSemi: ",v)
+                    this.gameService.psemiTorneo = v;
+                    await this.gameService.infoMatch(this.gameService.id).then();
+                    await this.gameService.connect().then()
+                    this.gameService.getMano().subscribe({
+                      next: async (mano: any) => {
+                        console.log("LA MANO ES", mano);
+                        this.gameService.getUltimaJugada().subscribe({
+                          next: async (mano: any) => {
+                            this.gameService.delay(Math.random()*1000)
+                            this.router.navigateByUrl('/game');
+                            this.loading = false;
+                          }
+                        });
+                      },
+                      error: (e:any) => {
+                        console.error("ERROR EN LA MANO",e)
+                      }
+                    });
+                  },
+                  error (e:any) {
+                    console.error("Error en isSemi: ",e);
+                  }
+                })
+              }
+              else {
+                await this.gameService.infoMatch(this.gameService.id).then();
+                await this.gameService.connect().then()
+                this.gameService.getMano().subscribe({
+                  next: async (mano: any) => {
+                    console.log("LA MANO ES", mano);
+                    this.gameService.getUltimaJugada().subscribe({
+                      next: async (mano: any) => {
+                        this.router.navigateByUrl('/game');
+                        this.loading = false;
+                      }
+                    });
+                  },
+                  error: (e:any) => {
+                    console.error("ERROR EN LA MANO",e)
+                  }
+                });
+              }
             },
             error: (e:any) => {
-              console.error("ERROR EN LA MANO",e)
+              console.error(e);
             }
           });
         }

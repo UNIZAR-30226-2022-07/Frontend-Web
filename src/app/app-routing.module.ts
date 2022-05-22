@@ -29,6 +29,7 @@ const routes: Routes = [
   { path: "leaderboard", component: LeaderboardComponent, canActivate: [LoggedGuard] },
   { path: "partidaPrivada/:id", component:PartidaPrivadaComponent, canActivate: [LoggedGuard] },
   { path: "partidaPublica/:id", component:PartidaPublicaComponent, canActivate: [LoggedGuard] },
+  { path: "partidaTorneo/:id", component:PartidaPublicaComponent, canActivate: [LoggedGuard] },
   { path: "edit-profile", component:EditProfileComponent, canActivate: [LoggedGuard] },
   { path: "restablecerContra", component:RestablecerContraComponent},
 ];
