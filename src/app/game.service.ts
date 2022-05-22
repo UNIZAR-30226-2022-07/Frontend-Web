@@ -359,10 +359,9 @@ export class GameService {
    * Borra toda la info de una partida
    * @returns promesa de finalizacion
   */
-  public restart(): Promise<any>  {
+  public restart(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.id = "";
-      this.idTorneo = "";
       this.jugadoresTorneo = [];
       this.jugadores = [];
       this.pilaCartas = [];
@@ -507,29 +506,6 @@ export class GameService {
   onMessage(message:any, emitter:any, winemitter:any): void {
     if (String(message).indexOf("HA GANADO") != -1) { //Es mensaje de victoria
       winemitter.emit(String(message).substring(String(message).lastIndexOf(' '), String(message).length-1));
-      if(this.psemiTorneo) {
-        const httpOptions = {
-          headers: new HttpHeaders({
-            'Authorization': "Bearer "+this.userService.getToken()
-          }),
-          withCredentials: true
-        };
-        let test: Observable<any> = this.http.post("https://onep1.herokuapp.com/game/torneo/jugarFinal",
-        {
-          username : this.userService.username,
-          torneoId : this.idTorneo
-        },
-        httpOptions)
-        test.subscribe({
-          next: async (v: any) => {
-            console.log("He recibido Final: ",v)
-            //TODO: unirse a la partida v
-          },
-          error: (e:any) => {
-            console.error(e);
-          }
-        });
-      }
       return;
     }
     let msg = JSON.parse(message.body);
@@ -585,19 +561,21 @@ export class GameService {
     }
   };
 
-  onTorneoPrivateMessage(message:any): void {
+  async onTorneoPrivateMessage(message:any): Promise<void> {
     console.log("TORNEO PRIVADO HE RECIBIDO", message);
-    this.suscripciones.forEach(s => {
-      this.stompClient.unsubscribe(s,{"Authorization": "Bearer " + this.userService.getToken()})
-    });
-    const that = this;
-    this.stompClient.disconnect(async function(frame: any) {
-      await that.delay(Math.random()*2000).then()
-      that.id = message.body;
-      await that.connect().then();
-      await that.joinMatch(message.body).then();
-      that.router.navigateByUrl("/partidaTorneo/"+that.id)
-    },{"Authorization": "Bearer " + this.userService.getToken()})
+    await this.restart().then()
+    this.ptorneo = true;
+    this.psemiTorneo = true;
+    await this.delay(Math.random()*2000).then(async x => {
+      this.id = message.body;
+      await this.infoMatch(this.id).then(async x => {
+        await this.joinMatch(this.id).then(async x => {
+          this.router.navigateByUrl("/partidaTorneo/"+this.id)
+        });
+      })
+    })
+
+    
     
   }
 
@@ -647,19 +625,7 @@ export class GameService {
     this.jugadoresTorneo = [];
     let i = 0;
     msg.forEach((e: { nombre: string; cartas: Carta[]; }) => {
-      if(e.cartas == undefined) {
-        if(e.nombre == this.userService.username) {
-          this.jugadoresTorneo.push(new Jugador(e.nombre, new Mano([])));
-        }
-        else {
-          let m = new Mano([]);
-          m.set(7);
-          this.jugadoresTorneo.push(new Jugador(e.nombre, m));
-        }
-      }
-      else {
-        this.jugadoresTorneo.push(new Jugador(e.nombre, new Mano(e.cartas)));
-      }
+      this.jugadoresTorneo.push(new Jugador(e.nombre, new Mano([])));
     });
 
     if(this.jugadoresTorneo[0].nombre == this.userService.username && this.jugadoresTorneo.length==9) {

@@ -30,6 +30,7 @@ export class TorneoComponent implements OnInit {
   tiempoTurno: number = 10;
   listaTorneosActivos: Array<any> = [];
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
+  loading: boolean = false;
  
   constructor(public router: Router, public gameService:GameService, public MatDialog:MatDialog, public userService: UsersService) { }
 
@@ -97,13 +98,17 @@ export class TorneoComponent implements OnInit {
   async joinTorneo(torneo:any) {
     console.log("click",torneo);
     if(torneo.nJugadores<9 && torneo.jugadores.indexOf(this.userService.username)==-1) {
+      this.loading = true;
+      await this.gameService.restart().then();
       this.gameService.idTorneo = torneo.id;
       this.gameService.ptorneo = true;
       this.gameService.psemiTorneo = true;
       this.gameService.reglas = torneo.reglas;
       await this.gameService.joinTorneo(torneo.id).then()
       this.router.navigateByUrl("/torneoEspera/"+torneo.id)
+      this.loading = false;
     }
+
   }
 
   abrirAyudaReglas(){
