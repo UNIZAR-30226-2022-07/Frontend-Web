@@ -526,10 +526,10 @@ export class GameService {
   };
 
   onPrivateMessage(message:any, ref:GameService,e:any): void {
-    let obj = JSON.parse(message.body);
-    console.log("Mensaje privado: ",message)
-
-    if(obj.hasOwnProperty("turno")) {
+    
+    if(String(message).indexOf("turno") != -1) {
+      let obj = JSON.parse(message.body);
+      console.log("Mensaje privado: ",message)
       this.pilaCartas.push(util.BTF_carta(obj.carta.color,obj.carta.numero))
       this.messageReceived.emit(obj);
     }
