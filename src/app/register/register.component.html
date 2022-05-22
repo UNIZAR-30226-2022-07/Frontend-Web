@@ -1,3 +1,4 @@
+
 <body>
   <button  class= "btn-token" mat-button (click)="abrirEsperarToken()">
     Activar Cuenta
@@ -45,10 +46,6 @@
         {{item}}
       </option>
     </select>
-    <p>
-      <input type="checkbox" class="tos" id="tos-input" [checked]="tos" (change)="tos = !tos">
-      <label for="tos"> Acepto los <a routerLink="/tos">terminos y condiciones</a></label>
-    </p>
     <button type="submit" id="register-btn" [disabled]="validate()" (click)="register_button()">Registrarse</button>
   </form>
     
