@@ -214,6 +214,17 @@ export class GameService {
             else {
               posiblesSalvaciones.push(new Carta(util.Valor.DRAW2,ultimaCarta.color));
             }
+            if(this.hasRegla(util.Reglas.BLOCK_DRAW)) {
+              if (ultimaCarta.value == util.Valor.SKIP) {
+                posiblesSalvaciones.push(new Carta(util.Valor.SKIP,util.Color.AMARILLO));
+                posiblesSalvaciones.push(new Carta(util.Valor.SKIP,util.Color.AZUL));
+                posiblesSalvaciones.push(new Carta(util.Valor.SKIP,util.Color.ROJO));
+                posiblesSalvaciones.push(new Carta(util.Valor.SKIP,util.Color.VERDE));
+              }
+              else {
+                posiblesSalvaciones.push(new Carta(util.Valor.SKIP,ultimaCarta.color));
+              }
+            }
             
             console.log("Me salvan:",posiblesSalvaciones);
             posiblesSalvaciones.forEach(c => {
