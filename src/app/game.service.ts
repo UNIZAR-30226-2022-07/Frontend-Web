@@ -416,7 +416,6 @@ export class GameService {
         that.suscripciones.push(that.stompClient.subscribe('/topic/disconnect/'+that.id, (message: any) => that.onDisconnect(message), {"Authorization": "Bearer " + that.userService.getToken()}));
         that.suscripciones.push(that.stompClient.subscribe('/topic/begin/'+that.id, (message: any) => that.onBegin(message), {"Authorization": "Bearer " + that.userService.getToken()}));
         that.suscripciones.push(that.stompClient.subscribe('/topic/chat/'+that.id, (message: any) => that.onChat(message, that.chat), {"Authorization": "Bearer " + that.userService.getToken()}));
-        that.suscripciones.push(that.stompClient.subscribe('/topic/buttonOne/'+that.id, (message: any) => that.onButtonOne(message), {"Authorization": "Bearer " + that.userService.getToken()}));
         
         resolve(true);
       });

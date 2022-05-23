@@ -241,11 +241,10 @@ export class ChatComponent{
   msg !: string;
 
   sendMsg() {
-    this.gameService.send(
-      this.msg,
-      "/game/message/",
-      undefined
-    )
+    this.gameService.stompClient.send(
+      "/game/message/"+this.gameService.id,
+      {"Authorization": "Bearer " + this.userService.getToken(),"username":this.userService.username},
+      this.msg);
     this.msg = "";
   }
 }
