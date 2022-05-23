@@ -538,7 +538,7 @@ export class UnirsePrivada {
 })
 export class ReglasPartidaComponent {
   nJugadores: number = 6;
-  tiempoTurno: number = 10;
+  tiempoTurno: number = 15;
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
   loading: boolean = false;
   constructor(public dialogRef: MatDialogRef<ReglasPartidaComponent>, public gameService: GameService, public router: Router) {this.loading = false;}
