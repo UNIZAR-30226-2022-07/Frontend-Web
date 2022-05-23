@@ -589,7 +589,7 @@ export class GameService {
     
   }
 
-  onConnect(message:any): void {
+  async onConnect(message:any): Promise<void> {
     console.info("connect: "+message.body);
     let msg = JSON.parse(message.body);
     this.jugadores = [];
@@ -621,6 +621,7 @@ export class GameService {
     }
 
     if((this.ppublica && this.jugadores[0].nombre == this.userService.username && this.jugadores.length==4) || (this.ptorneo  && this.jugadores[0].nombre == this.userService.username && this.jugadores.length==3)) {
+      await this.delay(Math.random()*1000+1000).then();
       this.send(
         { },
         "/game/begin/",
@@ -629,7 +630,7 @@ export class GameService {
     }
   };
 
-  onConnectTorneo(message:any): void {
+  async onConnectTorneo(message:any): Promise<void> {
     console.info("connect: "+message.body);
     let msg = JSON.parse(message.body);
     this.jugadoresTorneo = [];
@@ -639,6 +640,7 @@ export class GameService {
     });
 
     if(this.jugadoresTorneo[0].nombre == this.userService.username && this.jugadoresTorneo.length==9) {
+      await this.delay(Math.random()*1000+1000).then();
       this.sendTorneo(
         { },
         "/game/begin/torneo/",
