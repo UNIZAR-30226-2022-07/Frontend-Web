@@ -315,7 +315,7 @@ export class DialogContent {
 
       },
       error: (e) =>{
-        console.log("Ha ido mal");
+        this.snackBar.open("El usuario no existe",'',{duration: 4000});
       }
     })
 
@@ -538,7 +538,7 @@ export class UnirsePrivada {
 })
 export class ReglasPartidaComponent {
   nJugadores: number = 6;
-  tiempoTurno: number = 10;
+  tiempoTurno: number = 15;
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
   loading: boolean = false;
   constructor(public dialogRef: MatDialogRef<ReglasPartidaComponent>, public gameService: GameService, public router: Router) {this.loading = false;}

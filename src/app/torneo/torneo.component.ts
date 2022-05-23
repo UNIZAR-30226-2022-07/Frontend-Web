@@ -125,7 +125,7 @@ export class TorneoComponent implements OnInit {
 export class ReglasTorneoPartida {
   nJugadores: number = 9;
   
-  tiempoTurno: number = 10;
+  tiempoTurno: number = 15;
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
   
   

@@ -61,7 +61,7 @@ export class GameService {
     console.log("Inicializando servicio...")
     this.messageReceived.subscribe({
       next: async (msg: any) => {
-        if(!this.skipNextJugada){
+        if(!this.skipNextJugada) {
           const that = this;
           if(this.parseandomsg) {
             console.log("Tengo que esperar")
@@ -213,6 +213,17 @@ export class GameService {
             }
             else {
               posiblesSalvaciones.push(new Carta(util.Valor.DRAW2,ultimaCarta.color));
+            }
+            if(this.hasRegla(util.Reglas.BLOCK_DRAW)) {
+              if (ultimaCarta.value == util.Valor.SKIP) {
+                posiblesSalvaciones.push(new Carta(util.Valor.SKIP,util.Color.AMARILLO));
+                posiblesSalvaciones.push(new Carta(util.Valor.SKIP,util.Color.AZUL));
+                posiblesSalvaciones.push(new Carta(util.Valor.SKIP,util.Color.ROJO));
+                posiblesSalvaciones.push(new Carta(util.Valor.SKIP,util.Color.VERDE));
+              }
+              else {
+                posiblesSalvaciones.push(new Carta(util.Valor.SKIP,ultimaCarta.color));
+              }
             }
             
             console.log("Me salvan:",posiblesSalvaciones);
@@ -405,7 +416,6 @@ export class GameService {
         that.suscripciones.push(that.stompClient.subscribe('/topic/disconnect/'+that.id, (message: any) => that.onDisconnect(message), {"Authorization": "Bearer " + that.userService.getToken()}));
         that.suscripciones.push(that.stompClient.subscribe('/topic/begin/'+that.id, (message: any) => that.onBegin(message), {"Authorization": "Bearer " + that.userService.getToken()}));
         that.suscripciones.push(that.stompClient.subscribe('/topic/chat/'+that.id, (message: any) => that.onChat(message, that.chat), {"Authorization": "Bearer " + that.userService.getToken()}));
-        that.suscripciones.push(that.stompClient.subscribe('/topic/buttonOne/'+that.id, (message: any) => that.onButtonOne(message), {"Authorization": "Bearer " + that.userService.getToken()}));
         
         resolve(true);
       });
@@ -505,7 +515,7 @@ export class GameService {
   */
   onMessage(message:any, emitter:any, winemitter:any): void {
     if (String(message).indexOf("HA GANADO") != -1) { //Es mensaje de victoria
-      winemitter.emit(String(message).substring(String(message).lastIndexOf(' '), String(message).length-1));
+      winemitter.emit(String(message).substring(String(message).lastIndexOf(' '), String(message).length-1).replace(" ",""));
       return;
     }
     let msg = JSON.parse(message.body);
@@ -637,7 +647,25 @@ export class GameService {
     }
   };
 
-
+  onDisconnectTorneo(message:any): void {
+    console.info("disconnect: "+message);
+    let msg = message.body;
+    let player = msg.substring(1, msg.indexOf(' '));
+    let i = 0;
+    this.jugadoresTorneo.forEach(async j => {
+      if(j.nombre == player) {
+        this.jugadoresTorneo.splice(i, 1);
+        if(player == this.userService.username) {
+          await this.restart().then();
+          this._snackBar.open("Has salido del torneo",'',{duration: 4000});
+          this.router.navigateByUrl("");
+        }
+        return;
+      }
+      i = i+1;
+    });
+    console.log();
+  };
 
 
   onDisconnect(message:any): void {
@@ -943,6 +971,7 @@ export class GameService {
         
         that.suscripciones.push(that.stompClient.subscribe('/user/'+that.userService.username+'/msg', (message: any) => that.onTorneoPrivateMessage(message), {"Authorization": "Bearer " + that.userService.getToken()}));
         that.suscripciones.push(that.stompClient.subscribe('/topic/connect/torneo/'+that.idTorneo, (message: any) => that.onConnectTorneo(message), {"Authorization": "Bearer " + that.userService.getToken()}));
+        that.suscripciones.push(that.stompClient.subscribe('/topic/disconnect/torneo/'+that.idTorneo, (message: any) => that.onDisconnectTorneo(message), {"Authorization": "Bearer " + that.userService.getToken()}));
         
         resolve(true);
       });
@@ -1001,7 +1030,6 @@ export class GameService {
       return this.http.post("https://onep1.herokuapp.com/game/getManoJugador",body, httpOptions)
     }
 
-    //TODO: completar funcion
     isSemi(): Observable<any> {
       let body = {
         "idPartida" : this.id,

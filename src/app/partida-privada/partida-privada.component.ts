@@ -20,7 +20,7 @@ export class PartidaPrivadaComponent implements OnInit {
   reglas: Array<boolean> = [false, false, false, false, false, false] //0switch, Crazy7, ProgressiveDraw, ChaosDraw, BlockDraw, RepeatDraw
 
 
-  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog,public gameService: GameService, public userService: UsersService,private clipboardApi: ClipboardService) { }
+  constructor(private route: ActivatedRoute, public router: Router, public dialog:MatDialog,public gameService: GameService, public userService: UsersService,private clipboardApi: ClipboardService, public snackBar:MatSnackBar) { }
 
   ngOnInit(): void {
     
@@ -42,6 +42,7 @@ export class PartidaPrivadaComponent implements OnInit {
 
   copyText() {
     this.clipboardApi.copyFromContent(this.gameService.id);
+    this.snackBar.open("Copiado en el portapapeles",'',{duration: 4000});
   }
 
   async goBack() {

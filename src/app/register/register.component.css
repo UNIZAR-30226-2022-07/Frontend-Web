@@ -6,6 +6,36 @@ div.register {
   padding: 100px;
 }
 
+
+.btn-back {
+  position:absolute;
+  top:0;
+  z-index: 99999;
+  width: auto;
+  height: auto;
+}
+.btn-rtn{
+  z-index: 99999;
+  height: 10vh;
+  width: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 1vh;
+  left: 1vw;
+  
+
+  background-color:black;
+}
+
+.icon-rtn{
+  z-index: 999;
+  display: inline;
+  font-size: 6vh;
+  color:white;
+}
+
 /*------------------------------ FORM ------------------------------ */
 
 .btn-token{

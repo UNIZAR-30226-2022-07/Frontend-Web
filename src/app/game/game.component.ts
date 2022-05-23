@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Jugador } from './logica/jugador';
+import { Mano } from './logica/mano';
 
 @Component({
   selector: 'app-game',
@@ -54,17 +56,21 @@ export class GameComponent implements OnInit {
       if(util.isWild(c.value)) {
         await this.popupColor(c).then();
       }
-      if(this.gameService.partida.reglas.includes('CERO_SWITCH') && c.value == util.Valor.CERO){
-        let i = 1;
-        this.gameService.jugadores.forEach(element => {
-          this.gameService.cambiarMano(element.nombre,this.gameService.jugadores[i].nombre);
-          i = (i+1) % this.gameService.jugadores.length;
-        });
-      }
+      let user: string = "";
       if(this.gameService.partida.reglas.includes('CRAZY_7') && c.value == util.Valor.SIETE){
-        let user = await this.popupJugador().then();
+        user = await this.popupJugador().then();
         console.log("Cambiando mano con "+user);
-        this.gameService.cambiarMano(this.userService.username,user);
+        let j1 = new Jugador("TEMP",new Mano([]));
+        let j2 = new Jugador("TEMP",new Mano([]));
+        this.gameService.jugadores.forEach(j => {
+          if(j.nombre == this.userService.username) {j1 = j}
+          if(j.nombre == user) {j2 = j} 
+        });
+        let temp = j1.cartas.getFalso()
+        console.log("temp:"+temp,j1,j2)
+        j1.cartas.setFalso(j2.cartas.length())
+        j2.cartas.set(temp);
+        
       }
 
       if(!this.gameService.saidUno && this.gameService.jugadores[this.gameService.indexYo].cartas.length() == 1) {
@@ -87,6 +93,19 @@ export class GameComponent implements OnInit {
         "/game/card/play/",
         undefined
       ).then()
+      if(this.gameService.partida.reglas.includes('CERO_SWITCH') && c.value == util.Valor.CERO){
+        let i = 0
+        this.gameService.jugadores.forEach(element => {
+          if(i!=0) {
+            console.log("Cambiando mano "+element.nombre+" con "+this.gameService.jugadores[0].nombre)
+            this.gameService.cambiarMano(element.nombre,this.gameService.jugadores[0].nombre);
+          }
+          i = (i+1)
+        });
+      }
+      if(this.gameService.partida.reglas.includes('CRAZY_7') && c.value == util.Valor.SIETE){
+        this.gameService.cambiarMano(this.userService.username,user);
+      }
       this.gameService.saidUno = false;
     }
   }
@@ -130,7 +149,7 @@ export class GameComponent implements OnInit {
   }
 
   async salir() {
-    console.log("Laprueba: ", this.winner, this.userService, this.winner == this.userService.username)
+    console.log("Laprueba: ", this.winner, this.userService.username, this.winner == this.userService.username)
     if(this.gameService.psemiTorneo && (this.winner == this.userService.username)) {
       const httpOptions = {
         headers: new HttpHeaders({
@@ -241,11 +260,10 @@ export class ChatComponent{
   msg !: string;
 
   sendMsg() {
-    this.gameService.send(
-      this.msg,
-      "/game/message/",
-      undefined
-    )
+    this.gameService.stompClient.send(
+      "/game/message/"+this.gameService.id,
+      {"Authorization": "Bearer " + this.userService.getToken(),"username":this.userService.username},
+      this.msg);
     this.msg = "";
   }
 }
