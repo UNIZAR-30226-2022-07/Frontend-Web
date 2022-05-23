@@ -7,14 +7,12 @@ div.register {
 }
 
 
-.btn-back {
-  position:absolute;
-  top:0;
+div.back {
   z-index: 99999;
   width: auto;
   height: auto;
 }
-.btn-rtn{
+div.back .mat-icon-button{
   z-index: 99999;
   height: 10vh;
   width: 10vh;
@@ -24,12 +22,11 @@ div.register {
   position: absolute;
   top: 1vh;
   left: 1vw;
-  
 
   background-color:black;
 }
 
-.icon-rtn{
+div.back .mat-icon {
   z-index: 999;
   display: inline;
   font-size: 6vh;
@@ -39,20 +36,30 @@ div.register {
 /*------------------------------ FORM ------------------------------ */
 
 .btn-token{
-  
-  width: 15%;
-  height: 5%;
-  float: right;
-  
-  margin: auto;
+  position: absolute;
+  top:0;
+  right: 0;
 
-  display: flex;
-  text-align: center;
-  align-items: center;
-  padding: auto;
+  font-family: "Fredoka One";
+  background-color: #C7261A;
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  border-style: solid;
+  border-width: 4px;
+  border-color: black;
+  cursor: pointer;
 
+  display: block;
+  width: 200px;
+  height: 80px;
+
+  
+  margin-left: auto;
+  margin-right: auto;
+
+  font-size: large;
 }
-
 
 
 input {
@@ -95,7 +102,7 @@ input.tos {
   height: 25px;
 }
 
-button {
+.btn-1 {
   font-family: "Fredoka One";
   background-color: #C7261A;
   color: white;
