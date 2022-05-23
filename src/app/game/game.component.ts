@@ -130,7 +130,7 @@ export class GameComponent implements OnInit {
   }
 
   async salir() {
-    console.log("Laprueba: ", this.winner, this.userService, this.winner == this.userService.username)
+    console.log("Laprueba: ", this.winner, this.userService.username, this.winner == this.userService.username)
     if(this.gameService.psemiTorneo && (this.winner == this.userService.username)) {
       const httpOptions = {
         headers: new HttpHeaders({

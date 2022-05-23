@@ -505,7 +505,7 @@ export class GameService {
   */
   onMessage(message:any, emitter:any, winemitter:any): void {
     if (String(message).indexOf("HA GANADO") != -1) { //Es mensaje de victoria
-      winemitter.emit(String(message).substring(String(message).lastIndexOf(' '), String(message).length-1));
+      winemitter.emit(String(message).substring(String(message).lastIndexOf(' '), String(message).length-1).replace(" ",""));
       return;
     }
     let msg = JSON.parse(message.body);
