@@ -61,7 +61,7 @@ export class GameService {
     console.log("Inicializando servicio...")
     this.messageReceived.subscribe({
       next: async (msg: any) => {
-        if(!this.skipNextJugada){
+        if(!this.skipNextJugada) {
           const that = this;
           if(this.parseandomsg) {
             console.log("Tengo que esperar")
@@ -1030,7 +1030,6 @@ export class GameService {
       return this.http.post("https://onep1.herokuapp.com/game/getManoJugador",body, httpOptions)
     }
 
-    //TODO: completar funcion
     isSemi(): Observable<any> {
       let body = {
         "idPartida" : this.id,
