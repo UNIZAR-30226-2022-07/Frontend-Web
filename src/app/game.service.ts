@@ -648,7 +648,25 @@ export class GameService {
     }
   };
 
-
+  onDisconnectTorneo(message:any): void {
+    console.info("disconnect: "+message);
+    let msg = message.body;
+    let player = msg.substring(1, msg.indexOf(' '));
+    let i = 0;
+    this.jugadoresTorneo.forEach(async j => {
+      if(j.nombre == player) {
+        this.jugadoresTorneo.splice(i, 1);
+        if(player == this.userService.username) {
+          await this.restart().then();
+          this._snackBar.open("Has salido del torneo",'',{duration: 4000});
+          this.router.navigateByUrl("");
+        }
+        return;
+      }
+      i = i+1;
+    });
+    console.log();
+  };
 
 
   onDisconnect(message:any): void {
@@ -954,6 +972,7 @@ export class GameService {
         
         that.suscripciones.push(that.stompClient.subscribe('/user/'+that.userService.username+'/msg', (message: any) => that.onTorneoPrivateMessage(message), {"Authorization": "Bearer " + that.userService.getToken()}));
         that.suscripciones.push(that.stompClient.subscribe('/topic/connect/torneo/'+that.idTorneo, (message: any) => that.onConnectTorneo(message), {"Authorization": "Bearer " + that.userService.getToken()}));
+        that.suscripciones.push(that.stompClient.subscribe('/topic/disconnect/torneo/'+that.idTorneo, (message: any) => that.onDisconnectTorneo(message), {"Authorization": "Bearer " + that.userService.getToken()}));
         
         resolve(true);
       });

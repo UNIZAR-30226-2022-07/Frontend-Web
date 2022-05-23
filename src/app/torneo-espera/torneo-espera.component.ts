@@ -26,6 +26,7 @@ export class TorneoEsperaComponent implements OnInit {
       "/game/disconnect/torneo/",
       undefined
     ).then();
+    await this.gameService.restart().then()
     this.router.navigateByUrl('/torneo')
   }
   
