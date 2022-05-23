@@ -315,7 +315,7 @@ export class DialogContent {
 
       },
       error: (e) =>{
-        console.log("Ha ido mal");
+        this.snackBar.open("El usuario no existe",'',{duration: 4000});
       }
     })
 

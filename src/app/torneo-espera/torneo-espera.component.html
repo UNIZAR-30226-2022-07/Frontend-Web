@@ -9,7 +9,7 @@
     <div class="pack" *ngFor="let e of [].constructor(nJugadores); let i = index">
         <div class="persona" *ngIf="gameService.jugadoresTorneo[i] === undefined">
             <a>
-                    <mat-icon class="empty" >add</mat-icon>
+                    <mat-icon class="empty" >person</mat-icon>
             </a>
         </div>
         <div class="persona filled" *ngIf="gameService.jugadoresTorneo[i] !== undefined">
